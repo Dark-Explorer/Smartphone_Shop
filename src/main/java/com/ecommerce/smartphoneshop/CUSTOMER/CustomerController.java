@@ -1,6 +1,5 @@
 package com.ecommerce.smartphoneshop.CUSTOMER;
 
-import com.ecommerce.smartphoneshop.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -8,6 +7,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class CustomerController {
     @GetMapping("/login")
     public String showLogin() {
-        return "login";
+        return "user-login";
     }
+
+    @GetMapping("/home")
+    public String showHome() {
+        return "user-home";
+    }
+
+    @GetMapping("/register")
+    public String showRegister() {
+        return "user-register";
+    }
+
+    @GetMapping("/product")
+    public String showProduct() {
+        return "admin-products";
+    }
+
 }

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head th:replace = "~{admin-fragments::header}">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace = "~{admin-fragments::sidebar(var1=${newOrderNum}, var2= ${notiTime})}">
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav  th:replace = "~{admin-fragments::top-navbar}">
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Today) -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Earnings (Today)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${earningToday != 0 ? (#numbers.formatDecimal(earningToday, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;') : '0&#8363;'}"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (This month) -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Earnings (This month)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${earningThisMonth != 0 ? (#numbers.formatDecimal(earningThisMonth, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;') : '0&#8363;'}"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Orders -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                Pending Orders</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text='${pendingOrders}'></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-spinner fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+<!--                    Another row-->
+                    <div class="row">
+
+                        <!-- Orders completed (Today) -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Orders completed (Today)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text='${completedToday}'></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Orders completed this month -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Orders completed (This month)</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text='${completedThisMonth}'></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check-square fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Cancel Order Rate -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Cancel Order Rate
+                                            </div>
+                                            <div class="row no-gutters align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" th:text="${cancelRate + '%'}"></div>
+                                                </div>
+                                                <div class="col">
+                                                    <div class="progress progress-sm mr-2">
+                                                        <div class="progress-bar bg-info" role="progressbar"
+                                                             th:style="'width: ' + ${cancelRate} + '%'"
+                                                             aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-ban fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New members to the shop -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                New members</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text='${newMembers}'></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-user-plus fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Content Row -->
+
+                    <div class="row">
+
+                        <!-- Area Chart -->
+                        <div class="col-xl-8 col-lg-7">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview by Hour (this week)</h6>
+                                    <div class="dropdown no-arrow">
+                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-area">
+                                        <canvas id="myAreaChart"></canvas>
+                                        <input type="hidden" th:value="${ordersInAnHour}" id="ordersInAnHour">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Top spending users and Black list</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th style='width: 200px; text-align: center'>Name</th>
+                                            <th>Total spending</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <div th:each='user : ${top3Users}'>
+                                            <tr>
+                                                <td th:text='${user.user.fullname}'></td>
+                                                <td style='text-align: center' th:text="${#numbers.formatDecimal(user.amount, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th style='width: 200px; text-align: center'>Phone</th>
+                                            <th style='text-align: center;'>Cancel count</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <div th:each='blackList : ${blackList}'>
+                                            <tr>
+                                                <td th:text='${blackList.phonenumber}'></td>
+                                                <td style='text-align: center' th:text="${blackList.canceledOrderTime}"></td>
+                                            </tr>
+                                        </div>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace = "~{admin-fragments::footer}"></footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace = "~{admin-fragments::scroll}" >
+    </a>
+    <div th:replace = "~{admin-fragments::script}"></div>
+    <!-- Page level plugins -->
+    <script th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+
+    <!-- Page level custom scripts -->
+    <script th:src="@{/js/demo/chart-area-demo.js}"></script>
+    <script th:src="@{/js/demo/chart-pie-demo.js}"></script>
+    </div>
+</body>
+
+</html>

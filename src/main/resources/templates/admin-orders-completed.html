@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{admin-fragments::header}"></head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!--Sidebar-->
+    <ul th:replace="~{admin-fragments::sidebar}"></ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav th:replace="~{admin-fragments::top-navbar}"></nav>
+            <!-- End of Topbar -->
+
+            <!-- Begin Page Content -->
+            <div th:if="${success}" class="text-center alert alert-success">
+                <p th:text="${success}">
+                </p>
+            </div>
+            <div class="table-main table-responsive">
+                <table class="table" id="myTable">
+                    <thead>
+                    <tr>
+                        <th>Order Date</th>
+                        <th>Total Price</th>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Products</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}" th:if="${order.orderstatus == 3 or order.orderstatus == 4}">
+                        <td>
+                            <p th:text="${#temporals.format(order.time, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                            <!--                            <p>00:11 31/12/2023</p>-->
+                        </td>
+                        <td>
+                            <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                            <!--                            <p>350,000VND</p>-->
+                        </td>
+                        <td>
+                            <p th:text="${order.unregister_name}"></p>
+                            <!--                            <p>Luong Manh Tu</p>-->
+                        </td>
+                        <td style="width: 115px;">
+                            <p th:text="${order.unregister_phonenumber}"></p>
+                            <!--                            <p>0123456789</p>-->
+                        </td>
+                        <td style="width: 300px;">
+                            <p th:text="${order.unregister_address}"></p>
+                            <!--                            <p>So 1, Dai Co Viet, Hai Ba Trung, Ha Noi</p>-->
+                        </td>
+                        <td>
+
+                            <!--                            List <pair<pair<id,name>,quantity>-->
+                            <div th:each="pair : ${order.order_productList}">
+                                <p th:text="${pair.amount} + ' x ' + ${pair.pro.Name} + ' (' + ${pair.pro.id} + ')'"></p>
+                            </div>
+                            <!--                            <p>2x Egg (001)</p>-->
+                            <!--                            <p>1x Neptune (002)</p>-->
+                            <!--                            <p>10x Sausage (003)</p>-->
+                        </td>
+                        <td>
+                            <p th:text="${order.orderstatus == 3 ? 'Completed' : (order.orderstatus == 4 ? 'Cancelled' : '')}"></p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        sortTable(0); // Sắp xếp bảng khi trang web được tải
+
+                        function sortTable(columnIndex) {
+                            var table, rows, switching, i, x, y, shouldSwitch;
+                            table = document.getElementById("myTable");
+                            switching = true;
+
+                            while (switching) {
+                                switching = false;
+                                rows = table.getElementsByTagName("tr");
+
+                                for (i = 1; i < (rows.length - 1); i++) {
+                                    shouldSwitch = false;
+                                    x = rows[i].getElementsByTagName("td")[columnIndex];
+                                    y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                        shouldSwitch = true;
+                                        break;
+                                    }
+                                }
+
+                                if (shouldSwitch) {
+                                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                    switching = true;
+                                }
+                            }
+                        }
+                    });
+                </script>
+
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                <footer th:replace="~{admin-fragments::footer}"></footer>
+                <!-- End of Footer -->
+
+            </div>
+
+            <!-- End of Content Wrapper -->
+
+        </div>
+    </div>
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{admin-fragments::scroll}"></a>
+
+<!--Add Categories Modal-->
+
+
+<!--End-->
+
+<!-- End -->
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{admin-fragments::script}"></div>
+
+<script th:src="@{/js/categories.js}"></script>
+</body>
+
+</html>

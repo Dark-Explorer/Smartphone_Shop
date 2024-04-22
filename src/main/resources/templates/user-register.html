@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <title>UCL | Đăng ký</title>
+    <div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body>
+<div th:replace="~{user-fragment::header}"></div>
+
+<div th:replace="~{user-fragment::banner}"></div>
+
+<!--================Login Box Area =================-->
+<section class="login_box_area section_gap">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="login_box_img">
+                    <img class="img-fluid" th:src="@{img/login.jpg}" alt="">
+                    <div class="hover">
+                        <h4>Đã có tài khoản?</h4>
+                        <a class="primary-btn" th:href="@{user-login}">Đăng nhập</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="login_form_inner">
+                    <h3>Đăng ký tài khoản</h3>
+                    <form class="row login_form" action="" method="post" id="contactForm" novalidate="novalidate">
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Họ và tên'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="phone" name="name" placeholder="Số điện thoại" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Số điện thoại'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="mail" name="name" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="username" name="name" placeholder="Tên đăng nhập" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <input type="text" class="form-control" id="password" name="name" placeholder="Mật khẩu" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" value="submit" class="primary-btn">ĐĂNG KÝ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Login Box Area =================-->
+
+<div th:replace="~{user-fragment::footer}"></div>
+
+<div th:replace="~{user-fragment::JS-import}"></div>
+</body>
+
+</html>

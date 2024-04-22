@@ -44,7 +44,9 @@ public class UserConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(author ->
                         author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                .requestMatchers("*/img/**").permitAll()
+                                .requestMatchers("/img/**").permitAll()
+                                .requestMatchers("/home", "/do-login", "/register", "product").permitAll()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(login ->
                         login.loginPage("/login")

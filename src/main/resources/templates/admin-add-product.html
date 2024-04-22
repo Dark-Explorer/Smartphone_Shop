@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul th:replace = "~{admin-fragments::sidebar}">
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav th:replace = "~{admin-fragments::top-navbar}">
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <form class="form-horizontal" th:action="@{/save-product}" method="post" th:object="${productDt}"
+                          enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <!-- Form Name -->
+                                <legend style="padding-left: 60px;">ADD NEW PRODUCT</legend>
+                                <!-- Text input-->
+                                <div class="form-group" style="margin-left: 50px;">
+                                    <label class="col-md-4 control-label" for="price">ID</label>
+                                    <div class="col-md-8">
+                                        <input id="id" name="id" th:field="*{id}" class="form-control input-md" required=""
+                                               type="text">
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group" style="margin-left: 50px;">
+                                    <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+                                    <div class="col-md-8">
+                                        <input id="product_name" th:field="*{name}" name="product_name"
+                                               class="form-control input-md" required="" type="text">
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group" style="margin-left: 50px;">
+                                    <label class="col-md-4 control-label" for="description">PRODUCT DESCRIPTION</label>
+                                    <div class="col-md-8">
+                                        <input id="description" th:field="*{info}" name="description" class="form-control input-md"
+                                               required="" type="text">
+                                    </div>
+                                </div>
+                                <!-- Text input-->
+                                <div class="form-group" style="margin-left: 50px;">
+                                    <label class="col-md-4 control-label" for="price">PRICE</label>
+                                    <div class="col-md-8">
+                                        <input id="price" name="price" th:field="*{price}" class="form-control input-md" required=""
+                                               type="number">
+                                    </div>
+                                </div>
+                                <!-- Add other fields here -->
+                                <button type="submit" class="btn btn-primary" onclick="saveForm()" style="margin-left: 60px;">Save</button>
+                                <a th:href="admin-products" class="btn btn-danger">Cancel</a>
+
+
+                            </div>
+                            <div class="col-md-6">
+                                <!-- File Button -->
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label" for="image">PRODUCT IMAGE</label>
+                                    <div class="col-md-8">
+                                        <img id="previewImage" class="my-product-image" style="height: 450px; width: 450px;" alt="">
+                                        <br><br>
+                                        <input id="image" name="imageProduct" class="input-file" type="file">
+
+                                        <script>
+                                            const inputElement = document.getElementById("image");
+                                            const previewElement = document.getElementById("previewImage");
+
+                                            inputElement.addEventListener("change", function (event) {
+                                                const file = event.target.files[0];
+                                                const reader = new FileReader();
+
+                                                reader.onload = function (e) {
+                                                    previewElement.src = e.target.result;
+                                                };
+
+                                                reader.readAsDataURL(file);
+                                            });
+                                        </script>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer th:replace="~{admin-fragments::footer}">
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="~{admin-fragments::scroll}">
+    </a>
+
+
+
+    <!-- Bootstrap core JavaScript-->
+    <div th:replace="~{admin-fragments::script}"></div>
+
+</body>
+
+</html>
