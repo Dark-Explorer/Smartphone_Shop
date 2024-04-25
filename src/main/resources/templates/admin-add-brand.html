@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>Brand</title>
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+        <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+
+                <div class="container-fluid">
+                    <form class="form-horizontal" th:action="@{/save-brand}" method="post" th:object="${brandDTO}"
+                          enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <legend style="padding-left: 60px;">ADD NEW BRAND</legend>
+                                <div class="form-group" style="margin-left: 50px;">
+                                    <label class="col-md-4 control-label" for="product_name">Brand name</label>
+                                    <div class="col-md-8">
+                                        <input id="product_name" th:field="*{name}" name="product_name" class="form-control input-md" required="" type="text">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary" onclick="saveForm()" style="margin-left: 60px;">Save</button>
+                                <a th:href="@{admin-brands}" class="btn btn-danger">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <footer th:replace="~{admin-fragments::footer}"></footer>
+        </div>
+    </div>
+
+    <a th:replace="~{admin-fragments::scroll}"></a>
+
+    <div th:replace="~{admin-fragments::script}"></div>
+</body>
+</html>

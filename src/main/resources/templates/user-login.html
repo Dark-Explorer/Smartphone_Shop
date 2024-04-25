@@ -9,6 +9,8 @@
 <body>
 	<div th:replace="~{user-fragment::header}"></div>
 
+	<div style="height: 100px"></div>
+
 	<!--================Login Box Area =================-->
 	<section class="login_box_area section_gap">
 		<div class="container">
@@ -25,12 +27,16 @@
 				<div class="col-lg-6">
 					<div class="login_form_inner">
 						<h3>Đăng nhập</h3>
-						<form class="row login_form" action="" method="post" id="contactForm" novalidate="novalidate">
+						<div th:if="${error}" id="error">
+							<p class="alert alert-danger" th:text="${error}"></p>
+						</div>
+						<div th:if = "${param.error}" id="error2" class="alert alert-danger text-center">Tên đăng nhập hoặc mật khẩu không đúng</div>
+						<form class="row login_form" th:action="@{/do-login}" method="POST" id="contactForm" novalidate="novalidate">
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Tên đăng nhập" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
+								<input type="text" class="form-control" id="name" name="username" placeholder="Tên đăng nhập" required onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="password" name="name" placeholder="Mật khẩu" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
 							</div>
 							<div class="col-md-12 form-group">
 								<button type="submit" value="submit" class="primary-btn">Đăng nhập</button>

@@ -9,9 +9,8 @@
 <body>
 <div th:replace="~{user-fragment::header}"></div>
 
-<div th:replace="~{user-fragment::banner}"></div>
-
-<!--================Login Box Area =================-->
+<div style="height: 100px"></div>
+<!--================Register Box Area =================-->
 <section class="login_box_area section_gap">
     <div class="container">
         <div class="row">
@@ -27,24 +26,42 @@
             <div class="col-lg-6">
                 <div class="login_form_inner">
                     <h3>Đăng ký tài khoản</h3>
-                    <form class="row login_form" action="" method="post" id="contactForm" novalidate="novalidate">
+                    <div th:if = "${success}">
+                        <p class = "alert alert-success" th:text = "${success}"></p>
+                    </div>
+                    <div th:if = "${usernameError}">
+                        <p class = "alert alert-danger" th:text = "${usernameError}"></p>
+                    </div>
+                    <div th:if = "${emailError}">
+                        <p class = "alert alert-danger" th:text = "${emailError}"></p>
+                    </div>
+                    <div th:if = "${phoneError}">
+                        <p class = "alert alert-danger" th:text = "${phoneError}"></p>
+                    </div>
+                    <div th:if = "${passwordError}">
+                        <p class = "alert alert-danger" th:text = "${passwordError}"></p>
+                    </div>
+                    <form class="row login_form" th:action="@{/register-new}" th:object="${userDTO}" method="POST" id="contactForm" novalidate="novalidate">
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Họ và tên'">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Họ và tên" th:field="*{name}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Họ và tên'" required>
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="phone" name="name" placeholder="Số điện thoại" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Số điện thoại'">
+                            <input type="text" class="form-control" id="phone" name="name" placeholder="Số điện thoại" th:field="*{phone}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Số điện thoại'" required>
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="mail" name="name" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
+                            <input type="text" class="form-control" id="mail" name="name" placeholder="Email" th:field="*{email}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="username" name="name" placeholder="Tên đăng nhập" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
+                            <input type="text" class="form-control" id="username" name="name" placeholder="Tên đăng nhập" th:field="*{username}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="password" name="name" placeholder="Mật khẩu" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+                            <input type="password" class="form-control" id="password" name="name" placeholder="Mật khẩu (ít nhất 6 ký tự)" th:field="*{password}" pattern=".{6,}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <button type="submit" value="submit" class="primary-btn">ĐĂNG KÝ</button>
+                            <input type="password" class="form-control" id="repeat-password" name="name" placeholder="Nhập lại mật khẩu" th:field="*{repeatPassword}" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nhập lại mật khẩu'">
+                        </div>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" class="primary-btn">ĐĂNG KÝ</button>
                         </div>
                     </form>
                 </div>
@@ -52,7 +69,7 @@
         </div>
     </div>
 </section>
-<!--================End Login Box Area =================-->
+<!--================End Register Box Area =================-->
 
 <div th:replace="~{user-fragment::footer}"></div>
 

@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +34,21 @@ public class UserConfig {
         return new BCryptPasswordEncoder();
     }
 
+    private static final String[] PUBLIC_MATCHERS = {
+            "/home",
+            "/do-login",
+            "/login?error",
+            "/register",
+            "product",
+            "register-new",
+            "/add-brand",
+            "admin-brands",
+            "/delete-brand",
+            "/save-brand",
+            "/update-brand/",
+            "admin-update-brand"
+    };
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -45,12 +61,12 @@ public class UserConfig {
                 .authorizeHttpRequests(author ->
                         author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/img/**").permitAll()
-                                .requestMatchers("/home", "/do-login", "/register", "product").permitAll()
+                                .requestMatchers(PUBLIC_MATCHERS).permitAll()
                                 .anyRequest().authenticated()
                 )
                 .formLogin(login ->
                         login.loginPage("/login")
-                            .loginProcessingUrl("*/do-login")
+                            .loginProcessingUrl("/do-login")
                             .defaultSuccessUrl("/home", true)
                             .permitAll()
                 )

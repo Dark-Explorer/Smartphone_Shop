@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>UCL | Hãng</title>
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+    <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+            <div class="container-fluid">
+                <p th:if="${size == 0} ">No Products</p>
+                <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
+                    <p th:text = "${success}"></p>
+                </div>
+                <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                    <p th:text = "${error}"></p>
+                </div>
+<!--                <script>-->
+<!--                    const successMessage = document.getElementById("successMessage");-->
+<!--                    const errorMessage = document.getElementById("errorMessage");-->
+
+<!--                    if (successMessage) {-->
+<!--                        setTimeout(function () {-->
+<!--                            successMessage.classList.add("fade-out");-->
+<!--                            setTimeout(function () {-->
+<!--                                successMessage.style.display = "none";-->
+<!--                            }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+<!--                        }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+<!--                    }-->
+
+<!--                    if (errorMessage) {-->
+<!--                        setTimeout(function () {-->
+<!--                            errorMessage.classList.add("fade-out");-->
+<!--                            setTimeout(function () {-->
+<!--                                errorMessage.style.display = "none";-->
+<!--                            }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+<!--                        }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+<!--                    }-->
+<!--                </script>-->
+
+                <a th:href="@{add-brand}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm hãng</a>
+
+                <table class="table table-bordered" th:if = "${size > 0}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Tên hãng</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "brand : ${brands}">
+                        <th scope="row" th:text = "${brand.name}"></th>
+                        <td>
+                            <a th:href="@{/update-brand/{id}(id= ${brand.id})}" class="btn btn-primary">Cập nhật</a>
+                            <a th:href="@{/delete-brand(id = ${brand.id})}" class=" btn btn-danger">Xoá</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <footer th:replace = "~{admin-fragments::footer}"></footer>
+    </div>
+</div>
+
+<a th:replace = "~{admin-fragments::scroll}"></a>
+
+<div th:replace = "~{admin-fragments::script}"></div>
+</body>
+</html>

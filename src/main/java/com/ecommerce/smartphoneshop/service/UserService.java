@@ -8,4 +8,6 @@ import org.springframework.stereotype.Service;
 public interface UserService {
     User save(UserDTO userDTO);
     User findByUsername(String username);
+    User findByEmail(String email);
+    User findByPhone(String phone);
 }
