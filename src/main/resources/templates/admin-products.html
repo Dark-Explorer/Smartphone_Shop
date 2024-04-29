@@ -6,30 +6,15 @@
 </head>
 
 <body id="page-top">
-
-    <!-- Page Wrapper -->
     <div id="wrapper">
+        <ul th:replace = "~{admin-fragments::sidebar}"></ul>
 
-        <!-- Sidebar -->
-        <ul th:replace = "~{admin-fragments::sidebar}">
-        </ul>
-        <!-- End of Sidebar -->
-
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
-
-            <!-- Main Content -->
             <div id="content">
+                <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
 
-                <!-- Topbar -->
-                <nav th:replace = "~{admin-fragments::top-navbar}">
-                </nav>
-                <!-- End of Topbar -->
-
-                <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <p th:if="${size == 0} ">No Products</p>
+                    <p th:if="${size == 0}">Chưa có sản phẩm</p>
                     <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
                         <p th:text = "${success}"></p>
                     </div>
@@ -37,83 +22,71 @@
                         <p th:text = "${error}"></p>
                     </div>
 
-                    <script>
-                        const successMessage = document.getElementById("successMessage");
-                        const errorMessage = document.getElementById("errorMessage");
+<!--                    <script>-->
+<!--                        const successMessage = document.getElementById("successMessage");-->
+<!--                        const errorMessage = document.getElementById("errorMessage");-->
 
-                        if (successMessage) {
-                            setTimeout(function () {
-                                successMessage.classList.add("fade-out");
-                                setTimeout(function () {
-                                    successMessage.style.display = "none";
-                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ
-                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)
-                        }
+<!--                        if (successMessage) {-->
+<!--                            setTimeout(function () {-->
+<!--                                successMessage.classList.add("fade-out");-->
+<!--                                setTimeout(function () {-->
+<!--                                    successMessage.style.display = "none";-->
+<!--                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+<!--                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+<!--                        }-->
 
-                        if (errorMessage) {
-                            setTimeout(function () {
-                                errorMessage.classList.add("fade-out");
-                                setTimeout(function () {
-                                    errorMessage.style.display = "none";
-                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ
-                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)
-                        }
-                    </script>
+<!--                        if (errorMessage) {-->
+<!--                            setTimeout(function () {-->
+<!--                                errorMessage.classList.add("fade-out");-->
+<!--                                setTimeout(function () {-->
+<!--                                    errorMessage.style.display = "none";-->
+<!--                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+<!--                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+<!--                        }-->
+<!--                    </script>-->
 
-                    <a th:href="@{/admin-add-product}" class = "btn btn-primary" style="margin-bottom: 10px;">Add Product</a>
+                    <a th:href="@{add-product}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm sản phẩm</a>
 
                     <table class="table table-bordered" th:if = "${size > 0}">
                         <thead>
                         <tr>
-                            <th scope="col">Name</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Image</th>
-                            <th scope="col">Update</th>
-                            <th scope="col">Action</th>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Hãng</th>
+                            <th scope="col">Cấu hình</th>
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Thao tác</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each = "product : ${products}">
                             <th scope="row" th:text = "${product.name}"></th>
-                            <td th:text = "${#numbers.formatDecimal(product.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></td>
+                            <td th:text = "${product.brand}"></td>
+                            <td style="width: 500px" th:text = "${product.specification}"></td>
                             <td>
                                 <img class = "my-product-image" style="height: 40px; width: 40px"
-                                     th:src="'data:image/jpeg;base64,' + ${product.image}" alt="Product Image">
+                                     th:src="${product.image}" alt="Product Image">
                             </td>
-                            <td><a th:href="@{/admin-update-product/{id}(id= ${product.id})}" class="btn btn-primary">Update</a></td>
-                            <td>
-                                <a th:if="${product.deleted} == true" th:href="@{/enable-product(id = ${product.id})}"
-                                   class="btn btn-primary">Enable</a>
-                                <a th:if="${product.deleted} == false" th:href="@{/delete-product(id = ${product.id})}"
-                                   class=" btn btn-danger">Disable</a>
+                            <td><a th:href="@{/update-product/{id}(id= ${product.id})}" class="btn btn-primary">Cập nhật</a>
+                                <a th:if="${product.is_active()} == false" th:href="@{/enable-product(id = ${product.id})}"
+                                   class="btn btn-primary">Hiện SP</a>
+                                <a th:if="${product.is_active()} == true" th:href="@{/disable-product(id = ${product.id})}"
+                                   class=" btn btn-danger">Ẩn SP</a>
+                                <a th:href="@{/delete-product(id = ${product.id})}"
+                                   class=" btn btn-danger">Xoá SP</a>
                             </td>
                         </tr>
                         </tbody>
                     </table>
 
                 </div>
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
 
-            <!-- Footer -->
-            <footer th:replace = "~{admin-fragments::footer}">
-            </footer>
-            <!-- End of Footer -->
-
+            <footer th:replace = "~{admin-fragments::footer}"></footer>
         </div>
-        <!-- End of Content Wrapper -->
-
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a th:replace = "~{admin-fragments::scroll}">
-    </a>
+    <a th:replace = "~{admin-fragments::scroll}"></a>
 
-
-    <!-- Bootstrap core JavaScript-->
     <div th:replace = "~{admin-fragments::script}"></div>
 </body>
 

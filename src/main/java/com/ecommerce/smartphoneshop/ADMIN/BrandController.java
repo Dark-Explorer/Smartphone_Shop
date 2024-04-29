@@ -2,7 +2,6 @@ package com.ecommerce.smartphoneshop.ADMIN;
 
 import com.ecommerce.smartphoneshop.domain.Brand;
 import com.ecommerce.smartphoneshop.dto.BrandDTO;
-import com.ecommerce.smartphoneshop.dto.ProductDTO;
 import com.ecommerce.smartphoneshop.service.BrandService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;

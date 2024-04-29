@@ -39,14 +39,16 @@ public class UserConfig {
             "/do-login",
             "/login?error",
             "/register",
-            "product",
             "register-new",
             "/add-brand",
             "admin-brands",
             "/delete-brand",
             "/save-brand",
             "/update-brand/",
-            "admin-update-brand"
+            "admin-update-brand",
+            "/products",
+            "/add-product",
+            "/update-product"
     };
 
     @Bean

@@ -31,13 +31,13 @@
         <li class="nav-item">
             <a class="nav-link" th:href = "@{/admin-dashboard}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Dashboard</span>
+                <span>Thống kê</span>
             </a>
         </li>
         <li class="nav-item">
             <a class="nav-link" th:href = "@{/user-home}">
                 <i class="fa fa-home"></i>
-                <span>User homepage</span>
+                <span>Trang chủ cửa hàng</span>
             </a>
         </li>
 
@@ -45,12 +45,19 @@
         <hr class="sidebar-divider">
 
     <!-- Heading -->
-        <div class="sidebar-heading">Interface</div>
+        <div class="sidebar-heading">Quản lý</div>
+
+        <li class="nav-item">
+            <a class="nav-link" th:href = "@{/admin-brands}">
+                <i class="fas fa-fw fa-wrench"></i>
+                <span>Quản lý hãng</span>
+            </a>
+        </li>
 
         <li class="nav-item">
             <a class="nav-link" th:href = "@{/admin-products}">
                 <i class="fas fa-fw fa-wrench"></i>
-                <span>Manage Products</span>
+                <span>Quản lý sản phẩm</span>
             </a>
         </li>
 
@@ -58,19 +65,18 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                 <i class="fas fa-fw fa-wrench"></i>
-                <span>Manage Orders</span>
+                <span>Quản lý đơn hàng</span>
             </a>
             <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Order Utilities:</h6>
-                    <a class="collapse-item" th:href="@{/admin-orders-pending}">Awaiting orders</a>
-                    <a class="collapse-item" th:href="@{/admin-orders-completed}">Completed orders</a>
+                    <a class="collapse-item" th:href="@{/admin-orders-pending}">Đơn hàng chờ duyệt</a>
+                    <a class="collapse-item" th:href="@{/admin-orders-completed}">Đơn hàng đã hoàn thành</a>
                 </div>
             </div>
             <li class="nav-item">
             <a class="nav-link" th:href = "@{/admin-customers}">
                 <i class="fas fa-fw fa-wrench"></i>
-                <span>Manage Customers</span>
+                <span>Quản lý khách hàng</span>
             </a>
             </li>
 
@@ -90,18 +96,6 @@
     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
         <i class="fa fa-bars"></i>
     </button>
-
-    <!-- Topbar Search -->
-    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-        <div class="input-group">
-            <input type="text" class="form-control bg-light border-0 small" placeholder="Tìm kiếm..." aria-label="Search" aria-describedby="basic-addon2">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                    <i class="fas fa-search fa-sm"></i>
-                </button>
-            </div>
-        </div>
-    </form>
 
     <!-- Topbar Navbar -->
     <ul class="navbar-nav ml-auto">
@@ -148,20 +142,6 @@
           Alerts Center
         </h6>
 
-        <div class="scroll-container" id="scroll-container">
-    <!--          <a class="dropdown-item d-flex align-items-center" href="#">-->
-    <!--            <div class="mr-3">-->
-    <!--              <div class="icon-circle bg-success">-->
-    <!--                <i class="fas fa-bell text-white"></i>-->
-    <!--              </div>-->
-    <!--            </div>-->
-    <!--            <div>-->
-    <!--              <div class="small text-gray-500">December 7, 2019</div>-->
-    <!--              <span class="font-weight-bold">$290.29 has been deposited into your account!</span>-->
-    <!--            </div>-->
-    <!--          </a>-->
-        </div>
-
         <div style="height: 30px;"></div>
 
         <style>
@@ -206,19 +186,11 @@
         </a>
       </div>
     </li>
-
     </ul>
-
     </nav>
-    <!-- Footer -->
-    <footer th:fragment="footer" class="sticky-footer bg-white">
-    <div class="container my-auto">
-    <div class="copyright text-center my-auto">
-      <span>Project SE</span>
-    </div>
-    </div>
-    </footer>
-<!-- End of Footer -->
+
+    <footer th:fragment="footer" class="sticky-footer bg-white"></footer>
+
 <!-- Scroll to Top Button-->
     <a th:fragment="scroll" class="scroll-to-top rounded" href="#page-top">
       <i class="fas fa-angle-up"></i>

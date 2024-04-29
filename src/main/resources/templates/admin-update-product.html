@@ -2,86 +2,135 @@
 <html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 <head th:replace = "~{admin-fragments::header}">
+    <title>Thêm sản phẩm</title>
 </head>
 
 <body id="page-top">
-
-<!-- Page Wrapper -->
 <div id="wrapper">
+    <ul th:replace = "~{admin-fragments::sidebar}"></ul>
 
-    <!-- Sidebar -->
-    <ul th:replace = "~{admin-fragments::sidebar}">
-    </ul>
-    <!-- End of Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
         <div id="content">
+            <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
 
-            <!-- Topbar -->
-            <nav th:replace = "~{admin-fragments::top-navbar}">
-            </nav>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
             <div class="container-fluid">
-                <form class="form-horizontal" th:action="@{/admin-update-product/{id}(id = ${productDt.id})}" method="post" th:object = "${productDt}"
-                      enctype="multipart/form-data">
+                <form class="form-horizontal" th:action="@{/update-product/{id}(id = ${productDTO.id})}" method="post" th:object="${productDTO}">
                     <div class="row">
                         <div class="col-md-6">
-                            <!-- Form Name -->
-                            <legend style="padding-left: 60px;">UPDATE PRODUCT</legend>
-                            <!-- Text input-->
+                            <legend style="padding-left: 60px;">Cập nhật sản phẩm</legend>
+
                             <div class="form-group" style="margin-left: 50px;">
-                                <label class="col-md-4 control-label" for="product_name">PRODUCT NAME</label>
+                                <label class="col-md-4 control-label" for="product_name">Tên sản phẩm</label>
                                 <div class="col-md-8">
-                                    <input id="product_name" th:field = "*{name}" name="product_name" class="form-control input-md" required="" type="text">
+                                    <input id="product_name" th:field="*{name}" name="product_name" class="form-control input-md" required="" type="text">
                                 </div>
                             </div>
-
                             <!-- Text input-->
+                            <!--                                Drop box-->
                             <div class="form-group" style="margin-left: 50px;">
-                                <label class="col-md-4 control-label" for="description">PRODUCT DESCRIPTION</label>
+                                <label class="col-md-4 control-label" for="brand">Hãng</label>
                                 <div class="col-md-8">
-                                    <input id="description" th:field = "*{info}" name="description" class="form-control input-md" required="" type="text">
+                                    <select class="form-control" id="brand" name="brand">
+                                        <option th:each="brand : ${brands}" th:value="${brand.name}" th:text="${brand.name}"></option>
+                                    </select>
                                 </div>
                             </div>
-
                             <!-- Text input-->
                             <div class="form-group" style="margin-left: 50px;">
-                                <label class="col-md-4 control-label" for="price">PRICE</label>
-                                <div class="col-md-4">
-                                    <input id="price" name="price" th:field = "*{price}" class="form-control input-md" required="" type="number">
+                                <label class="col-md-4 control-label" for="cpu">CPU</label>
+                                <div class="col-md-8">
+                                    <input id="cpu" name="cpu" class="form-control input-md" required="" type="text">
                                 </div>
                             </div>
 
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="ram">RAM</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="ram" name="ram">
+                                        <option value="4 GB">4 GB</option>
+                                        <option value="6 GB">6 GB</option>
+                                        <option value="8 GB">8 GB</option>
+                                        <option value="12 GB">12 GB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="rom">ROM</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="rom" name="rom">
+                                        <option value="64 GB">64 GB</option>
+                                        <option value="128 GB">128 GB</option>
+                                        <option value="256 GB">256 GB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="size">Kích thước màn hình (inch)</label>
+                                <div class="col-md-8">
+                                    <input id="size" name="size" class="form-control input-md" required="" type="number" step="0.01">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="resolution">Độ phân giải</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="resolution" name="resolution">
+                                        <option value="HD+">HD+</option>
+                                        <option value="Full HD+">Full HD+</option>
+                                        <option value="AMOLED">AMOLED</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="camera">Camera</label>
+                                <div class="col-md-8">
+                                    <input id="camera" name="camera" class="form-control input-md" required="" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="battery">Pin (mAh)</label>
+                                <div class="col-md-8">
+                                    <input id="battery" name="battery" class="form-control input-md" required="" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="charge">Sạc (W)</label>
+                                <div class="col-md-8">
+                                    <input id="charge" name="charge" class="form-control input-md" required="" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="os">Hệ điều hành</label>
+                                <div class="col-md-8">
+                                    <input id="os" name="os" class="form-control input-md" required="" type="text">
+                                </div>
+                            </div>
+                            <!-- Add other fields here -->
                             <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Update</button>
+                            <a th:href="@{admin-products}" class="btn btn-danger">Cancel</a>
 
 
                         </div>
                         <div class="col-md-6">
                             <!-- File Button -->
                             <div class="form-group">
-                                <label class="col-md-4 control-label" for="image">PRODUCT IMAGE</label>
-                                <div class="col-md-4">
-                                    <img id="previewImage" class = "my-product-image" style="height: 450px; width: 450px;" alt="" th:src="'data:image/jpeg;base64,' + *{image}">
-                                    <input id="image" name="imageProduct"  class="input-file" type="file">
+                                <label class="col-md-4 control-label" for="image">Ảnh</label>
+                                <div class="col-md-8">
+                                    <input id="image" name="image" class="form-control input-md" required="" type="text" placeholder="Link ảnh">
+                                    <img id="previewImage" class="my-product-image" style="height: 250px; width: 250px;" alt="">
 
                                     <script>
                                         const inputElement = document.getElementById("image");
                                         const previewElement = document.getElementById("previewImage");
 
-                                        inputElement.addEventListener("change", function (event) {
-                                            const file = event.target.files[0];
-                                            const reader = new FileReader();
-
-                                            reader.onload = function (e) {
-                                                previewElement.src = e.target.result;
-                                            };
-
-                                            reader.readAsDataURL(file);
+                                        inputElement.addEventListener("input", () => {
+                                            previewElement.src = inputElement.value.trim();
                                         });
                                     </script>
 

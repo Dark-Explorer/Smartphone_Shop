@@ -20,9 +20,6 @@ public class Brand {
     private Long id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand", orphanRemoval = true)
     private List<Product> products;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
-    private List<Variation> variations;
 }

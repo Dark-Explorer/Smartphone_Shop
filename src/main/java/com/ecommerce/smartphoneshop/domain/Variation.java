@@ -19,8 +19,8 @@ public class Variation {
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "brand_id")
-    private Brand brand;
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "variation")
     private List<VariationOption> variationOptions;
