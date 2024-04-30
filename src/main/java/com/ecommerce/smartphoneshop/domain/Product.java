@@ -32,7 +32,4 @@ public class Product {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
     private List<ProductItem> productItems;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
-    private List<Variation> variations;
 }

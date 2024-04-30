@@ -48,7 +48,8 @@ public class UserConfig {
             "admin-update-brand",
             "/products",
             "/add-product",
-            "/update-product"
+            "/update-product",
+            "admin-add-variation"
     };
 
     @Bean

@@ -17,10 +17,10 @@
                     <form class="form-horizontal" th:action="@{/save-product}" method="post" th:object="${productDTO}">
                         <div class="row">
                             <div class="col-md-6">
-                                <legend style="padding-left: 60px;">Thêm sản phẩm</legend>
+                                <legend style="padding-left: 60px;">Thêm mẫu sản phẩm</legend>
 
                                 <div class="form-group" style="margin-left: 50px;">
-                                    <label class="col-md-4 control-label" for="product_name">Tên sản phẩm</label>
+                                    <label class="col-md-4 control-label" for="product_name">Tên mẫu sản phẩm</label>
                                     <div class="col-md-8">
                                         <input id="product_name" th:field="*{name}" name="product_name" class="form-control input-md" required="" type="text">
                                     </div>

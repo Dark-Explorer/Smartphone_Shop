@@ -15,6 +15,7 @@ public interface ProductService {
     Product updateProduct(ProductDTO productDTO);
     Product findbyName(String productName);
     ProductDTO getbyId(String id);
+    Product findById(Long id);
     void deleteProduct(String id);
     void enableProduct(String id);
     void disableProduct(String id);

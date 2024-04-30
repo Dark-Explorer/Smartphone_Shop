@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>UCL | Sản phẩm</title>
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+
+            <div class="container-fluid">
+                <p th:if="${size == 0}">Chưa có sản phẩm</p>
+                <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
+                    <p th:text = "${success}"></p>
+                </div>
+                <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                    <p th:text = "${error}"></p>
+                </div>
+
+                <!--                    <script>-->
+                <!--                        const successMessage = document.getElementById("successMessage");-->
+                <!--                        const errorMessage = document.getElementById("errorMessage");-->
+
+                <!--                        if (successMessage) {-->
+                <!--                            setTimeout(function () {-->
+                <!--                                successMessage.classList.add("fade-out");-->
+                <!--                                setTimeout(function () {-->
+                <!--                                    successMessage.style.display = "none";-->
+                <!--                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+                <!--                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+                <!--                        }-->
+
+                <!--                        if (errorMessage) {-->
+                <!--                            setTimeout(function () {-->
+                <!--                                errorMessage.classList.add("fade-out");-->
+                <!--                                setTimeout(function () {-->
+                <!--                                    errorMessage.style.display = "none";-->
+                <!--                                }, 1000); // Thời gian chờ 1 giây để phần tử biến mất sau khi phần tử đã phai mờ-->
+                <!--                            }, 5000); // Hiển thị trong 5 giây (5000 milliseconds)-->
+                <!--                        }-->
+                <!--                    </script>-->
+
+                <a th:href="@{add-product}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm sản phẩm</a>
+
+                <table class="table table-bordered" th:if = "${size > 0}">
+                    <thead>
+                    <tr>
+                        <th scope="col">Phân loại</th>
+                        <th scope="col">SKU</th>
+                        <th scope="col">Ảnh</th>
+                        <th scope="col">Giá</th>
+                        <th scope="col">Thao tác</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "productItem : ${productItems}">
+                        <th scope="row" th:text = "${productItem.variation}"></th>
+                        <td th:text = "${productItem.SKU}"></td>
+                        <td>
+                            <img class = "my-product-image" style="height: 40px; width: 40px"
+                                 th:src="${productItem.image}" alt="Product Image">
+                        </td>
+                        <td th:text = "${productItem.price}"></td>
+                        <td><a th:href="@{/update-product/{id}(id = ${product.id})}" class="btn btn-primary">Cập nhật</a>
+                            <a th:href="@{/delete-product(id = ${product.id})}"
+                               class=" btn btn-danger">Xoá SP</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+        <footer th:replace = "~{admin-fragments::footer}"></footer>
+    </div>
+</div>
+
+<a th:replace = "~{admin-fragments::scroll}"></a>
+
+<div th:replace = "~{admin-fragments::script}"></div>
+</body>
+
+</html>

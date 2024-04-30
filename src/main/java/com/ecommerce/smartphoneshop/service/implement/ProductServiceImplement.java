@@ -19,13 +19,11 @@ import java.util.List;
 public class ProductServiceImplement implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
-    private final ImageUpload imageUpload;
 
     @Autowired
-    public ProductServiceImplement(ProductRepository productRepository, BrandRepository brandRepository, ImageUpload imageUpload) {
+    public ProductServiceImplement(ProductRepository productRepository, BrandRepository brandRepository) {
         this.productRepository = productRepository;
         this.brandRepository = brandRepository;
-        this.imageUpload = imageUpload;
     }
 
     @Override
@@ -49,7 +47,7 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public Product updateProduct(ProductDTO productDTO) {
-        Product product = productRepository.getReferenceById(Math.toIntExact(productDTO.getId()));
+        Product product = productRepository.getReferenceById(productDTO.getId());
 
         product.setName(productDTO.getName());
         product.setSpecification(productDTO.getSpecification());
@@ -67,7 +65,7 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public ProductDTO getbyId(String id) {
-        Product product = productRepository.getReferenceById(Math.toIntExact(Integer.parseInt(id)));
+        Product product = productRepository.getReferenceById(Long.valueOf(id));
         return ProductDTO.builder()
                                 .id(product.getId())
                                 .name(product.getName())
@@ -79,20 +77,25 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Override
+    public Product findById(Long id){
+        return productRepository.findById(id).orElse(null);
+    }
+
+    @Override
     public void deleteProduct(String id) {
-        productRepository.deleteById(Integer.valueOf(id));
+        productRepository.deleteById(Long.valueOf(id));
     }
 
     @Override
     public void enableProduct(String id) {
-        Product product = productRepository.getReferenceById(Math.toIntExact(Integer.parseInt(id)));
+        Product product = productRepository.getReferenceById(Long.valueOf(id));
         product.set_active(true);
         productRepository.save(product);
     }
 
     @Override
     public void disableProduct(String id) {
-        Product product = productRepository.getReferenceById(Math.toIntExact(Integer.parseInt(id)));
+        Product product = productRepository.getReferenceById(Long.valueOf(id));
         product.set_active(false);
         productRepository.save(product);
     }

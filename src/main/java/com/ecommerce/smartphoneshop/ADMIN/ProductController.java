@@ -2,24 +2,20 @@ package com.ecommerce.smartphoneshop.ADMIN;
 
 import com.ecommerce.smartphoneshop.domain.Brand;
 import com.ecommerce.smartphoneshop.domain.Product;
-import com.ecommerce.smartphoneshop.dto.BrandDTO;
+import com.ecommerce.smartphoneshop.domain.ProductItem;
 import com.ecommerce.smartphoneshop.dto.ProductDTO;
 import com.ecommerce.smartphoneshop.service.BrandService;
+import com.ecommerce.smartphoneshop.service.ProductItemService;
 import com.ecommerce.smartphoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +23,7 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
     private final BrandService brandService;
+    private final ProductItemService productItemService;
 
     @GetMapping("/admin-products")
     public String adminProducts(Model model, Principal principal) {
@@ -84,8 +81,8 @@ public class ProductController {
                         "Sạc: " + charge + " W\n" +
                         "Hệ điều hành: " + os + "\n";
                 productDTO.setSpecification(specification);
-                redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm thành công!");
                 productService.saveProduct(productDTO);
+                redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm thành công!");
             } else redirectAttributes.addFlashAttribute("error", "Sản phẩm đã tồn tại");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra!");
@@ -155,5 +152,36 @@ public class ProductController {
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra!");
         }
         return "redirect:/admin-products";
+    }
+
+    @GetMapping("/products/{id}/item")
+    public String productItem(@PathVariable("id") Long id, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        List<ProductItem> productItems = productItemService.getItemsOfProduct(id);
+
+        model.addAttribute("productItems", productItems);
+        model.addAttribute("size", productItems.size());
+
+        return "admin-product-item";
+    }
+
+    @GetMapping("/products/{productId}/item/{itemId}")
+    public String addItem(@PathVariable("productId") Long productId, @PathVariable("itemId") Long itemId, Model model) {
+        model.addAttribute("productItem", new ProductItem());
+        return "admin-add-item";
+    }
+
+    @PostMapping("/products/{productId}/item/{itemId}")
+    public String addItem(@PathVariable("productId") Long productId,
+                          @PathVariable("itemId") Long itemId,
+                          Model model, RedirectAttributes redirectAttribute,
+                          @ModelAttribute("productItem") ProductItem productItem) {
+
+        
+
+        return "redirect:/products/{id}/item";
     }
 }

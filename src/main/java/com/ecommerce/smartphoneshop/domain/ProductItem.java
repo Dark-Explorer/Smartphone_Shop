@@ -17,6 +17,7 @@ public class ProductItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String SKU;
+    private String variation;
     private int qty_in_stock;
     private String image;
     private Long price;
@@ -24,9 +25,6 @@ public class ProductItem {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productItem")
-    private List<ProductConfiguration> productConfigurations;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "productItem")
     private List<ShoppingCartItem> shoppingCartItems;
