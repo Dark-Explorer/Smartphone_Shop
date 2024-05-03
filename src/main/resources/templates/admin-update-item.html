@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th = "https://www.thymeleaf.org/">
 
 <head th:replace = "~{admin-fragments::header}">
-    <title>Thêm sản phẩm</title>
+    <title>Sửa loại sản phẩm</title>
 </head>
 
 <body id="page-top">
@@ -14,15 +14,15 @@
             <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
 
             <div class="container-fluid">
-                <form class="form-horizontal" th:action="@{/save-item/{id}(id = ${productId})}" method="post" th:object="${productItem}">
+                <form class="form-horizontal" th:action="@{/update-item/{id}(id = ${productItem.id})}" method="post" th:object="${productItem}">
                     <div class="row">
                         <div class="col-md-6">
-                            <legend style="padding-left: 60px;">Thêm loại sản phẩm</legend>
+                            <legend style="padding-left: 60px;">Cập nhật loại sản phẩm</legend>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="sku">SKU</label>
                                 <div class="col-md-8">
-                                    <input id="sku" name="sku" class="form-control input-md" required="" type="text">
+                                    <input id="sku" name="sku" class="form-control input-md" th:value="${productItem.SKU}" required="" type="text">
                                 </div>
                             </div>
 
@@ -30,28 +30,26 @@
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="variation">Phân loại</label>
                                 <div class="col-md-8">
-                                    <input id="variation" name="variation" class="form-control input-md" required="" type="text">
+                                    <input id="variation" name="variation" class="form-control input-md" th:value="${productItem.variation}" required="" type="text">
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="qty">Số lượng</label>
                                 <div class="col-md-8">
-                                    <input id="qty" name="qty" class="form-control input-md" required="" type="number" step="1">
+                                    <input id="qty" name="qty" class="form-control input-md" th:value="${productItem.qty_in_stock}" required="" type="number" step="1">
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="price">Giá</label>
                                 <div class="col-md-8">
-                                    <input id="price" name="price" class="form-control input-md" required="" type="number" step="1000">
+                                    <input id="price" name="price" class="form-control input-md" th:value="${productItem.price}" required="" type="number" step="1000">
                                 </div>
                             </div>
-
-
                             <!-- Add other fields here -->
-                            <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Lưu</button>
-                            <a th:href="@{admin-product-item}" class="btn btn-danger">Huỷ</a>
+                            <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Update</button>
+                            <a th:href="@{admin-products}" class="btn btn-danger">Cancel</a>
 
 
                         </div>
@@ -60,7 +58,7 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="image">Ảnh</label>
                                 <div class="col-md-8">
-                                    <input id="image" name="image" class="form-control input-md" required="" type="text" placeholder="Link ảnh">
+                                    <input id="image" name="image" class="form-control input-md" th:value="${productItem.image}" required="" type="text" placeholder="Link ảnh">
                                     <img id="previewImage" class="my-product-image" style="height: 250px; width: 250px;" alt="">
 
                                     <script>

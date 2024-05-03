@@ -67,6 +67,8 @@
                                      th:src="${product.image}" alt="Product Image">
                             </td>
                             <td><a th:href="@{/update-product/{id}(id = ${product.id})}" class="btn btn-primary">Cập nhật</a>
+                                <a th:href="@{/products/{productId}/item/add(productId = ${product.id})}" class="btn btn-primary">Thêm loại SP</a>
+                                <a th:href="@{/products/{id}/item(id = ${product.id})}" class="btn btn-outline-primary">Xem loại SP</a>
                                 <a th:if="${product.is_active()} == false" th:href="@{/enable-product(id = ${product.id})}"
                                    class="btn btn-primary">Hiện SP</a>
                                 <a th:if="${product.is_active()} == true" th:href="@{/disable-product(id = ${product.id})}"

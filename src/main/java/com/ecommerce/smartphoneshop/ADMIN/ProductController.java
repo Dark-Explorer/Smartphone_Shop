@@ -154,6 +154,7 @@ public class ProductController {
         return "redirect:/admin-products";
     }
 
+    // Show items of a product
     @GetMapping("/products/{id}/item")
     public String productItem(@PathVariable("id") Long id, Model model, Principal principal) {
         if (principal == null) {
@@ -161,27 +162,73 @@ public class ProductController {
         }
 
         List<ProductItem> productItems = productItemService.getItemsOfProduct(id);
-
         model.addAttribute("productItems", productItems);
         model.addAttribute("size", productItems.size());
 
         return "admin-product-item";
     }
 
-    @GetMapping("/products/{productId}/item/{itemId}")
-    public String addItem(@PathVariable("productId") Long productId, @PathVariable("itemId") Long itemId, Model model) {
+    @GetMapping("/products/{productId}/item/add")
+    public String addItem(@PathVariable("productId") Long productId, Model model) {
+        Product product = productService.findById(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("product", product);
         model.addAttribute("productItem", new ProductItem());
         return "admin-add-item";
     }
 
-    @PostMapping("/products/{productId}/item/{itemId}")
-    public String addItem(@PathVariable("productId") Long productId,
-                          @PathVariable("itemId") Long itemId,
-                          Model model, RedirectAttributes redirectAttribute,
-                          @ModelAttribute("productItem") ProductItem productItem) {
+    @PostMapping("/save-item/{id}")
+    public String addItem(@ModelAttribute("productItem") ProductItem productItem,
+                          @ModelAttribute("product") Product product,
+                          @RequestParam("sku") String sku,
+                          @RequestParam("variation") String variation,
+                          @RequestParam("qty") int qtyInStock,
+                          @RequestParam("image") String image,
+                          @RequestParam("price") Long price,
+                          RedirectAttributes redirectAttribute) {
+        try {
+            if (productItemService.findByName(productItem.getVariation()) == null) {
+                productItemService.saveProductItem(sku, variation, qtyInStock, image, price, product);
+                redirectAttribute.addFlashAttribute("success", "Thêm sản phẩm thành công!");
+            } else redirectAttribute.addFlashAttribute("error", "Loại sản phẩm đã tồn tại");
+        } catch (Exception e) {
+            redirectAttribute.addFlashAttribute("error", "Có lỗi xảy ra!");
+        }
 
-        
+        return "redirect:/admin-products";
+    }
 
-        return "redirect:/products/{id}/item";
+    @GetMapping("/products/{productId}/item/{itemId}")
+    public String updateItem(@PathVariable("productId") Long productId,
+                             @PathVariable("itemId") Long itemId,
+                             Model model) {
+        ProductDTO productDTO = productService.getbyId(String.valueOf(productId));
+        ProductItem productItem = productItemService.findById(itemId);
+        model.addAttribute("productDTO", productDTO);
+        model.addAttribute("productItem", productItem);
+        return "admin-update-item";
+    }
+
+    @PostMapping("/update-item/{id}")
+    public String updateItem(@ModelAttribute("productItem") ProductItem productItem,
+                             @RequestParam("sku") String sku,
+                             @RequestParam("variation") String variation,
+                             @RequestParam("qty") int qtyInStock,
+                             @RequestParam("image") String image,
+                             @RequestParam("price") Long price,
+                             RedirectAttributes redirectAttributes) {
+        try {
+            productItemService.updateProductItem(productItem, sku, variation, qtyInStock, image, price);
+            redirectAttributes.addFlashAttribute("success", "Cập nhật loại sản phẩm thành công!");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra");
+        }
+        return "redirect:/admin-product-item";
+    }
+
+    @RequestMapping( "/delete-item")
+    public String deleteItem(@RequestParam("id") Long id) {
+        productItemService.deleteProductItem(id);
+        return "redirect:/admin-products";
     }
 }

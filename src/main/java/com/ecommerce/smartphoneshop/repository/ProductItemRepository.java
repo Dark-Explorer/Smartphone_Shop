@@ -11,4 +11,6 @@ public interface ProductItemRepository extends JpaRepository<ProductItem, Long> 
     @Query("select pi from ProductItem pi where pi.product.id = :id")
     List<ProductItem> findItemsOfProduct(Long id);
 
+    @Query("select pi from ProductItem pi where pi.variation = :name")
+    ProductItem findByName(String name);
 }

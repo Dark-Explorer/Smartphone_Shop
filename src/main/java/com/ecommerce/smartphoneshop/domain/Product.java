@@ -26,10 +26,10 @@ public class Product {
     private int warranty;
     private boolean is_active = true;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "product")
+    @OneToMany(cascade = CascadeType.MERGE, mappedBy = "product", orphanRemoval = true)
     private List<ProductItem> productItems;
 }

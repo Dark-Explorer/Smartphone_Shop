@@ -9,7 +9,9 @@ import java.util.List;
 @Service
 public interface ProductItemService {
     List<ProductItem> getItemsOfProduct(Long id);
-    ProductItem saveProductItem(ProductItem productItem);
-    ProductItem updateProductItem(ProductItem productItem);
+    ProductItem saveProductItem(String sku, String variation, int qtyInStock, String image, Long price, Product product);
+    ProductItem updateProductItem(ProductItem productItem, String sku, String variation, int qtyInStock, String image, Long price);
     void deleteProductItem(Long id);
+    ProductItem findByName(String name);
+    ProductItem findById(Long id);
 }

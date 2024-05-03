@@ -46,10 +46,9 @@ public class UserConfig {
             "/save-brand",
             "/update-brand/",
             "admin-update-brand",
-            "/products",
-            "/add-product",
-            "/update-product",
-            "admin-add-variation"
+            "admin-add-item",
+            "admin-update-item",
+            "admin-product-item"
     };
 
     @Bean

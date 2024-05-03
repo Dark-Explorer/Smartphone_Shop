@@ -2,6 +2,7 @@ package com.ecommerce.smartphoneshop.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "product_item")
 public class ProductItem {
     @Id
@@ -22,7 +24,7 @@ public class ProductItem {
     private String image;
     private Long price;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id")
     private Product product;
 

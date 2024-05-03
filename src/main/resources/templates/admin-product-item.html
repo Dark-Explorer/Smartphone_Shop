@@ -45,7 +45,7 @@
                 <!--                        }-->
                 <!--                    </script>-->
 
-                <a th:href="@{add-product}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm sản phẩm</a>
+                <a th:href="@{/products/{productId}/item/add(productId = ${id})}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm loại sản phẩm</a>
 
                 <table class="table table-bordered" th:if = "${size > 0}">
                     <thead>
@@ -66,9 +66,9 @@
                                  th:src="${productItem.image}" alt="Product Image">
                         </td>
                         <td th:text = "${productItem.price}"></td>
-                        <td><a th:href="@{/update-product/{id}(id = ${product.id})}" class="btn btn-primary">Cập nhật</a>
-                            <a th:href="@{/delete-product(id = ${product.id})}"
-                               class=" btn btn-danger">Xoá SP</a>
+                        <td><a th:href="@{/products/{productId}/item/{itemId}(productId = ${productItem.product.id}, itemId = ${productItem.id})}" class="btn btn-primary">Cập nhật</a>
+                            <a th:href="@{/delete-item(id = ${productItem.id})}"
+                               class=" btn btn-danger">Xoá loại SP</a>
                         </td>
                     </tr>
                     </tbody>
