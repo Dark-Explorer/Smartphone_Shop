@@ -67,7 +67,7 @@ public class ProductController {
                               @RequestParam("rom") String rom, @RequestParam("size") String size,
                               @RequestParam("resolution") String resolution, @RequestParam("camera") String camera,
                               @RequestParam("battery") String battery, @RequestParam("charge") String charge,
-                              @RequestParam("os") String os) {
+                              @RequestParam("os") String os, @RequestParam("image") String image) {
 //                                ){
         try {
             if (productService.findbyName(productDTO.getName()) == null){
@@ -81,6 +81,7 @@ public class ProductController {
                         "Sạc: " + charge + " W\n" +
                         "Hệ điều hành: " + os + "\n";
                 productDTO.setSpecification(specification);
+                productDTO.setImage(image);
                 productService.saveProduct(productDTO);
                 redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm thành công!");
             } else redirectAttributes.addFlashAttribute("error", "Sản phẩm đã tồn tại");
@@ -106,7 +107,7 @@ public class ProductController {
                                 @RequestParam("rom") String rom, @RequestParam("size") String size,
                                 @RequestParam("resolution") String resolution, @RequestParam("camera") String camera,
                                 @RequestParam("battery") String battery, @RequestParam("charge") String charge,
-                                @RequestParam("os") String os) {
+                                @RequestParam("os") String os, @RequestParam("image") String image) {
         try {
             String specification = "CPU: " + cpu + "\n" +
                     "RAM: " + ram + "\n" +
@@ -118,6 +119,7 @@ public class ProductController {
                     "Sạc: " + charge + " W\n" +
                     "Hệ điều hành: " + os + "\n";
             productDTO.setSpecification(specification);
+            productDTO.setImage(image);
             productService.updateProduct(productDTO);
             redirectAttributes.addFlashAttribute("success", "Cập nhật thành công!");
         } catch (Exception e) {
@@ -171,7 +173,6 @@ public class ProductController {
     @GetMapping("/products/{productId}/item/add")
     public String addItem(@PathVariable("productId") Long productId, Model model) {
         Product product = productService.findById(productId);
-        model.addAttribute("productId", productId);
         model.addAttribute("product", product);
         model.addAttribute("productItem", new ProductItem());
         return "admin-add-item";
@@ -187,7 +188,7 @@ public class ProductController {
                           @RequestParam("price") Long price,
                           RedirectAttributes redirectAttribute) {
         try {
-            if (productItemService.findByName(productItem.getVariation()) == null) {
+            if (productItemService.findByName(productItem.getVariation(), product.getId()) == null) {
                 productItemService.saveProductItem(sku, variation, qtyInStock, image, price, product);
                 redirectAttribute.addFlashAttribute("success", "Thêm sản phẩm thành công!");
             } else redirectAttribute.addFlashAttribute("error", "Loại sản phẩm đã tồn tại");
@@ -202,15 +203,16 @@ public class ProductController {
     public String updateItem(@PathVariable("productId") Long productId,
                              @PathVariable("itemId") Long itemId,
                              Model model) {
-        ProductDTO productDTO = productService.getbyId(String.valueOf(productId));
+        Product product = productService.findById(productId);
         ProductItem productItem = productItemService.findById(itemId);
-        model.addAttribute("productDTO", productDTO);
+        model.addAttribute("product", product);
         model.addAttribute("productItem", productItem);
         return "admin-update-item";
     }
 
-    @PostMapping("/update-item/{id}")
-    public String updateItem(@ModelAttribute("productItem") ProductItem productItem,
+    @PostMapping("/update-item/{productId}/{itemId}")
+    public String updateItem(@PathVariable("productId") Long productId,
+                             @PathVariable("itemId") Long productItemId,
                              @RequestParam("sku") String sku,
                              @RequestParam("variation") String variation,
                              @RequestParam("qty") int qtyInStock,
@@ -218,12 +220,15 @@ public class ProductController {
                              @RequestParam("price") Long price,
                              RedirectAttributes redirectAttributes) {
         try {
-            productItemService.updateProductItem(productItem, sku, variation, qtyInStock, image, price);
+            Product product = productService.findById(productId);
+            ProductItem productItem = productItemService.findById(productItemId);
+            productItemService.updateProductItem(product, productItem, sku, variation, qtyInStock, image, price);
             redirectAttributes.addFlashAttribute("success", "Cập nhật loại sản phẩm thành công!");
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra");
         }
-        return "redirect:/admin-product-item";
+        return "redirect:/admin-products";
     }
 
     @RequestMapping( "/delete-item")

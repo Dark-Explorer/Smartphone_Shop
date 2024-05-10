@@ -2,6 +2,7 @@ package com.ecommerce.smartphoneshop.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "shopping_cart_item")
 public class ShoppingCartItem {
     @Id
@@ -16,11 +18,11 @@ public class ShoppingCartItem {
     private Long id;
     private int qty;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_item_id")
     private ProductItem productItem;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "cart_id")
     private ShoppingCart shoppingCart;
 }

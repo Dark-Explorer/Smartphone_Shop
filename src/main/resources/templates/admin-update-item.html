@@ -14,7 +14,7 @@
             <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
 
             <div class="container-fluid">
-                <form class="form-horizontal" th:action="@{/update-item/{id}(id = ${productItem.id})}" method="post" th:object="${productItem}">
+                <form class="form-horizontal" th:action="@{/update-item/{productId}/{itemId}(productId = ${product.id}, itemId = ${productItem.id})}" method="post" th:object="${productItem}">
                     <div class="row">
                         <div class="col-md-6">
                             <legend style="padding-left: 60px;">Cập nhật loại sản phẩm</legend>
@@ -64,6 +64,7 @@
                                     <script>
                                         const inputElement = document.getElementById("image");
                                         const previewElement = document.getElementById("previewImage");
+                                        previewElement.src = inputElement.value.trim();
 
                                         inputElement.addEventListener("input", () => {
                                             previewElement.src = inputElement.value.trim();

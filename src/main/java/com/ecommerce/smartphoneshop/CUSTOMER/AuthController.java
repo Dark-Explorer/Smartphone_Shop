@@ -1,7 +1,9 @@
 package com.ecommerce.smartphoneshop.CUSTOMER;
 
+import com.ecommerce.smartphoneshop.domain.ShoppingCart;
 import com.ecommerce.smartphoneshop.domain.User;
 import com.ecommerce.smartphoneshop.dto.UserDTO;
+import com.ecommerce.smartphoneshop.repository.CartRepository;
 import com.ecommerce.smartphoneshop.service.implement.UserServiceImplement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.security.Principal;
 public class AuthController {
     private final UserServiceImplement userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CartRepository cartRepository;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -64,7 +67,10 @@ public class AuthController {
 
         if (userDTO.getPassword().equals(userDTO.getRepeatPassword())){
             userDTO.setPassword(bCryptPasswordEncoder.encode(userDTO.getPassword()));
-            userService.save(userDTO);
+            User user = userService.save(userDTO);
+            ShoppingCart shoppingCart = new ShoppingCart();
+            shoppingCart.setUser(user);
+            cartRepository.save(shoppingCart);
             model.addAttribute("success", "Đăng ký thành công!");
         } else {
             model.addAttribute("userDTO", userDTO);

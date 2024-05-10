@@ -1,18 +1,14 @@
 package com.ecommerce.smartphoneshop.service.implement;
 
-import com.ecommerce.smartphoneshop.domain.Brand;
 import com.ecommerce.smartphoneshop.domain.Product;
 import com.ecommerce.smartphoneshop.dto.ProductDTO;
 import com.ecommerce.smartphoneshop.repository.BrandRepository;
 import com.ecommerce.smartphoneshop.repository.ProductRepository;
 import com.ecommerce.smartphoneshop.service.ProductService;
-import com.ecommerce.smartphoneshop.utils.ImageUpload;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -54,6 +50,7 @@ public class ProductServiceImplement implements ProductService {
         product.setWarranty(productDTO.getWarranty());
         product.setBrand(product.getBrand());
         product.set_active(product.is_active());
+        product.setImage(productDTO.getImage());
 
         return productRepository.save(product);
     }

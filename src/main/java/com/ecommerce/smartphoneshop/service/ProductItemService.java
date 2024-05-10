@@ -10,8 +10,8 @@ import java.util.List;
 public interface ProductItemService {
     List<ProductItem> getItemsOfProduct(Long id);
     ProductItem saveProductItem(String sku, String variation, int qtyInStock, String image, Long price, Product product);
-    ProductItem updateProductItem(ProductItem productItem, String sku, String variation, int qtyInStock, String image, Long price);
+    ProductItem updateProductItem(Product product, ProductItem productItem, String sku, String variation, int qtyInStock, String image, Long price);
     void deleteProductItem(Long id);
-    ProductItem findByName(String name);
+    ProductItem findByName(String name, Long productId);
     ProductItem findById(Long id);
 }

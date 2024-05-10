@@ -2,6 +2,7 @@ package com.ecommerce.smartphoneshop.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "shopping_cart")
+@Builder
 @Entity
 public class ShoppingCart {
     @Id

@@ -18,7 +18,6 @@ public class ProductItemServiceImplement implements ProductItemService {
         this.productItemRepository = productItemRepository;
     }
 
-
     @Override
     public List<ProductItem> getItemsOfProduct(Long id) {
         return productItemRepository.findItemsOfProduct(id);
@@ -38,12 +37,14 @@ public class ProductItemServiceImplement implements ProductItemService {
     }
 
     @Override
-    public ProductItem updateProductItem(ProductItem productItem, String sku, String variation, int qtyInStock, String image, Long price) {
+    public ProductItem updateProductItem(Product product, ProductItem productItem, String sku, String variation, int qtyInStock, String image, Long price) {
         productItem.setSKU(sku);
         productItem.setVariation(variation);
         productItem.setQty_in_stock(qtyInStock);
         productItem.setImage(image);
         productItem.setPrice(price);
+        productItem.setProduct(product);
+
         return productItemRepository.save(productItem);
     }
 
@@ -53,14 +54,12 @@ public class ProductItemServiceImplement implements ProductItemService {
     }
 
     @Override
-    public ProductItem findByName(String name) {
-        return productItemRepository.findByName(name);
+    public ProductItem findByName(String name, Long productId) {
+        return productItemRepository.findByName(name, productId);
     }
 
     @Override
     public ProductItem findById(Long id) {
         return productItemRepository.findById(id).orElse(null);
     }
-
-
 }

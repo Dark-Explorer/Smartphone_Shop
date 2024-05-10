@@ -1509,7 +1509,8 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%; }
   .single-product .product-details h6 {
     font-size: 16px;
-    text-transform: uppercase; }
+    /*text-transform: uppercase; */
+  }
   .single-product .product-details .price h6 {
     font-size: 14px;
     display: inline-block;
@@ -1575,7 +1576,7 @@ h1, h2, h3, h4, h5, h6 {
         opacity: 0;
         visibility: hidden; }
       .single-product .product-details .prd-bottom .social-info:hover {
-        width: 115px; }
+        width: 300px; }
         .single-product .product-details .prd-bottom .social-info:hover span:after {
           opacity: 1;
           visibility: visible; }
@@ -1589,7 +1590,7 @@ h1, h2, h3, h4, h5, h6 {
 .exclusive-deal-area {
   background: #f9f9ff; }
   .exclusive-deal-area .exclusive-left {
-    position: realtive;
+    position: relative;
     background: url(../img/exclusive.jpg) center no-repeat;
     background-size: cover;
     text-align: center;
