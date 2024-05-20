@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<div th:replace="~{user-fragment::header(var1=${display})}"></div>
+	<div th:replace="~{user-fragment::header(var1=${loggedIn}, var2=${admin})}"></div>
 
 	<div th:replace="~{user-fragment::banner}"></div>
 
@@ -135,13 +135,7 @@
 							<div class="product-details">
 								<h6 th:text="${product.name}"></h6>
 								<div class="price">
-									<h6 th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
-								</div>
-								<div class="prd-bottom">
-									<a href="" class="social-info">
-										<span class="lnr lnr-cart"></span>
-										<p class="hover-text">Thêm vào giỏ hàng</p>
-									</a>
+									<h6 style="color: red" th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
 								</div>
 							</div>
 						</div>

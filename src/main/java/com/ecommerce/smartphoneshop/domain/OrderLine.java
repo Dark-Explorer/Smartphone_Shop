@@ -3,12 +3,14 @@ package com.ecommerce.smartphoneshop.domain;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.Order;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "order_line")
 public class OrderLine {

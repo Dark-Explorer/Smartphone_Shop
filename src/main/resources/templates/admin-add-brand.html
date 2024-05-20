@@ -18,16 +18,16 @@
                           enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-6">
-                                <legend style="padding-left: 60px;">ADD NEW BRAND</legend>
+                                <legend style="padding-left: 60px;">Thêm hãng mới</legend>
                                 <div class="form-group" style="margin-left: 50px;">
-                                    <label class="col-md-4 control-label" for="product_name">Brand name</label>
+                                    <label class="col-md-4 control-label" for="product_name">Tên hãng</label>
                                     <div class="col-md-8">
                                         <input id="product_name" th:field="*{name}" name="product_name" class="form-control input-md" required="" type="text">
                                     </div>
                                 </div>
 
-                                <button type="submit" class="btn btn-primary" onclick="saveForm()" style="margin-left: 60px;">Save</button>
-                                <a th:href="@{admin-brands}" class="btn btn-danger">Cancel</a>
+                                <button type="submit" class="btn btn-primary" onclick="saveForm()" style="margin-left: 60px;">Lưu</button>
+                                <a th:href="@{admin-brands}" class="btn btn-danger">Huỷ</a>
                             </div>
                         </div>
                     </form>

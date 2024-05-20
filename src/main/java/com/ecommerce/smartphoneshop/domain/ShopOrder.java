@@ -2,6 +2,7 @@ package com.ecommerce.smartphoneshop.domain;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.w3c.dom.stylesheets.LinkStyle;
@@ -13,6 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "shop_order")
+@Builder
 @Entity
 public class ShopOrder {
     @Id
@@ -22,10 +24,9 @@ public class ShopOrder {
     private LocalDateTime date_updated;
     private String address;
     private Long total;
-    private int status;
-
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_method_id")
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
+    @Enumerated(EnumType.STRING)
     private PaymentMethod payment_method;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

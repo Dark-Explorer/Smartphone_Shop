@@ -5791,4 +5791,18 @@ label {
   .footer-text i {
     color: #ffba00; }
 
-/*# sourceMappingURL=main.css.map */
+.checkout-column-1 {
+  display: inline-block;
+  width: 50%;
+}
+
+.checkout-column-2 {
+  display: inline-block;
+  width: 10%;
+}
+
+.checkout-column-3 {
+  display: inline-block;
+  width: 40%;
+  text-align: right;
+}

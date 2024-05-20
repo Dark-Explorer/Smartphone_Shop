@@ -26,7 +26,7 @@ public class Product {
     private int warranty;
     private boolean is_active = true;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
 

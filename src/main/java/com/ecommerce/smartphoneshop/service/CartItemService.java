@@ -15,5 +15,6 @@ public interface CartItemService {
     ShoppingCartItem updateItem(ShoppingCartItem shoppingCartItem, int qty);
     ShoppingCartItem getExistingItem(ShoppingCart shoppingCart, ProductItem productItem);
     void deleteItem(Long itemId);
+    void deleteUserCart(Long userId);
 
 }

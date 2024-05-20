@@ -4,8 +4,8 @@ import com.ecommerce.smartphoneshop.domain.ProductItem;
 import com.ecommerce.smartphoneshop.domain.ShoppingCart;
 import com.ecommerce.smartphoneshop.domain.ShoppingCartItem;
 import com.ecommerce.smartphoneshop.repository.CartItemRepository;
-import com.ecommerce.smartphoneshop.repository.ProductRepository;
 import com.ecommerce.smartphoneshop.service.CartItemService;
+import com.ecommerce.smartphoneshop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +14,12 @@ import java.util.List;
 @Service
 public class CartItemServiceImplement implements CartItemService {
     private final CartItemRepository cartItemRepository;
-    private final ProductRepository productRepository;
+    private final CartService cartService;
 
     @Autowired
-    public CartItemServiceImplement(CartItemRepository cartItemRepository, ProductRepository productRepository) {
+    public CartItemServiceImplement(CartItemRepository cartItemRepository, CartService cartService) {
         this.cartItemRepository = cartItemRepository;
-        this.productRepository = productRepository;
+        this.cartService = cartService;
     }
 
     @Override
@@ -44,8 +44,10 @@ public class CartItemServiceImplement implements CartItemService {
 
     @Override
     public ShoppingCartItem updateItem(ShoppingCartItem shoppingCartItem, int qty) {
-        shoppingCartItem.setQty(qty);
-        return cartItemRepository.save(shoppingCartItem);
+        if (qty <= shoppingCartItem.getProductItem().getQty_in_stock()) {
+            shoppingCartItem.setQty(qty);
+            return cartItemRepository.save(shoppingCartItem);
+        } else return null;
     }
 
     @Override
@@ -63,5 +65,11 @@ public class CartItemServiceImplement implements CartItemService {
     @Override
     public void deleteItem(Long itemId) {
         cartItemRepository.deleteById(itemId);
+    }
+
+    @Override
+    public void deleteUserCart(Long userId) {
+        ShoppingCart cart = cartService.getUserCart(userId);
+        cartItemRepository.deleteAll(cart.getShoppingCartItems());
     }
 }

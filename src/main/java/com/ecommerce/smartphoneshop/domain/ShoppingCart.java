@@ -23,6 +23,6 @@ public class ShoppingCart {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shoppingCart")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "shoppingCart", orphanRemoval = true)
     private List<ShoppingCartItem> shoppingCartItems;
 }

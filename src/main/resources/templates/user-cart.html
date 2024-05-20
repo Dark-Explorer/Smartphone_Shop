@@ -7,7 +7,6 @@
 </head>
 
 <body>
-
     <div th:replace="~{user-fragment::header(var1=${display})}"></div>
 
     <!-- Start Banner Area -->
@@ -57,87 +56,62 @@
                                     <h5 th:text="${#numbers.formatDecimal(item.productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h5>
                                 </td>
                                 <td>
+                                    <form th:action="@{/update-cart-item/{itemId}(itemId = ${item.id})}" method="post">
                                     <div class="product_count">
-                                        <input type="text" name="qty" id="sst" maxlength="12" th:value="${item.qty}" title="Quantity:" class="input-text qty">
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                        <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+                                        <input type="number" name="qty" th:id="'qty' + ${item.id}" th:value="${item.qty}" th:disabled="${item.productItem.qty_in_stock} == 0" title="Số lượng:" class="input-text qty">
+<!--                                        <button onclick="var result = document.getElementById('qty' + [[${item.id}]]); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"-->
+<!--                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>-->
+<!--                                        <button onclick="var result = document.getElementById('qty'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value&#45;&#45;;return false;"-->
+<!--                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>-->
                                     </div>
+                                        <button type="submit" class="btn btn-outline-warning">Cập nhật</button>
+                                    </form>
                                 </td>
                                 <td>
                                     <h5 th:text="${#numbers.formatDecimal(item.productItem.price * item.qty, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h5>
                                 </td>
                                 <td>
-                                    <button type="submit" class="primary-btn">Xoá</button>
+                                    <a th:href="@{/delete-cart-item(id = ${item.id})}" class="primary-btn">Xoá</a>
                                 </td>
                             </tr>
-
 
                             <tr class="bottom_button">
                                 <td>
-                                    <a class="gray_btn" href="#">Cập nhật giỏ hàng</a>
+                                    <form action="" method="post">
+                                        <button type="submit" class="gray_btn">Cập nhật giỏ hàng</button>
+                                    </form>
                                 </td>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-<!--                                    <div class="cupon_text d-flex align-items-center">-->
-<!--                                        <input type="text" placeholder="Coupon Code">-->
-<!--                                        <a class="primary-btn" href="#">Apply</a>-->
-<!--                                        <a class="gray_btn" href="#">Close Coupon</a>-->
-<!--                                    </div>-->
-                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
+
                             <tr>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
+                                <td></td>
+                                <td></td>
                                 <td>
                                     <h5>Tổng thanh toán</h5>
                                 </td>
-                                <td>
-
-                                </td>
+                                <td></td>
                                 <td>
                                     <h5 th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h5>
                                 </td>
-                            </tr>
-                            <tr class="shipping_area">
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    <h5>Vận chuyển</h5>
-                                </td>
-                                <td>
-
-                                </td>
+                                <td></td>
                             </tr>
                             <tr class="out_button_area">
-                                <td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
 
-                                </td>
                                 <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    <div class="checkout_btn_inner d-flex align-items-center">
-                                        <button type="submit" class="primary-btn" href="#">Thanh toán</button>
+                                    <div class="checkout_btn_inner d-flex">
+                                        <a class="primary-btn" th:href="@{/checkout}">Thanh toán</a>
                                     </div>
                                 </td>
+                                <td></td>
                             </tr>
                         </tbody>
                     </table>
@@ -151,5 +125,8 @@
 
     <div th:replace="~{user-fragment::JS-import}"></div>
 </body>
+<script>
+    let itemQty = document.getElementById()
+</script>
 
 </html>
