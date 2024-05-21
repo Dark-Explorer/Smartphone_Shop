@@ -36,4 +36,37 @@ public class OrderServiceImplement implements OrderService {
     public ShopOrder findOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<ShopOrder> getAllPendingOrders() {
+        return orderRepository.getPendingOrders();
+    }
+
+    @Override
+    public List<ShopOrder> getAllCompletedOrders() {
+        return orderRepository.getCompletedOrders();
+    }
+
+    @Override
+    public ShopOrder acceptOrder(Long id) {
+        ShopOrder order = orderRepository.getReferenceById(id);
+        order.setStatus(OrderStatus.DELIVERING);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public ShopOrder cancelOrder(Long id) {
+        ShopOrder order = orderRepository.getReferenceById(id);
+        order.setStatus(OrderStatus.CANCELLED);
+        return orderRepository.save(order);
+    }
+
+    @Override
+    public ShopOrder deliverOrder(Long id) {
+        ShopOrder order = orderRepository.getReferenceById(id);
+        order.setStatus(OrderStatus.DELIVERED);
+        return orderRepository.save(order);
+    }
+
+
 }

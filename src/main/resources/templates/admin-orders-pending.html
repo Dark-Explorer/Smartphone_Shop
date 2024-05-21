@@ -1,143 +1,114 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head th:replace="~{admin-fragments::header}"></head>
+
 <body id="page-top">
+    <div id="wrapper">
+        <ul th:replace="~{admin-fragments::sidebar}"></ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="~{admin-fragments::top-navbar}"></nav>
 
-<!-- Page Wrapper -->
-<div id="wrapper">
+                <div th:if="${success}" class="text-center alert alert-success">
+                    <p th:text="${success}">
+                    </p>
+                </div>
+                <div class="table-main table-responsive">
+                    <table id="myTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Thành tiền</th>
+                                <th>Tên</th>
+                                <th>SĐT</th>
+                                <th>Địa chỉ</th>
+                                <th>Sản phẩm</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Đơn hàng mới tạo, chưa duyệt-->
+                            <tr th:each="order : ${orders}" th:if="${order.status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).CREATED}">
+                                <td>
+                                    <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </td>
+                                <td>
+                                    <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${order.user.name}"></p>
+                                </td>
+                                <td style="width: 115px;">
+                                    <p th:text="${order.user.phone}"></p>
+                                </td>
+                                <td style="width: 300px;">
+                                    <p th:text="${order.address}"></p>
+                                </td>
+                                <td>
+                                    <div th:each="product : ${order.orderLines}">
+                                        <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>CREATED</p>
+                                </td>
+                                <td>
+                                    <a th:href="@{/accept-order/{id}(id = ${order.id})}" style="margin-bottom: 5px;"
+                                       class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Duyệt</a>
+                                    <a th:href="@{/cancel-order/{id}(id = ${order.id})}"
+                                       class="btn btn-primary"><img class='fa fa-window-close' alt='' src=''>Huỷ</a>
+                                </td>
+                            </tr>
 
-    <!--Sidebar-->
-    <ul th:replace="~{admin-fragments::sidebar}"></ul>
-    <!-- End of Sidebar -->
+                        <!--Đơn hàng đã duyệt, đang vận chuyển-->
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+                            <tr th:each="order : ${orders}" th:if="${order.status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).DELIVERING}">
+                                <td>
+                                    <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </td>
+                                <td>
+                                    <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${order.user.name}"></p>
+                                </td>
+                                <td style="width: 115px;">
+                                    <p th:text="${order.user.phone}"></p>
+                                </td>
+                                <td style="width: 300px;">
+                                    <p th:text="${order.address}"></p>
+                                </td>
+                                <td>
+                                    <div th:each="product : ${order.orderLines}">
+                                        <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>DELIVERING</p>
+                                </td>
+                                <td>
+                                    <a th:href="@{/deliver-order/{id}(id = ${order.id})}"
+                                       class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Hoàn thành</a>
+                                </td>
+                            </tr>
+                        </tbody>
 
-        <!-- Main Content -->
-        <div id="content">
+                    </table>
 
-            <!-- Topbar -->
-            <nav th:replace="~{admin-fragments::top-navbar}"></nav>
-            <!-- End of Topbar -->
-
-            <!-- Begin Page Content -->
-            <div th:if="${success}" class="text-center alert alert-success">
-                <p th:text="${success}">
-                </p>
+                    <footer th:replace="~{admin-fragments::footer}"></footer>
+                </div>
             </div>
-            <div class="table-main table-responsive">
-                <table id="myTable" class="table">
-                    <thead>
-                    <tr>
-                        <th>Order Date</th>
-                        <th>Total Price</th>
-                        <th>Name</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Products</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-<!--                    Pending approval-->
-
-                    <tr th:each="order : ${orders}" th:if="${order.orderstatus == 1}">
-                        <td>
-                            <p th:text="${#temporals.format(order.time, 'yyyy-MM-dd HH:mm:ss')}"></p>
-                        </td>
-                        <td>
-                            <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${order.unregister_name}"></p>
-                        </td>
-                        <td style="width: 115px;">
-                            <p th:text="${order.unregister_phonenumber}"></p>
-                        </td>
-                        <td style="width: 300px;">
-                            <p th:text="${order.unregister_address}"></p>
-                        </td>
-                        <td>
-                            <div th:each="pair : ${order.order_productList}">
-                                <p th:text="${pair.amount} + ' x ' + ${pair.pro.Name} + ' (' + ${pair.pro.id} + ')'"></p>
-                            </div>
-                        </td>
-                        <td>
-                            <p>Pending Approval</p>
-                        </td>
-                        <td>
-                            <a th:href="@{/accept-order(id = ${order.id})}" style="margin-bottom: 5px;"
-                               class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Accept</a>
-                            <a th:href="@{/cancel-order(id = ${order.id})}"
-                               class="btn btn-primary"><img class='fa fa-window-close' alt='' src=''>Cancel</a>
-                        </td>
-                    </tr>
-
-<!--                    Pending delivery-->
-
-                    <tr th:each="order : ${orders}" th:if="${order.orderstatus == 2}">
-                        <td>
-                            <p th:text="${#temporals.format(order.time, 'yyyy-MM-dd HH:mm:ss')}"></p>
-                        </td>
-                        <td>
-                            <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
-                        </td>
-                        <td>
-                            <p th:text="${order.unregister_name}"></p>
-                        </td>
-                        <td style="width: 115px;">
-                            <p th:text="${order.unregister_phonenumber}"></p>
-                        </td>
-                        <td style="width: 300px;">
-                            <p th:text="${order.unregister_address}"></p>
-                        </td>
-                        <td>
-                            <!--                            List <pair<pair<id,name>,quantity>-->
-                            <div th:each="pair : ${order.order_productList}">
-                                <p th:text="${pair.amount} + ' x ' + ${pair.pro.Name} + ' (' + ${pair.pro.id} + ')'"></p>
-                            </div>
-                        </td>
-                        <td>
-                            <p>Pending Delivery</p>
-                        </td>
-                        <td>
-                            <a th:href="@{/complete-order(id = ${order.id})}"
-                               class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Complete</a>
-                        </td>
-                    </tr>
-
-                    </tbody>
-
-                </table>
-
-                <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <footer th:replace="~{admin-fragments::footer}"></footer>
-                <!-- End of Footer -->
-
-            </div>
-            <!-- End of Content Wrapper -->
-
         </div>
     </div>
-</div>
-<!-- End of Page Wrapper -->
+    <!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a th:replace="~{admin-fragments::scroll}"></a>
+    <!-- Scroll to Top Button-->
+    <a th:replace="~{admin-fragments::scroll}"></a>
 
-<!--Add Categories Modal-->
+    <div th:replace="~{admin-fragments::script}"></div>
 
+    <script th:src="@{/js/categories.js}"></script>
 
-<!--End-->
-
-<!-- End -->
-<!-- Bootstrap core JavaScript-->
-<div th:replace="~{admin-fragments::script}"></div>
-
-<script th:src="@{/js/categories.js}"></script>
 </body>
 </html>
