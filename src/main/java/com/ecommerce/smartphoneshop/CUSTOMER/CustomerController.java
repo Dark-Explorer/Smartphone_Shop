@@ -1,9 +1,12 @@
 package com.ecommerce.smartphoneshop.CUSTOMER;
 
+import com.ecommerce.smartphoneshop.domain.Brand;
 import com.ecommerce.smartphoneshop.domain.Product;
 import com.ecommerce.smartphoneshop.domain.ProductItem;
 import com.ecommerce.smartphoneshop.domain.User;
 import com.ecommerce.smartphoneshop.dto.ProductDTO;
+import com.ecommerce.smartphoneshop.repository.UserRepository;
+import com.ecommerce.smartphoneshop.service.BrandService;
 import com.ecommerce.smartphoneshop.service.ProductItemService;
 import com.ecommerce.smartphoneshop.service.ProductService;
 import com.ecommerce.smartphoneshop.service.UserService;
@@ -12,8 +15,8 @@ import lombok.extern.java.Log;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -28,6 +31,8 @@ public class CustomerController {
     private final ProductService productService;
     private final ProductItemService productItemService;
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final BrandService brandService;
 
     @GetMapping("/home")
     public String showHome(Model model) {
@@ -80,18 +85,47 @@ public class CustomerController {
         return "user-single-product";
     }
 
-//    @GetMapping("/{name}/{id}")
-//    public String showProduct(@PathVariable String name, @PathVariable String id, Model model) {
-//        Product product = productService.findbyName(name);
-//        ProductItem productItem = productItemService.findById(Long.valueOf(id));
-//        model.addAttribute("product", product);
-//        model.addAttribute("productItem", productItem);
-//        return "user-single-product";
-//    }
-
     @GetMapping("/contact")
     public String showContact(Model model) {
         return "user-contact";
+    }
+
+    @GetMapping("/info")
+    public String showInfo(Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User user = userService.findByUsername(principal.getName());
+
+        model.addAttribute("user", user);
+        return "user-info";
+    }
+
+    @PostMapping("/edit-info")
+    public String editInfo(Principal principal,
+                           @RequestParam("phone") String phone,
+                           @RequestParam("email") String email,
+                           @RequestParam("address") String address) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User user = userService.findByUsername(principal.getName());
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setAddress(address);
+        userRepository.save(user);
+        return "redirect:/info";
+    }
+
+    @GetMapping("/products")
+    public String showProducts(Model model) {
+        List<Product> products = productService.getAllProducts();
+        List<Brand> brands = brandService.getAllBrands();
+
+        model.addAttribute("products", products);
+        model.addAttribute("brands", brands);
+
+        return "user-products";
     }
 
 }

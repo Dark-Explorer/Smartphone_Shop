@@ -10,4 +10,5 @@ public interface UserService {
     User findByUsername(String username);
     User findByEmail(String email);
     User findByPhone(String phone);
+    User updateInfo(User user, String phone, String email, String address);
 }

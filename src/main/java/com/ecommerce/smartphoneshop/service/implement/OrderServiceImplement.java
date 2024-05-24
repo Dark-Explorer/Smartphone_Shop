@@ -51,6 +51,7 @@ public class OrderServiceImplement implements OrderService {
     public ShopOrder acceptOrder(Long id) {
         ShopOrder order = orderRepository.getReferenceById(id);
         order.setStatus(OrderStatus.DELIVERING);
+        order.setDate_updated(LocalDateTime.now());
         return orderRepository.save(order);
     }
 
@@ -58,6 +59,7 @@ public class OrderServiceImplement implements OrderService {
     public ShopOrder cancelOrder(Long id) {
         ShopOrder order = orderRepository.getReferenceById(id);
         order.setStatus(OrderStatus.CANCELLED);
+        order.setDate_updated(LocalDateTime.now());
         return orderRepository.save(order);
     }
 
@@ -65,6 +67,7 @@ public class OrderServiceImplement implements OrderService {
     public ShopOrder deliverOrder(Long id) {
         ShopOrder order = orderRepository.getReferenceById(id);
         order.setStatus(OrderStatus.DELIVERED);
+        order.setDate_updated(LocalDateTime.now());
         return orderRepository.save(order);
     }
 

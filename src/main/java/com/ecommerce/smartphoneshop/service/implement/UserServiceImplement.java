@@ -47,4 +47,13 @@ public class UserServiceImplement implements UserService {
     public User findByPhone(String phone) {
         return userRepository.findByPhone(phone);
     }
+
+    @Override
+    public User updateInfo(User user, String phone, String email, String address) {
+        user.setPhone(phone);
+        user.setEmail(email);
+        user.setAddress(address);
+
+        return userRepository.save(user);
+    }
 }

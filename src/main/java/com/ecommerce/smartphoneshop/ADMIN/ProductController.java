@@ -231,7 +231,7 @@ public class ProductController {
         return "redirect:/admin-products";
     }
 
-    @RequestMapping( "/delete-item")
+    @RequestMapping("/delete-item")
     public String deleteItem(@RequestParam("id") Long id) {
         productItemService.deleteProductItem(id);
         return "redirect:/admin-products";
