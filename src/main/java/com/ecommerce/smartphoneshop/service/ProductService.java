@@ -19,4 +19,8 @@ public interface ProductService {
     void deleteProduct(String id);
     void enableProduct(String id);
     void disableProduct(String id);
+    List<Product> sortByPrice(List<Product> products);
+    List<Product> filterByBrand(String brand);
+    List<Product> filterByPrice(Long min, Long max);
+    List<Product> filterProduct(String brandName, Long min, Long max);
 }

@@ -5,6 +5,7 @@ import com.ecommerce.smartphoneshop.domain.Product;
 import com.ecommerce.smartphoneshop.domain.ProductItem;
 import com.ecommerce.smartphoneshop.domain.User;
 import com.ecommerce.smartphoneshop.dto.ProductDTO;
+import com.ecommerce.smartphoneshop.repository.ProductRepository;
 import com.ecommerce.smartphoneshop.repository.UserRepository;
 import com.ecommerce.smartphoneshop.service.BrandService;
 import com.ecommerce.smartphoneshop.service.ProductItemService;
@@ -12,11 +13,9 @@ import com.ecommerce.smartphoneshop.service.ProductService;
 import com.ecommerce.smartphoneshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.ArrayList;
@@ -33,6 +32,7 @@ public class CustomerController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final BrandService brandService;
+    private final ProductRepository productRepository;
 
     @GetMapping("/home")
     public String showHome(Model model) {
@@ -118,8 +118,22 @@ public class CustomerController {
     }
 
     @GetMapping("/products")
-    public String showProducts(Model model) {
+    public String showAllProducts(Model model) {
         List<Product> products = productService.getAllProducts();
+        List<Brand> brands = brandService.getAllBrands();
+        model.addAttribute("products", products);
+        model.addAttribute("brands", brands);
+        return "user-products";
+    }
+
+    @GetMapping("/productsfilter")
+    public String showProducts(@RequestParam(name = "brandName", required = false, defaultValue = "") String brandName,
+                               @RequestParam(name = "min", required = false, defaultValue = "0") String minPrice,
+                               @RequestParam(name = "max", required = false, defaultValue = "10000000000") String maxPrice,
+                               Model model) {
+        Long min = Long.valueOf(minPrice);
+        Long max = Long.valueOf(maxPrice);
+        List<Product> products = productService.filterProduct(brandName, min, max);
         List<Brand> brands = brandService.getAllBrands();
 
         model.addAttribute("products", products);
@@ -127,5 +141,4 @@ public class CustomerController {
 
         return "user-products";
     }
-
 }

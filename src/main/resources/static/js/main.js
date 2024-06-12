@@ -276,6 +276,9 @@ $(document).ready(function(){
         // from the left edge of the slider.
         nonLinearSlider.noUiSlider.on('update', function ( values, handle, unencoded, isTap, positions ) {
             nodes[handle].innerHTML = String(Math.floor(values[handle]));
+            $('#minPrice').val(String(Math.floor(values[0])));
+            $('#maxPrice').val(String(Math.floor(values[1])));
+
         });
 
         }

@@ -40,16 +40,27 @@ public class UserConfig {
             "/login?error",
             "/register",
             "register-new",
-            "/add-brand",
+            "user-single-product",
+            "user-contact",
+    };
+
+    private static final String[] ADMIN_PERMISSION = {
+            "dashboard",
+            "admin-products",
+            "add-product",
+            "update-product",
+            "pending-orders",
+            "completed-orders",
             "admin-brands",
-            "/delete-brand",
-            "/save-brand",
-            "/update-brand/",
-            "admin-update-brand",
-            "admin-add-item",
-            "admin-update-item",
-            "admin-product-item",
-            "user-single-product"
+            "add-brand",
+            "update-brand",
+    };
+
+    private static final String[] REGISTERED_PERMISSION = {
+            "user-order-confirmation",
+            "user-checkout",
+            "user-cart",
+            "user-info",
     };
 
     @Bean
@@ -65,6 +76,8 @@ public class UserConfig {
                         author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/img/**").permitAll()
                                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
+                                .requestMatchers(REGISTERED_PERMISSION).hasAuthority("CUSTOMER")
+                                .requestMatchers(ADMIN_PERMISSION).hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(login ->

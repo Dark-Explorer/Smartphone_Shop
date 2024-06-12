@@ -7,9 +7,13 @@ import com.ecommerce.smartphoneshop.repository.ProductRepository;
 import com.ecommerce.smartphoneshop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImplement implements ProductService {
@@ -95,5 +99,44 @@ public class ProductServiceImplement implements ProductService {
         Product product = productRepository.getReferenceById(Long.valueOf(id));
         product.set_active(false);
         productRepository.save(product);
+    }
+
+    @Override
+    public List<Product> sortByPrice(List<Product> products) {
+        products.sort(Comparator.comparing(
+                product -> product.getProductItems().getFirst().getPrice()));
+        return products;
+    }
+
+    @Override
+    public List<Product> filterByBrand(String brand) {
+        return productRepository.findByBrand(brand);
+    }
+
+    @Override
+    public List<Product> filterByPrice(Long min, Long max) {
+        return productRepository.filterByPrice(min, max);
+    }
+
+    @Override
+    public List<Product> filterProduct(String brandName, Long min, Long max) {
+        List<Product> allProducts = productRepository.findAll();
+
+        if (StringUtils.hasText(brandName) && min != null && max != null) {
+            return allProducts.stream()
+                    .filter(product -> product.getBrand().getName().equalsIgnoreCase(brandName))
+                    .filter(product -> product.getProductItems().getFirst().getPrice() >= min && product.getProductItems().getFirst().getPrice() <= max)
+                    .collect(Collectors.toList());
+        } else if (StringUtils.hasText(brandName)) {
+            return allProducts.stream()
+                    .filter(product -> product.getBrand().getName().equalsIgnoreCase(brandName))
+                    .collect(Collectors.toList());
+        } else if (min != null && max != null) {
+            return allProducts.stream()
+                    .filter(product -> product.getProductItems().getFirst().getPrice() >= min && product.getProductItems().getFirst().getPrice() <= max)
+                    .collect(Collectors.toList());
+        } else {
+            return allProducts;
+        }
     }
 }

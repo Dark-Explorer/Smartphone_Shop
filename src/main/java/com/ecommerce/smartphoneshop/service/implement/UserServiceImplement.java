@@ -56,4 +56,9 @@ public class UserServiceImplement implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public int getNewUsersThisMonth() {
+        return 0;
+    }
 }

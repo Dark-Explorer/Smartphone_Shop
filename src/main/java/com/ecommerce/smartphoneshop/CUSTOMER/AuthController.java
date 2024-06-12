@@ -96,15 +96,15 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/fragment")
-    public String fragment(Model model, Principal principal) {
-        if (principal == null) {
-            model.addAttribute("loggedIn", false);
-        } else {
-            if (principal.getName().equals("adminonly")) model.addAttribute("admin", true);
-            else model.addAttribute("admin", false);
-            model.addAttribute("loggedIn", true);
-        }
-        return "user-fragment";
-    }
+//    @GetMapping("/fragment")
+//    public String fragment(Model model, Principal principal) {
+//        if (principal == null) {
+//            model.addAttribute("loggedIn", false);
+//        } else {
+//            if (principal.getName().equals("adminonly")) model.addAttribute("admin", true);
+//            else model.addAttribute("admin", false);
+//            model.addAttribute("loggedIn", true);
+//        }
+//        return "user-fragment";
+//    }
 }

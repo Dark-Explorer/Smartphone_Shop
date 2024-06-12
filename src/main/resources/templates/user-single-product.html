@@ -62,7 +62,8 @@
 								 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
 							</div>
 							<div class="card_area d-flex align-items-center">
-								<button type="submit" class="primary-btn">Thêm vào giỏ hàng</button>
+								<button th:if="${productItem.qty_in_stock > 0}" type="submit" class="primary-btn">Thêm vào giỏ hàng</button>
+								<button th:if="${productItem.qty_in_stock == 0}" class="primary-btn" disabled="disabled">Hết hàng</button>
 							</div>
 						</div>
 					</form>

@@ -130,15 +130,15 @@
 					<!-- single product -->
 					<div class="col-lg-3 col-md-6" th:each="product : ${products}" th:if="${product.is_active} == true">
 						<a th:href="@{/product/{productName}/{itemId}(productName = ${product.name}, itemId = ${product.productItems.get(0).id})}">
-						<div class="single-product">
-							<img class="img-fluid" th:src="${product.image}" alt="">
-							<div class="product-details">
-								<h6 th:text="${product.name}"></h6>
-								<div class="price">
-									<h6 style="color: red" th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
+							<div class="single-product">
+								<img class="img-fluid" th:src="${product.image}" alt="">
+								<div class="product-details">
+									<h6 th:text="${product.name}"></h6>
+									<div class="price">
+										<h6 style="color: red" th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
+									</div>
 								</div>
 							</div>
-						</div>
 						</a>
 					</div>
 				</div>
