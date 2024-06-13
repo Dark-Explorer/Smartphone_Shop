@@ -14,7 +14,9 @@ public interface OrderService {
     ShopOrder acceptOrder(Long id);
     ShopOrder cancelOrder(Long id);
     ShopOrder deliverOrder(Long id);
-    Long incomeToday();
-    Long incomThisWeek();
-
+    Long getIncomeToday();
+    Long getIncomeThisMonth();
+    int getNumberOfPendingOrders();
+    int getNumberOfCompletedOrdersToday();
+    int getNumberOfCompletedOrdersThisMonth();
 }

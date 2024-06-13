@@ -13,5 +13,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     @Query("select u from User u where u.phone = :phone")
     User findByPhone(String phone);
-
+    @Query("SELECT COUNT(u) FROM User u WHERE MONTH(u.date_signup) = MONTH(CURRENT_DATE()) AND YEAR(u.date_signup) = YEAR(CURRENT_DATE())")
+    int getNewUsersThisMonth();
 }

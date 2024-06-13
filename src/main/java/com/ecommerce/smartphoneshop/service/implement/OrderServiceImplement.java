@@ -6,6 +6,7 @@ import com.ecommerce.smartphoneshop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -71,5 +72,41 @@ public class OrderServiceImplement implements OrderService {
         return orderRepository.save(order);
     }
 
+    @Override
+    public Long getIncomeToday() {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime currentTime = LocalDateTime.now();
+        Long res = orderRepository.getIncomeForDateRange(startOfDay, currentTime);
+        if (res == null) return 0L;
+        return res;
+    }
+
+    @Override
+    public Long getIncomeThisMonth() {
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime currentTime = LocalDateTime.now();
+        Long res = orderRepository.getIncomeForDateRange(startOfMonth, currentTime);
+        if (res == null) return 0L;
+        return res;
+    }
+
+    @Override
+    public int getNumberOfPendingOrders() {
+        return orderRepository.getNumberOfPendingOrders();
+    }
+
+    @Override
+    public int getNumberOfCompletedOrdersToday() {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime currentTime = LocalDateTime.now();
+        return orderRepository.getCompletedOrdersInRange(startOfDay, currentTime);
+    }
+
+    @Override
+    public int getNumberOfCompletedOrdersThisMonth() {
+        LocalDateTime startOfMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime currentTime = LocalDateTime.now();
+        return orderRepository.getCompletedOrdersInRange(startOfMonth, currentTime);
+    }
 
 }

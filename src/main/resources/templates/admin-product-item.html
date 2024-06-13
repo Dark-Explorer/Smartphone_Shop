@@ -53,6 +53,7 @@
                         <th scope="col">Phân loại</th>
                         <th scope="col">SKU</th>
                         <th scope="col">Ảnh</th>
+                        <th scope="col">Số lượng</th>
                         <th scope="col">Giá</th>
                         <th scope="col">Thao tác</th>
                     </tr>
@@ -65,7 +66,8 @@
                             <img class = "my-product-image" style="height: 40px; width: 40px"
                                  th:src="${productItem.image}" alt="Product Image">
                         </td>
-                        <td th:text = "${productItem.price}"></td>
+                        <td th:text = "${productItem.qty_in_stock}"></td>
+                        <td th:text = "${#numbers.formatDecimal(productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></td>
                         <td><a th:href="@{/products/{productId}/item/{itemId}(productId = ${productItem.product.id}, itemId = ${productItem.id})}" class="btn btn-primary">Cập nhật</a>
                             <a th:href="@{/delete-item(id = ${productItem.id})}"
                                class=" btn btn-danger">Xoá loại SP</a>

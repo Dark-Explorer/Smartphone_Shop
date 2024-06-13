@@ -59,6 +59,6 @@ public class UserServiceImplement implements UserService {
 
     @Override
     public int getNewUsersThisMonth() {
-        return 0;
+        return userRepository.getNewUsersThisMonth();
     }
 }
