@@ -28,7 +28,6 @@ public class CartController {
     private final OrderService orderService;
     private final OrderLineService orderLineService;
     private final ProductItemRepository productItemRepository;
-    private final OrderLineRepository orderLineRepository;
 
     @GetMapping("/cart")
     public String showCart(Model model, Principal principal) {

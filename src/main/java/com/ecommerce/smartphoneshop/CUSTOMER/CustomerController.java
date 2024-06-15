@@ -13,6 +13,8 @@ import com.ecommerce.smartphoneshop.service.ProductService;
 import com.ecommerce.smartphoneshop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -118,10 +120,21 @@ public class CustomerController {
     }
 
     @GetMapping("/products")
-    public String showAllProducts(Model model) {
-        List<Product> products = productService.getAllProducts();
+    public String showAllProducts(@Param("keyword") String keyword,
+                                  @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
+                                  Model model) {
+//        List<Product> products = productService.getAllProducts();
         List<Brand> brands = brandService.getAllBrands();
+        Page<Product> products = productService.getAllProducts(pageNo);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            products = productService.searchProduct(keyword, pageNo);
+            model.addAttribute("keyword", keyword);
+        }
+
         model.addAttribute("products", products);
+        model.addAttribute("totalPage", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("brands", brands);
         return "user-products";
     }
