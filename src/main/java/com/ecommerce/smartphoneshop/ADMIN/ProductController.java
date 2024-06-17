@@ -9,6 +9,8 @@ import com.ecommerce.smartphoneshop.service.ProductItemService;
 import com.ecommerce.smartphoneshop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Page;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,28 +28,39 @@ public class ProductController {
     private final ProductItemService productItemService;
 
     @GetMapping("/admin-products")
-    public String adminProducts(Model model, Principal principal) {
+    public String adminProducts(Model model, Principal principal,
+                                @Param("keyword") String keyword,
+                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo) {
         if (principal == null) {
             return "redirect:/login";
         }
 
-        List<Product> products = productService.getAllProducts();
-        List<ProductDTO> productDTOs = new ArrayList<>();
-        for (Product product : products) {
-            ProductDTO productDTO = ProductDTO.builder()
-                    .id(product.getId())
-                    .name(product.getName())
-                    .brand(product.getBrand().getName())
-                    .specification(product.getSpecification())
-                    .warranty(product.getWarranty())
-                    .is_active(product.is_active())
-                    .image(product.getImage())
-                    .build();
-            productDTOs.add(productDTO);
+//        List<Product> products = productService.getAllProducts();
+        Page<Product> products = productService.getAllProducts(pageNo);
+        if (keyword != null && !keyword.isEmpty()) {
+            products = productService.searchProduct(keyword, pageNo);
+            model.addAttribute("keyword", keyword);
         }
 
-        model.addAttribute("products", productDTOs);
-        model.addAttribute("size", productDTOs.size());
+//        List<ProductDTO> productDTOs = new ArrayList<>();
+//        for (Product product : products) {
+//            ProductDTO productDTO = ProductDTO.builder()
+//                    .id(product.getId())
+//                    .name(product.getName())
+//                    .brand(product.getBrand().getName())
+//                    .specification(product.getSpecification())
+//                    .warranty(product.getWarranty())
+//                    .is_active(product.is_active())
+//                    .image(product.getImage())
+//                    .build();
+//            productDTOs.add(productDTO);
+//        }
+
+//        model.addAttribute("products", productDTOs);
+//        model.addAttribute("size", productDTOs.size());
+        model.addAttribute("products", products);
+        model.addAttribute("totalPage", products.getTotalPages());
+        model.addAttribute("currentPage", pageNo);
 
         return "admin-products";
     }
@@ -68,7 +81,6 @@ public class ProductController {
                               @RequestParam("resolution") String resolution, @RequestParam("camera") String camera,
                               @RequestParam("battery") String battery, @RequestParam("charge") String charge,
                               @RequestParam("os") String os, @RequestParam("image") String image) {
-//                                ){
         try {
             if (productService.findbyName(productDTO.getName()) == null){
                 String specification = "CPU: " + cpu + "\n" +

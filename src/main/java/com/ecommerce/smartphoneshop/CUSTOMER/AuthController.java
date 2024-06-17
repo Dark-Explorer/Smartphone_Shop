@@ -8,13 +8,12 @@ import com.ecommerce.smartphoneshop.service.implement.UserServiceImplement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.boot.Banner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
@@ -83,28 +82,44 @@ public class AuthController {
     @GetMapping("/login")
     public String login(Model model, Principal principal, RedirectAttributes redirectAttributes) {
         if (principal == null) {
-            model.addAttribute("display", true);
             UserDTO userDTO = UserDTO.builder().build();
             model.addAttribute("userDTO", userDTO);
             return "user-login";
         } else {
-            log.info(principal.getName());
-            if (principal.getName().equals("adminonly")) model.addAttribute("checkRole", true);
-            else model.addAttribute("checkRole", false);
             redirectAttributes.addFlashAttribute("error", "Bạn đã đăng nhập vào hệ thống!");
             return "redirect:/home";
         }
     }
 
-//    @GetMapping("/fragment")
-//    public String fragment(Model model, Principal principal) {
-//        if (principal == null) {
-//            model.addAttribute("loggedIn", false);
-//        } else {
-//            if (principal.getName().equals("adminonly")) model.addAttribute("admin", true);
-//            else model.addAttribute("admin", false);
-//            model.addAttribute("loggedIn", true);
-//        }
-//        return "user-fragment";
-//    }
+    @GetMapping("/change-password")
+    public String changePassword(Principal principal) {
+        if (principal == null) {
+            return "user-login";
+        } else {
+            return "user-change-password";
+        }
+    }
+
+    @PostMapping("/update-password")
+    public String updatePassword(Model model, Principal principal,
+                                 @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword,
+                                 @RequestParam("confirmPassword") String confirmPassword) {
+        if (principal == null) {
+            return "user-login";
+        } else {
+            User user = userService.findByUsername(principal.getName());
+            if (newPassword.equals(confirmPassword)) {
+                if (bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
+                    userService.changePassword(user, bCryptPasswordEncoder.encode(newPassword));
+                    model.addAttribute("success", "Cập nhật mật khẩu thành công!");
+                } else {
+                    model.addAttribute("error", "Mật khẩu cũ không đúng!");
+                }
+            } else {
+                model.addAttribute("error", "Mật khẩu mới không khớp!");
+            }
+        }
+        return "redirect:/info";
+    }
 }

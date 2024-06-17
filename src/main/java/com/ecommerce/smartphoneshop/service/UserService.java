@@ -12,4 +12,5 @@ public interface UserService {
     User findByPhone(String phone);
     User updateInfo(User user, String phone, String email, String address);
     int getNewUsersThisMonth();
+    User changePassword(User user, String newPassword);
 }

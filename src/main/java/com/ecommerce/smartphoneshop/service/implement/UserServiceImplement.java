@@ -61,4 +61,10 @@ public class UserServiceImplement implements UserService {
     public int getNewUsersThisMonth() {
         return userRepository.getNewUsersThisMonth();
     }
+
+    @Override
+    public User changePassword(User user, String newPassword) {
+        user.setPassword(newPassword);
+        return userRepository.save(user);
+    }
 }

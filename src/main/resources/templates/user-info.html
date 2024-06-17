@@ -63,6 +63,10 @@
                                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact"
                                        aria-selected="false">Đơn hàng</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="password-tab" data-toggle="tab" href="#password-change" role="tab" aria-controls="contact"
+                                       aria-selected="false">Đổi mật khẩu</a>
+                                </li>
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
@@ -169,6 +173,27 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="password-change" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div class="col-lg-12">
+                                        <form class="row" th:action="@{/update-password}" method="post">
+                                            <div class="col-md-12 form-group">
+                                                <label for="oldPassword">Mật khẩu cũ</label>
+                                                <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                <label for="newPassword">Mật khẩu mới</label>
+                                                <input type="password" class="form-control" id="newPassword" name="newPassword">
+                                            </div>
+                                            <div class="col-md-12 form-group">
+                                                <label for="confirmPassword">Xác nhận mật khẩu</label>
+                                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                            </div>
+                                            <div class="col-md-12 text-right">
+                                                <button type="submit" value="submit" class="btn primary-btn">Xác nhận</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
