@@ -42,6 +42,8 @@ public class UserConfig {
             "register-new",
             "user-single-product",
             "user-contact",
+            "/forgot-password",
+            "/resetPassword/**"
     };
 
     private static final String[] ADMIN_PERMISSION = {

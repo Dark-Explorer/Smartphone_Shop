@@ -1,14 +1,15 @@
 package com.ecommerce.smartphoneshop.CUSTOMER;
 
+import com.ecommerce.smartphoneshop.domain.PasswordResetToken;
 import com.ecommerce.smartphoneshop.domain.ShoppingCart;
 import com.ecommerce.smartphoneshop.domain.User;
 import com.ecommerce.smartphoneshop.dto.UserDTO;
 import com.ecommerce.smartphoneshop.repository.CartRepository;
+import com.ecommerce.smartphoneshop.repository.TokenRepository;
 import com.ecommerce.smartphoneshop.service.implement.UserServiceImplement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
-import org.springframework.boot.Banner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class AuthController {
     private final UserServiceImplement userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CartRepository cartRepository;
+    private final TokenRepository tokenRepository;
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -91,15 +93,6 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/change-password")
-    public String changePassword(Principal principal) {
-        if (principal == null) {
-            return "user-login";
-        } else {
-            return "user-change-password";
-        }
-    }
-
     @PostMapping("/update-password")
     public String updatePassword(Model model, Principal principal,
                                  @RequestParam("oldPassword") String oldPassword,
@@ -121,5 +114,46 @@ public class AuthController {
             }
         }
         return "redirect:/info";
+    }
+
+    @GetMapping("forgot-password")
+    public String forgotPassword() {
+        return "user-forgot-password";
+    }
+
+    @PostMapping("/forgot-password")
+    public String forgotPasswordProcess(@RequestParam("email") String email) {
+        User user = userService.findByEmail(email);
+        String output = "";
+        if (user != null) {
+            output = userService.sendEmail(user);
+        }
+        if (output.equals("success")) {
+            return "redirect:/forgot-password?success";
+        } else return "redirect:/login?error";
+    }
+
+    @GetMapping("/resetPassword/{token}")
+    public String resetPassword(Model model, @PathVariable String token) {
+        PasswordResetToken reset = tokenRepository.findByToken(token);
+        if (reset != null && userService.hasExpired(reset.getExpiryDateTime())) {
+            model.addAttribute("email", reset.getUser().getEmail());
+            return "user-reset-password";
+        }
+        return "redirect:/forgot-password?error";
+    }
+
+    @PostMapping("/resetPassword")
+    public String passwordResetProcess(@ModelAttribute("email") String email,
+                                       @RequestParam("newPassword") String newPassword,
+                                       RedirectAttributes redirectAttributes) {
+        User user = userService.findByEmail(email);
+        if (user != null) {
+            userService.changePassword(user, bCryptPasswordEncoder.encode(newPassword));
+            redirectAttributes.addFlashAttribute("success", "Mật khẩu đã được cập nhật! Bạn có thể đăng nhập lại!");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Email không khớp!");
+        }
+        return "redirect:/login";
     }
 }
