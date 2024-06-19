@@ -38,9 +38,11 @@ public class CustomerController {
 
     @GetMapping("/home")
     public String showHome(Model model) {
+        int i = 0;
         List<Product> products = productService.getAllProducts();
         List<ProductDTO> productDTOs = new ArrayList<>();
         for (Product product : products) {
+            if (i == 12) break;
             ProductDTO productDTO = ProductDTO.builder()
                     .id(product.getId())
                     .name(product.getName())
@@ -52,6 +54,7 @@ public class CustomerController {
                     .productItems(product.getProductItems())
                     .build();
             productDTOs.add(productDTO);
+            i++;
         }
         model.addAttribute("products", productDTOs);
 

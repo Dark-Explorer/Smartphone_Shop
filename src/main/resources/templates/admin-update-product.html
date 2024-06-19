@@ -39,7 +39,7 @@
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="cpu">CPU</label>
                                 <div class="col-md-8">
-                                    <input id="cpu" name="cpu" class="form-control input-md" required="" type="text">
+                                    <input id="cpu" name="cpu" class="form-control input-md" th:value="${CPU}" required="" type="text">
                                 </div>
                             </div>
 
@@ -47,10 +47,12 @@
                                 <label class="col-md-4 control-label" for="ram">RAM</label>
                                 <div class="col-md-8">
                                     <select class="form-control" id="ram" name="ram">
+                                        <option th:value="${RAM}" th:text="${RAM}"></option>
                                         <option value="4 GB">4 GB</option>
                                         <option value="6 GB">6 GB</option>
                                         <option value="8 GB">8 GB</option>
                                         <option value="12 GB">12 GB</option>
+                                        <option value="16 GB">16 GB</option>
                                     </select>
                                 </div>
                             </div>
@@ -59,9 +61,12 @@
                                 <label class="col-md-4 control-label" for="rom">ROM</label>
                                 <div class="col-md-8">
                                     <select class="form-control" id="rom" name="rom">
+                                        <option th:value="${ROM}" th:text="${ROM}"></option>
                                         <option value="64 GB">64 GB</option>
                                         <option value="128 GB">128 GB</option>
                                         <option value="256 GB">256 GB</option>
+                                        <option value="512 GB">512 GB</option>
+                                        <option value="1 TB">1 TB</option>
                                     </select>
                                 </div>
                             </div>
@@ -69,7 +74,7 @@
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="size">Kích thước màn hình (inch)</label>
                                 <div class="col-md-8">
-                                    <input id="size" name="size" class="form-control input-md" required="" type="number" step="0.01">
+                                    <input id="size" name="size" class="form-control input-md" th:value="${size}" required="" type="number" step="0.01">
                                 </div>
                             </div>
 
@@ -77,6 +82,7 @@
                                 <label class="col-md-4 control-label" for="resolution">Độ phân giải</label>
                                 <div class="col-md-8">
                                     <select class="form-control" id="resolution" name="resolution">
+                                        <option th:value="${resolution}" th:text="${resolution}"></option>
                                         <option value="HD+">HD+</option>
                                         <option value="Full HD+">Full HD+</option>
                                         <option value="AMOLED">AMOLED</option>
@@ -87,33 +93,33 @@
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="camera">Camera</label>
                                 <div class="col-md-8">
-                                    <input id="camera" name="camera" class="form-control input-md" required="" type="text">
+                                    <input id="camera" name="camera" class="form-control input-md" th:value="${camera}" required="" type="text">
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="battery">Pin (mAh)</label>
                                 <div class="col-md-8">
-                                    <input id="battery" name="battery" class="form-control input-md" required="" type="number">
+                                    <input id="battery" name="battery" class="form-control input-md" th:value="${battery}" required="" type="number">
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="charge">Sạc (W)</label>
                                 <div class="col-md-8">
-                                    <input id="charge" name="charge" class="form-control input-md" required="" type="number">
+                                    <input id="charge" name="charge" class="form-control input-md" th:value="${charge}" required="" type="number">
                                 </div>
                             </div>
 
                             <div class="form-group" style="margin-left: 50px;">
                                 <label class="col-md-4 control-label" for="os">Hệ điều hành</label>
                                 <div class="col-md-8">
-                                    <input id="os" name="os" class="form-control input-md" required="" type="text">
+                                    <input id="os" name="os" class="form-control input-md" th:value="${os}" required="" type="text">
                                 </div>
                             </div>
                             <!-- Add other fields here -->
-                            <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Update</button>
-                            <a th:href="@{admin-products}" class="btn btn-danger">Cancel</a>
+                            <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Cập nhật</button>
+                            <a th:href="@{admin-products}" class="btn btn-danger">Hủy</a>
 
 
                         </div>

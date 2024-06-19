@@ -107,6 +107,22 @@ public class ProductController {
     public String updateProduct(Model model, @PathVariable("id") String id) {
         ProductDTO productDTO = productService.getbyId(id);
         List<Brand> brands = brandService.getAllBrands();
+
+        String[] specs = {"CPU", "RAM", "ROM", "size", "resolution", "camera", "battery", "charge", "os"};
+        String[] lines = productDTO.getSpecification().split("\\n");
+
+        int i = 0;
+        for (String line : lines) {
+            String[] parts = line.split(": ");
+            String value = parts[1].trim();
+            if (i == 3 || i == 6 || i == 7) {
+                String[] split = value.split(" ");
+                value = split[0].trim();
+                double numVal = Double.parseDouble(value);
+                model.addAttribute(specs[i++], numVal);
+            } else model.addAttribute(specs[i++], value);
+        }
+
         model.addAttribute("brands", brands);
         model.addAttribute("productDTO", productDTO);
         return "admin-update-product";
