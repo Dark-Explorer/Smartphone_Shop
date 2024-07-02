@@ -17,4 +17,7 @@ public interface ProductRepository extends PagingAndSortingRepository<Product, L
 
     @Query("select p from Product p where p.name like %?1%")
     List<Product> findByKeyword(String keyword);
+
+    @Query("select p from Product p where p.brand.name like %?1%")
+    List<Product> findByBrandName(String brandName);
 }

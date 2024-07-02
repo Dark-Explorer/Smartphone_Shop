@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImplement implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
+    private final int PAGE_SIZE = 2;
 
     @Autowired
     public ProductServiceImplement(ProductRepository productRepository, BrandRepository brandRepository) {
@@ -34,7 +35,7 @@ public class ProductServiceImplement implements ProductService {
 
     @Override
     public Page<Product> getAllProducts(int pageNo) {
-        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        Pageable pageable = PageRequest.of(pageNo - 1, PAGE_SIZE);
         return productRepository.findAll(pageable);
     }
 
@@ -133,13 +134,30 @@ public class ProductServiceImplement implements ProductService {
     @Override
     public Page<Product> searchProduct(String keyword, Integer pageNo) {
         List<Product> list = productRepository.findByKeyword(keyword);
-        Pageable pageable = PageRequest.of(pageNo - 1, 2);
+        Pageable pageable = PageRequest.of(pageNo - 1, PAGE_SIZE);
+
+        int start = (pageNo - 1) * PAGE_SIZE;
+        int end = Math.min(start + PAGE_SIZE, list.size());
+
+        List<Product> contentPage = list.subList(start, end);
+
+        return new PageImpl<>(contentPage, pageable, list.size());
+    }
+
+    @Override
+    public Page<Product> filterProduct(String brandName, Long min, Long max, Integer pageNo) {
+        List<Product> allProducts = productRepository.findByBrandName(brandName).stream()
+                .filter(product -> product.getProductItems().getFirst().getPrice() >= min && product.getProductItems().getFirst().getPrice() <= max)
+                .collect(Collectors.toList());
+        System.out.println(allProducts.size());
+
+        Pageable pageable = PageRequest.of(pageNo - 1, PAGE_SIZE);
 
         int start = (int) pageable.getOffset();
-        int end = Math.min((int) pageable.getOffset() + pageable.getPageSize(), list.size());
+        int end = Math.min((int) pageable.getOffset() + pageable.getPageSize(), allProducts.size());
 
-        list = list.subList(start, end);
+        List<Product> contentPage = allProducts.subList(start, end);
 
-        return new PageImpl<Product>(list, pageable, list.size());
+        return new PageImpl<>(contentPage, pageable, allProducts.size());
     }
 }

@@ -23,4 +23,5 @@ public interface ProductService {
     void disableProduct(String id);
     List<Product> filterProduct(String brandName, Long min, Long max);
     Page<Product> searchProduct(String keyword, Integer pageNo);
+    Page<Product> filterProduct(String brandName, Long min, Long max, Integer pageNo);
 }

@@ -2,10 +2,10 @@ package com.ecommerce.smartphoneshop.CUSTOMER;
 
 import com.ecommerce.smartphoneshop.domain.*;
 import com.ecommerce.smartphoneshop.repository.CartItemRepository;
-import com.ecommerce.smartphoneshop.repository.OrderLineRepository;
 import com.ecommerce.smartphoneshop.repository.ProductItemRepository;
 import com.ecommerce.smartphoneshop.repository.UserRepository;
 import com.ecommerce.smartphoneshop.service.*;
+import jakarta.persistence.criteria.Order;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.stereotype.Controller;
@@ -176,5 +176,21 @@ public class CartController {
         } else {
             return "user-404";
         }
+    }
+
+    @RequestMapping("/user-cancel-order/{id}")
+    public String cancelOrder(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            ShopOrder order = orderService.findOrderById(id);
+            if (order != null && order.getStatus() == OrderStatus.CREATED) {
+                orderService.cancelOrder(id);
+                redirectAttributes.addFlashAttribute("success", "Đơn hàng đã được huỷ!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Đơn hàng đã được vận chuyển. Không thể hủy!");
+            }
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra!");
+        }
+        return "redirect:/info#contact";
     }
 }

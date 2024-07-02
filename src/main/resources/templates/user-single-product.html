@@ -9,13 +9,6 @@
 <body>
 	<div th:replace="~{user-fragment::header}"></div>
 
-	<div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
-		<p th:text = "${success}"></p>
-	</div>
-	<div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
-		<p th:text = "${error}"></p>
-	</div>
-
 	<!--================Single Product Area =================-->
 	<div class="product_image_area">
 		<div class="container">
@@ -50,9 +43,15 @@
 										</a>
 									</div>
 								</li>
-								<li><p th:if="${productItem.qty_in_stock > 0}">Trạng thái: Còn hàng</p></li>
-								<li><p th:if="${productItem.qty_in_stock == 0}">Trạng thái: Hết hàng</p></li>
+								<li><a th:if="${productItem.qty_in_stock > 0}">Trạng thái: Còn hàng</a></li>
+								<li><a th:if="${productItem.qty_in_stock == 0}">Trạng thái: Hết hàng</a></li>
 							</ul>
+							<div id="successMessage" th:if = "${success}" class = "text-center alert alert-success" style="height: 4rem;">
+								<a th:text = "${success}"></a>
+							</div>
+							<div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+								<a th:text = "${error}"></a>
+							</div>
 							<div class="product_count">
 								<label for="qty">Số lượng:</label>
 								<input type="text" name="qty" id="qty" maxlength="12" value="1" title="Quantity:" class="input-text qty">

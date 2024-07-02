@@ -143,6 +143,12 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                    <div th:if = "${success}" class = "text-center alert alert-success" style="height: 4rem;">
+                                        <a th:text = "${success}"></a>
+                                    </div>
+                                    <div th:if = "${error}" class="text-center alert alert-danger">
+                                        <a th:text = "${error}"></a>
+                                    </div>
                                     <div class="table-responsive">
                                         <table class="table">
                                             <thead>
@@ -154,21 +160,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr th:each="order : ${user.orders}">
+                                                <tr th:each="i : ${#numbers.sequence(user.orders.size() - 1, 0, -1)}">
                                                     <td style="padding: 14px 12px">
-                                                        <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm')}"></p>
+                                                        <p th:text="${#temporals.format(user.orders[i].date_created, 'yyyy-MM-dd HH:mm')}"></p>
                                                     </td>
                                                     <td style="padding: 14px 12px">
-                                                        <p th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                                                        <p th:text="${#numbers.formatDecimal(user.orders[i].total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
                                                     </td>
                                                     <td style="padding: 14px 12px">
-                                                        <div th:each="product : ${order.orderLines}">
+                                                        <div th:each="product : ${user.orders[i].orderLines}">
                                                             <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
                                                         </div>
                                                     </td>
                                                     <td style="padding: 14px 12px">
-                                                        <p th:text="${order.status}"></p>
-                                                        <p style="color: green" th:text="${#temporals.format(order.date_updated, 'yyyy-MM-dd HH:mm')}"></p>
+                                                        <p th:text="${user.orders[i].status}"></p>
+                                                        <p style="color: green" th:text="${#temporals.format(user.orders[i].date_updated, 'yyyy-MM-dd HH:mm')}"></p>
+                                                        <a th:href="@{/user-cancel-order/{id}(id = ${user.orders[i].id})}" th:if="${user.orders[i].status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).CREATED}" class="genric-btn danger" style="padding: 0.3em; font-size: 1em; line-height: 1.5em">Hủy đơn</a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -176,6 +183,12 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="password-change" role="tabpanel" aria-labelledby="profile-tab">
+                                    <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success" style="height: 4rem;">
+                                        <a th:text = "${success}"></a>
+                                    </div>
+                                    <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                                        <a th:text = "${error}"></a>
+                                    </div>
                                     <div class="col-lg-12">
                                         <form class="row" th:action="@{/update-password}" method="post">
                                             <div class="col-md-12 form-group">

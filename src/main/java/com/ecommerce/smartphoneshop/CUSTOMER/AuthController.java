@@ -94,10 +94,11 @@ public class AuthController {
     }
 
     @PostMapping("/update-password")
-    public String updatePassword(Model model, Principal principal,
+    public String updatePassword(Principal principal,
                                  @RequestParam("oldPassword") String oldPassword,
                                  @RequestParam("newPassword") String newPassword,
-                                 @RequestParam("confirmPassword") String confirmPassword) {
+                                 @RequestParam("confirmPassword") String confirmPassword,
+                                 RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "user-login";
         } else {
@@ -105,12 +106,12 @@ public class AuthController {
             if (newPassword.equals(confirmPassword)) {
                 if (bCryptPasswordEncoder.matches(oldPassword, user.getPassword())) {
                     userService.changePassword(user, bCryptPasswordEncoder.encode(newPassword));
-                    model.addAttribute("success", "Cập nhật mật khẩu thành công!");
+                    redirectAttributes.addFlashAttribute("success", "Cập nhật mật khẩu thành công!");
                 } else {
-                    model.addAttribute("error", "Mật khẩu cũ không đúng!");
+                    redirectAttributes.addFlashAttribute("error", "Mật khẩu cũ không đúng!");
                 }
             } else {
-                model.addAttribute("error", "Mật khẩu mới không khớp!");
+                redirectAttributes.addFlashAttribute("error", "Mật khẩu mới không khớp!");
             }
         }
         return "redirect:/info";

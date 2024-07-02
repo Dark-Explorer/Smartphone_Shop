@@ -34,7 +34,6 @@ public class CustomerController {
     private final UserService userService;
     private final UserRepository userRepository;
     private final BrandService brandService;
-    private final ProductRepository productRepository;
 
     @GetMapping("/home")
     public String showHome(Model model) {
@@ -139,6 +138,7 @@ public class CustomerController {
         model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("brands", brands);
+        model.addAttribute("filter", 0);
         return "user-products";
     }
 
@@ -146,14 +146,24 @@ public class CustomerController {
     public String showProducts(@RequestParam(name = "brandName", required = false, defaultValue = "") String brandName,
                                @RequestParam(name = "min", required = false, defaultValue = "0") String minPrice,
                                @RequestParam(name = "max", required = false, defaultValue = "10000000000") String maxPrice,
+                               @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                Model model) {
         Long min = Long.valueOf(minPrice);
         Long max = Long.valueOf(maxPrice);
-        List<Product> products = productService.filterProduct(brandName, min, max);
+        Page<Product> products = productService.filterProduct(brandName, min, max, pageNo);
+//        Page<Product> products = productService.getAllProducts(pageNo);
+
         List<Brand> brands = brandService.getAllBrands();
+        int pageCount = products.getTotalPages();
 
         model.addAttribute("products", products);
+        model.addAttribute("totalFilteredPage", pageCount);
+        model.addAttribute("currentPage", pageNo);
         model.addAttribute("brands", brands);
+        model.addAttribute("filter", 1);
+        model.addAttribute("brandName", brandName);
+        model.addAttribute("min", min);
+        model.addAttribute("max", max);
 
         return "user-products";
     }
