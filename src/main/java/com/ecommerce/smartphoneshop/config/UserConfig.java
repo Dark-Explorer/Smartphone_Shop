@@ -40,29 +40,31 @@ public class UserConfig {
             "/login?error",
             "/register",
             "register-new",
-            "user-single-product",
-            "user-contact",
+            "/products/**",
+            "/product/**",
+            "/productsfilter/**",
+            "/contact",
             "/forgot-password",
             "/resetPassword/**"
     };
 
     private static final String[] ADMIN_PERMISSION = {
-            "dashboard",
-            "admin-products",
-            "add-product",
-            "update-product",
-            "pending-orders",
-            "completed-orders",
-            "admin-brands",
-            "add-brand",
-            "update-brand",
+            "/dashboard",
+            "/admin-products",
+            "/add-product",
+            "/update-product",
+            "/pending-orders",
+            "/completed-orders",
+            "/admin-brands",
+            "/add-brand",
+            "/update-brand",
     };
 
     private static final String[] REGISTERED_PERMISSION = {
             "user-order-confirmation",
-            "user-checkout",
-            "user-cart",
-            "user-info",
+            "/checkout",
+            "/cart",
+            "/info",
     };
 
     @Bean

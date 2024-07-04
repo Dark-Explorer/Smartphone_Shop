@@ -5,7 +5,6 @@ import com.ecommerce.smartphoneshop.domain.Product;
 import com.ecommerce.smartphoneshop.domain.ProductItem;
 import com.ecommerce.smartphoneshop.domain.User;
 import com.ecommerce.smartphoneshop.dto.ProductDTO;
-import com.ecommerce.smartphoneshop.repository.ProductRepository;
 import com.ecommerce.smartphoneshop.repository.UserRepository;
 import com.ecommerce.smartphoneshop.service.BrandService;
 import com.ecommerce.smartphoneshop.service.ProductItemService;
@@ -63,9 +62,7 @@ public class CustomerController {
     @GetMapping("/product/{productName}/{itemId}")
     public String showProduct(@PathVariable String productName,
                               @PathVariable String itemId,
-                              Principal principal,
                               Model model) {
-        User user = userService.findByUsername(principal.getName());
         Product product = productService.findbyName(productName);
         ProductItem productItem = productItemService.findById(Long.valueOf(itemId));
 
@@ -81,7 +78,7 @@ public class CustomerController {
                 specList.add(specMap);
             }
         }
-        model.addAttribute("currentUser", user.getId());
+
         model.addAttribute("product", product);
         model.addAttribute("itemId", itemId);
         model.addAttribute("productItem", productItem);
@@ -90,7 +87,7 @@ public class CustomerController {
     }
 
     @GetMapping("/contact")
-    public String showContact(Model model) {
+    public String showContact() {
         return "user-contact";
     }
 
@@ -125,7 +122,6 @@ public class CustomerController {
     public String showAllProducts(@Param("keyword") String keyword,
                                   @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                   Model model) {
-//        List<Product> products = productService.getAllProducts();
         List<Brand> brands = brandService.getAllBrands();
         Page<Product> products = productService.getAllProducts(pageNo);
 
@@ -151,8 +147,6 @@ public class CustomerController {
         Long min = Long.valueOf(minPrice);
         Long max = Long.valueOf(maxPrice);
         Page<Product> products = productService.filterProduct(brandName, min, max, pageNo);
-//        Page<Product> products = productService.getAllProducts(pageNo);
-
         List<Brand> brands = brandService.getAllBrands();
         int pageCount = products.getTotalPages();
 
