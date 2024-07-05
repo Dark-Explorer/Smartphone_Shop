@@ -25,6 +25,9 @@
     <section class="cart_area">
         <div class="container">
             <div class="cart_inner">
+                <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                    <a th:text = "${error}"></a>
+                </div>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -38,7 +41,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="item : ${cartItems}">
+<!--                        Normal section-->
+                            <tr th:each="item : ${cartItems}" th:if="${item.qty <= item.productItem.qty_in_stock && item.productItem.product.is_active()}">
                                 <td>
                                     <div class="media">
                                         <div class="d-flex">
@@ -100,6 +104,75 @@
                                 </td>
                                 <td></td>
                             </tr>
+<!--                            Section for out of stock-->
+                            <tr th:each="item : ${cartItems}" th:if="${item.productItem.qty_in_stock == 0 || item.qty > item.productItem.qty_in_stock}">
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img style="height: 5rem" th:src="${item.productItem.image}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 th:text="${item.productItem.product.name}"></h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5 th:text="${item.productItem.variation}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#numbers.formatDecimal(item.productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h5>
+                                </td>
+                                <td>
+                                    <form th:action="@{/update-cart-item/{itemId}(itemId = ${item.id})}" method="post">
+                                        <div class="product_count">
+                                            <input type="number" name="qty" th:id="'qty' + ${item.id}" th:value="${item.qty}" th:disabled="${item.productItem.qty_in_stock} == 0" title="Số lượng:" class="input-text qty">
+                                            <!--                                        <button onclick="var result = document.getElementById('qty' + [[${item.id}]]); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"-->
+                                            <!--                                            class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>-->
+                                            <!--                                        <button onclick="var result = document.getElementById('qty'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value&#45;&#45;;return false;"-->
+                                            <!--                                            class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>-->
+                                        </div>
+                                        <button type="submit" class="btn btn-outline-warning">Cập nhật</button>
+                                    </form>
+                                </td>
+                                <td style="width: 150px">
+                                    <h5 style="color: red" th:if="${item.productItem.qty_in_stock} == 0">Sản phẩm đã hết hàng!</h5>
+                                    <h5 style="color: red" th:if="${item.qty > item.productItem.qty_in_stock && item.productItem.qty_in_stock != 0}">Số lượng sản phẩm còn lại không đủ!</h5>
+                                </td>
+                                <td>
+                                    <a th:href="@{/delete-cart-item(id = ${item.id})}" class="primary-btn">Xoá</a>
+                                </td>
+                            </tr>
+
+<!--                        Hidden products section-->
+                            <tr th:each="item : ${cartItems}" th:if="${!item.productItem.product.is_active()}">
+                                <td>
+                                    <div class="media">
+                                        <div class="d-flex">
+                                            <img style="height: 5rem" th:src="${item.productItem.image}" alt="">
+                                        </div>
+                                        <div class="media-body">
+                                            <h5 th:text="${item.productItem.product.name}"></h5>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <h5 th:text="${item.productItem.variation}"></h5>
+                                </td>
+                                <td>
+                                    <h5 th:text="${#numbers.formatDecimal(item.productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h5>
+                                </td>
+                                <td>
+                                    <h5 style="color: red">Sản phẩm không khả dụng!</h5>
+                                </td>
+                                <td></td>
+                                <td>
+                                    <a th:href="@{/delete-cart-item(id = ${item.id})}" class="primary-btn">Xoá</a>
+                                </td>
+                            </tr>
+
+
+
+
                             <tr class="out_button_area">
                                 <td></td>
                                 <td></td>
@@ -125,8 +198,5 @@
 
     <div th:replace="~{user-fragment::JS-import}"></div>
 </body>
-<script>
-    let itemQty = document.getElementById()
-</script>
 
 </html>

@@ -31,6 +31,6 @@ public class ProductItem {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "productItem", orphanRemoval = true)
     private List<ShoppingCartItem> shoppingCartItems;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "productItem")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "productItem", orphanRemoval = true)
     private List<OrderLine> orderLines;
 }

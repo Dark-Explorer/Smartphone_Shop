@@ -20,11 +20,11 @@ public class OrderLine {
     private int qty;
     private Long price;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "product_item_id")
     private ProductItem productItem;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "order_id")
     private ShopOrder shopOrder;
 }

@@ -14,7 +14,7 @@
         <div id="content">
             <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
             <div class="container-fluid">
-                <p th:if="${size == 0} ">No Products</p>
+                <p th:if="${size == 0} ">Không có hãng nào</p>
                 <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
                     <p th:text = "${success}"></p>
                 </div>

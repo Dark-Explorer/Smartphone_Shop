@@ -29,10 +29,10 @@ public class ShopOrder {
     @Enumerated(EnumType.STRING)
     private PaymentMethod payment_method;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "shopOrder")
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "shopOrder", orphanRemoval = true)
     private List<OrderLine> orderLines;
 }

@@ -40,7 +40,8 @@ public class CartController {
         List<ShoppingCartItem> cartItems = cartItemService.getCartItems(cart.getId());
         long total = 0L;
         for (ShoppingCartItem item : cartItems) {
-            total += item.getProductItem().getPrice() * item.getQty();
+            if (item.getProductItem().getQty_in_stock() > 0 && item.getProductItem().getProduct().is_active())
+                total += item.getProductItem().getPrice() * item.getQty();
         }
 
         model.addAttribute("total", total);
@@ -110,26 +111,41 @@ public class CartController {
         return "redirect:/cart";
     }
 
+    public boolean checkAvailable(ShoppingCart cart) {
+        for (ShoppingCartItem item : cart.getShoppingCartItems()) {
+            if (item.getQty() > item.getProductItem().getQty_in_stock() || !item.getProductItem().getProduct().is_active()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @GetMapping("/checkout")
-    public String checkout(Model model, Principal principal) {
+    public String checkout(Model model, Principal principal, RedirectAttributes redirectAttributes) {
         if (principal == null) {
             return "redirect:/login";
         }
+
         User user = userRepository.findByUsername(principal.getName());
         ShoppingCart cart = cartService.getUserCart(user.getId());
         List<ShoppingCartItem> cartItems = cartItemService.getCartItems(cart.getId());
 
-        long total = 0L;
-        for (ShoppingCartItem item : cartItems) {
-            total += item.getProductItem().getPrice() * item.getQty();
+        if (checkAvailable(cart)) {
+            long total = 0L;
+            for (ShoppingCartItem item : cartItems) {
+                if (item.getProductItem().getQty_in_stock() > 0 && item.getProductItem().getProduct().is_active())
+                    total += item.getProductItem().getPrice() * item.getQty();
+            }
+
+            model.addAttribute("user", user);
+            model.addAttribute("cartItems", cartItems);
+            model.addAttribute("total", total);
+            model.addAttribute("order", new ShopOrder());
+            return "user-checkout";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Giỏ hàng chứa sản phẩm hết hàng hoặc không khả dụng!");
+            return "redirect:/cart";
         }
-
-        model.addAttribute("user", user);
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("total", total);
-        model.addAttribute("order", new ShopOrder());
-
-        return "user-checkout";
     }
 
     @PostMapping("/place-order")
@@ -145,14 +161,19 @@ public class CartController {
         ShopOrder order = orderService.saveOrder(user, address, PaymentMethod.CASH, total, OrderStatus.CREATED);
         try {
             List<ShoppingCartItem> cartItems = cartItemService.getCartItems(user.getShoppingCart().getId());
-            for (ShoppingCartItem item : cartItems) {
-                orderLineService.saveOrderLine(item.getProductItem(), order, item.getQty(), item.getProductItem().getPrice());
-                item.getProductItem().setQty_in_stock(item.getProductItem().getQty_in_stock() - item.getQty());
-                productItemRepository.save(item.getProductItem());
-            }
-            cartItemService.deleteUserCart(user.getId());
+            if (checkAvailable(user.getShoppingCart())) {
+                for (ShoppingCartItem item : cartItems) {
+                    orderLineService.saveOrderLine(item.getProductItem(), order, item.getQty(), item.getProductItem().getPrice());
+                    item.getProductItem().setQty_in_stock(item.getProductItem().getQty_in_stock() - item.getQty());
+                    productItemRepository.save(item.getProductItem());
+                }
+                cartItemService.deleteUserCart(user.getId());
 
-            redirectAttributes.addFlashAttribute("success", "Đơn hàng được tạo thành công!");
+                redirectAttributes.addFlashAttribute("success", "Đơn hàng được tạo thành công!");
+            } else {
+                redirectAttributes.addFlashAttribute("error", "Giỏ hàng chứa sản phẩm hết hàng hoặc không khả dụng!");
+                return "redirect:/cart";
+            }
         } catch (Exception e) {
             e.printStackTrace();
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra!");

@@ -34,12 +34,12 @@ public class User {
     private LocalDateTime date_signup;
     private int check_user = 1;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToOne(cascade = CascadeType.REMOVE, mappedBy = "user", orphanRemoval = true)
     private ShoppingCart shoppingCart;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<ShopOrder> orders;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "user", orphanRemoval = true)
     private List<PasswordResetToken> passwordResetTokens;
 }

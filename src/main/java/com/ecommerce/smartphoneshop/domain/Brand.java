@@ -20,6 +20,6 @@ public class Brand {
     private Long id;
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "brand", orphanRemoval = true)
     private List<Product> products;
 }

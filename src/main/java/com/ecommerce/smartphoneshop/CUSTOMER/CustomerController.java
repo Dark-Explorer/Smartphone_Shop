@@ -62,7 +62,7 @@ public class CustomerController {
     @GetMapping("/product/{productName}/{itemId}")
     public String showProduct(@PathVariable String productName,
                               @PathVariable String itemId,
-                              Model model) {
+                              Model model, Principal principal) {
         Product product = productService.findbyName(productName);
         ProductItem productItem = productItemService.findById(Long.valueOf(itemId));
 
@@ -77,6 +77,11 @@ public class CustomerController {
                 specMap.put("value", keyValue[1].trim());
                 specList.add(specMap);
             }
+        }
+
+        if (principal != null) {
+            User user = userRepository.findByUsername(principal.getName());
+            model.addAttribute("currentUser", user.getId());
         }
 
         model.addAttribute("product", product);

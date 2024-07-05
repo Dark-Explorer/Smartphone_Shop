@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -80,7 +81,7 @@ public class UserConfig {
                         author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/img/**").permitAll()
                                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                                .requestMatchers(REGISTERED_PERMISSION).hasAuthority("CUSTOMER")
+                                .requestMatchers(REGISTERED_PERMISSION).hasAnyAuthority("CUSTOMER","ADMIN")
                                 .requestMatchers(ADMIN_PERMISSION).hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )

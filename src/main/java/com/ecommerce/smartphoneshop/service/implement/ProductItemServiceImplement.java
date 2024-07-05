@@ -1,7 +1,9 @@
 package com.ecommerce.smartphoneshop.service.implement;
 
+import com.ecommerce.smartphoneshop.domain.OrderLine;
 import com.ecommerce.smartphoneshop.domain.Product;
 import com.ecommerce.smartphoneshop.domain.ProductItem;
+import com.ecommerce.smartphoneshop.repository.OrderLineRepository;
 import com.ecommerce.smartphoneshop.repository.ProductItemRepository;
 import com.ecommerce.smartphoneshop.service.ProductItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +14,12 @@ import java.util.List;
 @Service
 public class ProductItemServiceImplement implements ProductItemService {
     private final ProductItemRepository productItemRepository;
+    private final OrderLineRepository orderLineRepository;
 
     @Autowired
-    public ProductItemServiceImplement(ProductItemRepository productItemRepository) {
+    public ProductItemServiceImplement(ProductItemRepository productItemRepository, OrderLineRepository orderLineRepository) {
         this.productItemRepository = productItemRepository;
+        this.orderLineRepository = orderLineRepository;
     }
 
     @Override
@@ -50,6 +54,13 @@ public class ProductItemServiceImplement implements ProductItemService {
 
     @Override
     public void deleteProductItem(Long id) {
+        ProductItem productItem = productItemRepository.findById(id).orElse(null);
+        if (productItem != null) {
+            for (OrderLine orderLine : productItem.getOrderLines()) {
+                orderLine.setProductItem(null);
+                orderLineRepository.save(orderLine);
+            }
+        }
         productItemRepository.deleteById(id);
     }
 

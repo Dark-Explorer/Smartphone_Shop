@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <div th:replace="~{user-fragment::header(var1=${display})}"></div>
+    <div th:replace="~{user-fragment::header}"></div>
 
     <!-- Start Banner Area -->
     <section class="banner-area organic-breadcrumb">
@@ -22,6 +22,9 @@
     <!-- End Banner Area -->
 
     <!--================Checkout Area =================-->
+    <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+        <a th:text = "${error}"></a>
+    </div>
     <section class="checkout_area section_gap">
         <form id="checkout" class="row contact_form" th:action="@{/place-order}" th:object="${order}" method="post" novalidate="novalidate">
             <div class="container">
