@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImplement implements ProductService {
     private final ProductRepository productRepository;
     private final BrandRepository brandRepository;
-    private final int PAGE_SIZE = 2;
+    private final int PAGE_SIZE = 8;
 
     @Autowired
     public ProductServiceImplement(ProductRepository productRepository, BrandRepository brandRepository) {

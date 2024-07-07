@@ -5793,7 +5793,7 @@ label {
 
 .checkout-column-1 {
   display: inline-block;
-  width: 50%;
+  width: 65%;
 }
 
 .checkout-column-2 {
@@ -5803,6 +5803,6 @@ label {
 
 .checkout-column-3 {
   display: inline-block;
-  width: 40%;
+  width: 25%;
   text-align: right;
 }
