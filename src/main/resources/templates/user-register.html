@@ -74,6 +74,126 @@
 <div th:replace="~{user-fragment::footer}"></div>
 
 <div th:replace="~{user-fragment::JS-import}"></div>
+<script>
+    function validatePhoneNumber(phoneNumber) {
+        const phoneRegex = /^0\d{9}$/;
+        return phoneRegex.test(phoneNumber);
+    }
+
+    // Validate email format
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    // Validate password length
+    function validatePassword(password) {
+        return password.length >= 6;
+    }
+
+    // Function to display error message
+    function showError(inputElement, message) {
+        let errorElement = inputElement.nextElementSibling;
+        if (!errorElement || !errorElement.classList.contains('error-message')) {
+            const newErrorElement = document.createElement('span');
+            newErrorElement.classList.add('error-message');
+            newErrorElement.style.color = 'red';
+            inputElement.parentNode.insertBefore(newErrorElement, inputElement.nextSibling);
+            errorElement = newErrorElement;
+        }
+        errorElement.textContent = message;
+        inputElement.classList.add('is-invalid');
+    }
+
+    function clearError(inputElement) {
+        const errorElement = inputElement.nextElementSibling;
+        if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.textContent = '';
+        }
+        inputElement.classList.remove('is-invalid');
+    }
+
+    function validateName() {
+        const nameInput = document.getElementById('name');
+        if (!nameInput.value.trim()) {
+            showError(nameInput, 'Họ và tên không được để trống');
+            return false;
+        }
+        clearError(nameInput);
+        return true;
+    }
+
+    function validatePhone() {
+        const phoneInput = document.getElementById('phone');
+        if (!validatePhoneNumber(phoneInput.value)) {
+            showError(phoneInput, 'Số điện thoại không hợp lệ');
+            return false;
+        }
+        clearError(phoneInput);
+        return true;
+    }
+
+    function validateEmailInput() {
+        const emailInput = document.getElementById('mail');
+        if (!validateEmail(emailInput.value)) {
+            showError(emailInput, 'Email không hợp lệ');
+            return false;
+        }
+        clearError(emailInput);
+        return true;
+    }
+
+    function validateUsername() {
+        const usernameInput = document.getElementById('username');
+        if (!usernameInput.value.trim()) {
+            showError(usernameInput, 'Tên đăng nhập không được để trống');
+            return false;
+        }
+        clearError(usernameInput);
+        return true;
+    }
+
+    function validatePasswordInput() {
+        const passwordInput = document.getElementById('password');
+        if (!validatePassword(passwordInput.value)) {
+            showError(passwordInput, 'Mật khẩu phải có ít nhất 6 ký tự');
+            return false;
+        }
+        clearError(passwordInput);
+        return true;
+    }
+
+    function validateRepeatPassword() {
+        const passwordInput = document.getElementById('password');
+        const repeatPasswordInput = document.getElementById('repeat-password');
+        if (repeatPasswordInput.value !== passwordInput.value) {
+            showError(repeatPasswordInput, 'Mật khẩu không khớp');
+            return false;
+        }
+        clearError(repeatPasswordInput);
+        return true;
+    }
+
+    document.getElementById('name').addEventListener('input', validateName);
+    document.getElementById('phone').addEventListener('input', validatePhone);
+    document.getElementById('mail').addEventListener('input', validateEmailInput);
+    document.getElementById('username').addEventListener('input', validateUsername);
+    document.getElementById('password').addEventListener('input', validatePasswordInput);
+    document.getElementById('repeat-password').addEventListener('input', validateRepeatPassword);
+
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        const isNameValid = validateName();
+        const isPhoneValid = validatePhone();
+        const isEmailValid = validateEmailInput();
+        const isUsernameValid = validateUsername();
+        const isPasswordValid = validatePasswordInput();
+        const isRepeatPasswordValid = validateRepeatPassword();
+
+        if (!isNameValid || !isPhoneValid || !isEmailValid || !isUsernameValid || !isPasswordValid || !isRepeatPasswordValid) {
+            event.preventDefault();
+        }
+    });
+</script>
 </body>
 
 </html>

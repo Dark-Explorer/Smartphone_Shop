@@ -1,4 +1,4 @@
-package com.ecommerce.smartphoneshop.CUSTOMER;
+package com.ecommerce.smartphoneshop.controller.CUSTOMER;
 
 import com.ecommerce.smartphoneshop.domain.*;
 import com.ecommerce.smartphoneshop.repository.CartItemRepository;
@@ -76,6 +76,8 @@ public class CartController {
                 // Thêm quá số lượng
                 if (qty > productItem.getQty_in_stock()) {
                     redirectAttributes.addFlashAttribute("error", "Không thể thêm quá số lượng sản phẩm còn lại!");
+                } else if (qty < 1) {
+                    redirectAttributes.addFlashAttribute("error", "Số lượng không hợp lệ!");
                 } else {
                     cartItemService.saveItem(shoppingCart, productItem, qty);
                     redirectAttributes.addFlashAttribute("success", "Thêm sản phẩm vào giỏ hàng thành công!");
@@ -96,7 +98,7 @@ public class CartController {
             if (cartItemService.updateItem(cartItem, qty) != null) {
                 redirectAttributes.addFlashAttribute("success","Cập nhật giỏ hàng thành công!");
             } else {
-               redirectAttributes.addFlashAttribute("error", "Không thể thêm quá số lượng sản phẩm còn lại!");
+               redirectAttributes.addFlashAttribute("error", "Số lượng sản phẩm không hợp lệ!");
             }
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Có lỗi xảy ra!");
@@ -150,7 +152,6 @@ public class CartController {
 
     @PostMapping("/place-order")
     public String createOrder(@RequestParam("address") String address,
-                              @RequestParam("paymentMethod") PaymentMethod paymentMethod,
                               @RequestParam("total") Long total,
                               Principal principal,
                               RedirectAttributes redirectAttributes) {

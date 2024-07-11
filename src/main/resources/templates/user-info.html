@@ -180,7 +180,7 @@
                                         <a th:text = "${error}"></a>
                                     </div>
                                     <div class="col-lg-12">
-                                        <form class="row" th:action="@{/update-password}" method="post">
+                                        <form class="row" th:action="@{/update-password}" method="post" novalidate="novalidate">
                                             <div class="col-md-12 form-group">
                                                 <label for="oldPassword">Mật khẩu cũ</label>
                                                 <input type="password" class="form-control" id="oldPassword" name="oldPassword">
@@ -192,9 +192,10 @@
                                             <div class="col-md-12 form-group">
                                                 <label for="confirmPassword">Xác nhận mật khẩu</label>
                                                 <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+                                                <span id="passwordError" style="color: red"></span>
                                             </div>
                                             <div class="col-md-12 text-right">
-                                                <button type="submit" value="submit" class="btn primary-btn">Xác nhận</button>
+                                                <button type="submit" value="submit" onclick="checkPassword(event)" class="btn primary-btn">Xác nhận</button>
                                             </div>
                                         </form>
                                     </div>
@@ -226,6 +227,18 @@
                     .catch((error) => {
                         alert('Có lỗi xảy ra!');
                     });
+            }
+        }
+        function checkPassword(event) {
+            var password = document.getElementById("newPassword").value;
+            var confirmPassword = document.getElementById("confirmPassword").value;
+            var errorElement = document.getElementById("passwordError");
+
+            if (password !== confirmPassword) {
+                errorElement.textContent = "Mật khẩu không khớp!";
+                event.preventDefault();
+            } else {
+                errorElement.textContent = "";
             }
         }
     </script>

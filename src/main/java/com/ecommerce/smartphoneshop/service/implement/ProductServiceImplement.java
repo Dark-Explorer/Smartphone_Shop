@@ -40,7 +40,7 @@ public class ProductServiceImplement implements ProductService {
     }
 
     @Override
-    public Product saveProduct(ProductDTO productDTO) throws IOException {
+    public Product saveProduct(ProductDTO productDTO) {
         Product product = Product.builder()
                 .id(productDTO.getId())
                 .name(productDTO.getName())

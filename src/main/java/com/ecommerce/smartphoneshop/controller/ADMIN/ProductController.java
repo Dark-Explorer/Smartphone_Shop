@@ -1,4 +1,4 @@
-package com.ecommerce.smartphoneshop.ADMIN;
+package com.ecommerce.smartphoneshop.controller.ADMIN;
 
 import com.ecommerce.smartphoneshop.domain.Brand;
 import com.ecommerce.smartphoneshop.domain.Product;

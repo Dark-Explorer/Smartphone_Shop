@@ -38,11 +38,13 @@
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <label for="phone">Số điện thoại</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}" readonly>
+                                    <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
+                                    <span id="phoneError" style="color: red"></span>
                                 </div>
                                 <div class="col-md-12 form-group">
                                     <label for="address">Địa chỉ</label>
                                     <input type="text" class="form-control" id="address" name="address" th:value="${user.address}">
+                                    <span id="addressError" style="color: red"></span>
                                 </div>
                         </div>
                         <div class="col-lg-6">
@@ -83,17 +85,17 @@
 <!--                                        <div class="check"></div>-->
 <!--                                    </div>-->
 <!--                                </div>-->
-                                <div>
-                                    <label>Payment Method:</label>
-                                    <div th:each="method : ${T(com.ecommerce.smartphoneshop.domain.PaymentMethod).values()}">
-<!--                                        <input type="radio" th:value="${method}" th:id="${method}"/>-->
-<!--                                        <label th:for="${#ids.prev('paymentMethod')}" th:text="${method}"></label>-->
-                                        <input name="method" type="radio" th:value="${method}" th:checked="${method == T(com.ecommerce.smartphoneshop.domain.PaymentMethod).CASH}">
-                                        <label th:text="${method}"></label>
-                                    </div>
-                                    <input type="hidden" id="paymentMethod" name="paymentMethod" required>
-                                </div>
-                                <button type="submit" class="primary-btn">Tiến hành thanh toán</button>
+<!--                                <div>-->
+<!--                                    <label>Payment Method:</label>-->
+<!--                                    <div th:each="method : ${T(com.ecommerce.smartphoneshop.domain.PaymentMethod).values()}">-->
+<!--&lt;!&ndash;                                        <input type="radio" th:value="${method}" th:id="${method}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <label th:for="${#ids.prev('paymentMethod')}" th:text="${method}"></label>&ndash;&gt;-->
+<!--                                        <input name="method" type="radio" th:value="${method}" th:checked="${method == T(com.ecommerce.smartphoneshop.domain.PaymentMethod).CASH}">-->
+<!--                                        <label th:text="${method}"></label>-->
+<!--                                    </div>-->
+<!--                                    <input type="hidden" id="paymentMethod" name="paymentMethod" required>-->
+<!--                                </div>-->
+                                <button type="submit" class="primary-btn" onclick="validate(event)">Tiến hành thanh toán</button>
                             </div>
                         </div>
                     </div>
@@ -108,15 +110,62 @@
     <div th:replace="~{user-fragment::JS-import}"></div>
 
     <script>
-        document.getElementById("checkout").addEventListener("submit", function() {
-            const radioButtons = document.querySelectorAll('input[type="radio"][name="method"]');
+        function validatePhoneNumber(phoneNumber) {
+            const phoneRegex = /^0\d{9}$/;
+            return phoneRegex.test(phoneNumber);
+        }
 
-            radioButtons.forEach(function(radioButton) {
-                if (radioButton.checked) {
-                    document.getElementById("paymentMethod").value = radioButton.value;
-                }
-            });
-        });
+        function validateNonNullString(input) {
+            return typeof input === 'string' && input.trim().length > 0;
+        }
+
+        function showError(inputElement, errorElement, message) {
+            errorElement.textContent = message;
+            inputElement.classList.add('is-invalid');
+        }
+
+        function clearError(inputElement, errorElement) {
+            errorElement.textContent = '';
+            inputElement.classList.remove('is-invalid');
+        }
+
+        function validatePhone() {
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+
+            if (!validatePhoneNumber(phoneInput.value)) {
+                showError(phoneInput, phoneError, 'Số điện thoại không hợp lệ');
+                return false;
+            } else {
+                clearError(phoneInput, phoneError);
+                return true;
+            }
+        }
+
+        function validateAddress() {
+            const addressInput = document.getElementById('address');
+            const addressError = document.getElementById('addressError');
+
+            if (!validateNonNullString(addressInput.value)) {
+                showError(addressInput, addressError, 'Địa chỉ không được để trống.');
+                return false;
+            } else {
+                clearError(addressInput, addressError);
+                return true;
+            }
+        }
+
+        document.getElementById('phone').addEventListener('input', validatePhone);
+        document.getElementById('address').addEventListener('input', validateAddress);
+
+        function validate(event) {
+            const isPhoneValid = validatePhone();
+            const isAddressValid = validateAddress();
+
+            if (!isPhoneValid || !isAddressValid) {
+                event.preventDefault();
+            }
+        }
     </script>
 </body>
 

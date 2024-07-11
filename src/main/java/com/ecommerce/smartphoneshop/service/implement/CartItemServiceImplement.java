@@ -44,7 +44,7 @@ public class CartItemServiceImplement implements CartItemService {
 
     @Override
     public ShoppingCartItem updateItem(ShoppingCartItem shoppingCartItem, int qty) {
-        if (qty <= shoppingCartItem.getProductItem().getQty_in_stock()) {
+        if (qty <= shoppingCartItem.getProductItem().getQty_in_stock() && qty > 0) {
             shoppingCartItem.setQty(qty);
             return cartItemRepository.save(shoppingCartItem);
         } else return null;
