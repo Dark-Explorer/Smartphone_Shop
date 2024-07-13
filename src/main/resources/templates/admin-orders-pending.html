@@ -29,7 +29,7 @@
                         </thead>
                         <tbody>
                         <!-- Đơn hàng mới tạo, chưa duyệt-->
-                            <tr th:each="order : ${orders}" th:if="${order.status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).CREATED}">
+                            <tr th:each="order : ${orders}" th:if="${order.status.name() == 'CREATED'}">
                                 <td>
                                     <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </td>
@@ -63,7 +63,7 @@
 
                         <!--Đơn hàng đã duyệt, đang vận chuyển-->
 
-                            <tr th:each="order : ${orders}" th:if="${order.status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).DELIVERING}">
+                            <tr th:each="order : ${orders}" th:if="${order.status.name() == 'DELIVERING'}">
                                 <td>
                                     <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
                                 </td>

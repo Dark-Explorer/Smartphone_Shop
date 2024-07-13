@@ -79,19 +79,6 @@
                                 </td>
                             </tr>
 
-                            <tr class="bottom_button">
-                                <td>
-                                    <form action="" method="post">
-                                        <button type="submit" class="gray_btn">Cập nhật giỏ hàng</button>
-                                    </form>
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-
                             <tr>
                                 <td></td>
                                 <td></td>
@@ -181,7 +168,7 @@
 
                                 <td>
                                     <div class="checkout_btn_inner d-flex">
-                                        <a class="primary-btn" th:href="@{/checkout}">Thanh toán</a>
+                                        <a class="primary-btn" th:href="@{/checkout}" th:if="${total != 0}">Thanh toán</a>
                                     </div>
                                 </td>
                                 <td></td>

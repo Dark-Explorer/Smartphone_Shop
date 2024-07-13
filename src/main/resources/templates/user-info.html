@@ -164,7 +164,7 @@
                                                     <td style="padding: 14px 12px">
                                                         <p th:text="${user.orders[i].status}"></p>
                                                         <p style="color: green" th:text="${#temporals.format(user.orders[i].date_updated, 'yyyy-MM-dd HH:mm')}"></p>
-                                                        <a id="delete" th:onclick="'confirmDelete(' + ${user.orders[i].id} + ')'" th:if="${user.orders[i].status == T(com.ecommerce.smartphoneshop.domain.OrderStatus).CREATED}"
+                                                        <a id="delete" th:onclick="'confirmDelete(' + ${user.orders[i].id} + ')'" th:if="${user.orders[i].status.name() == 'CREATED'}"
                                                            class="genric-btn danger" style="padding: 0.3em; font-size: 1em; line-height: 1.5em">Hủy đơn</a>
                                                     </td>
                                                 </tr>
