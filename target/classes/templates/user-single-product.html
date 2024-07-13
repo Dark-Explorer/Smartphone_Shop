@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+	<title>NHD | Sản phẩm</title>
+	<div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body>
+	<div th:replace="~{user-fragment::header}"></div>
+
+	<!--================Single Product Area =================-->
+	<div class="product_image_area">
+		<div class="container">
+			<div class="row s_product_inner">
+				<div class="col-lg-6">
+					<div class="s_Product_carousel">
+						<div class="single-prd-item">
+							<img class="img-fluid" th:src="${productItem.image}" alt="">
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" th:src="${productItem.image}" alt="">
+						</div>
+						<div class="single-prd-item">
+							<img class="img-fluid" th:src="${productItem.image}" alt="">
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-5 offset-lg-1">
+					<form th:action="@{/add-to-cart/{userId}/{productItemId}(userId = ${currentUser}, productItemId = ${itemId})}">
+						<div class="s_product_text">
+							<h3 th:text="${productName}"></h3>
+							<h2 th:text="${#numbers.formatDecimal(productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h2>
+							<ul class="list">
+								<li><a class="active" th:text="${product.brand.name}"></a></li>
+								<li>
+									<div style="display: flex;">
+										<a th:each="item : ${product.productItems}" th:href="@{/product/{productName}/{itemId}(productName = ${product.name}, itemId = ${item.id})}" style="display: inline-block; vertical-align: middle; margin-right: 10px;">
+											<div class="info_item">
+												<img th:src="${item.image}" alt="" style="width: 30%">
+												<span th:text="${item.variation}"></span>
+											</div>
+										</a>
+									</div>
+								</li>
+								<li><a th:if="${productItem.qty_in_stock > 0}">Trạng thái: Còn hàng</a></li>
+								<li><a th:if="${productItem.qty_in_stock == 0}">Trạng thái: Hết hàng</a></li>
+							</ul>
+							<div id="successMessage" th:if = "${success}" class = "text-center alert alert-success" style="height: 4rem;">
+								<a th:text = "${success}"></a>
+							</div>
+							<div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+								<a th:text = "${error}"></a>
+							</div>
+							<div class="product_count">
+								<label for="qty">Số lượng:</label>
+								<input type="text" name="qty" id="qty" maxlength="12" value="1" title="Quantity:" class="input-text qty">
+								<button onclick="var result = document.getElementById('qty'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+								 class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
+								<button onclick="var result = document.getElementById('qty'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+								 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
+							</div>
+							<div class="card_area d-flex align-items-center">
+								<button th:if="${productItem.qty_in_stock > 0}" type="submit" class="primary-btn">Thêm vào giỏ hàng</button>
+								<button th:if="${productItem.qty_in_stock == 0}" class="primary-btn" disabled="disabled">Hết hàng</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--================End Single Product Area =================-->
+
+	<!--================Product Description Area =================-->
+	<section class="product_description_area">
+		<div class="container">
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active show" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Mô tả sản phẩm</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+					 aria-selected="false">Thông số sản phẩm</a>
+				</li>
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td><h5>Tên sản phẩm:</h5></td>
+									<td><h5 th:text="${product.name}"></h5></td>
+								</tr>
+								<tr>
+									<td><h5>Thương hiệu:</h5></td>
+									<td><h5 th:text="${product.brand.name}"></h5></td>
+								</tr>
+								<tr>
+									<td><h5>Bảo hành:</h5></td>
+									<td><h5 th:text="${product.warranty}"></h5></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr th:each="spec : ${specList}">
+									<td><h5 th:text="${spec.key}"></h5></td>
+									<td><h5 th:text="${spec.value}"></h5></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Product Description Area =================-->
+
+<!--	&lt;!&ndash; Start related-product Area &ndash;&gt;-->
+<!--	<section class="related-product-area section_gap_bottom">-->
+<!--		<div class="container">-->
+<!--			<div class="row justify-content-center">-->
+<!--				<div class="col-lg-6 text-center">-->
+<!--					<div class="section-title">-->
+<!--						<h1>Deals of the Week</h1>-->
+<!--						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore-->
+<!--							magna aliqua.</p>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--			<div class="row">-->
+<!--				<div class="col-lg-9">-->
+<!--					<div class="row">-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r1.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r2.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r3.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r5.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r6.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r7.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="/img/r9.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r10.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--						<div class="col-lg-4 col-md-4 col-sm-6">-->
+<!--							<div class="single-related-product d-flex">-->
+<!--								<a href="#"><img src="img/r11.jpg" alt=""></a>-->
+<!--								<div class="desc">-->
+<!--									<a href="#" class="title">Black lace Heels</a>-->
+<!--									<div class="price">-->
+<!--										<h6>$189.00</h6>-->
+<!--										<h6 class="l-through">$210.00</h6>-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--				<div class="col-lg-3">-->
+<!--					<div class="ctg-right">-->
+<!--						<a href="#" target="_blank">-->
+<!--							<img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">-->
+<!--						</a>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--	</section>-->
+<!--	&lt;!&ndash; End related-product Area &ndash;&gt;-->
+
+	<div th:replace="~{user-fragment::footer}"></div>
+
+	<div th:replace="~{user-fragment::JS-import}"></div>
+
+</body>
+
+</html>

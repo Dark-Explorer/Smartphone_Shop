@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+    <title>NHD | Thanh toán</title>
+    <div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body>
+    <div th:replace="~{user-fragment::header}"></div>
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1>Thanh toán</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Checkout Area =================-->
+    <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+        <a th:text = "${error}"></a>
+    </div>
+    <section class="checkout_area section_gap">
+        <form id="checkout" class="row contact_form" th:action="@{/place-order}" th:object="${order}" method="post" novalidate="novalidate">
+            <div class="container">
+                <div class="billing_details">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3>Chi tiết đơn hàng</h3>
+                                <div class="col-md-12 form-group">
+                                    <label for="name">Tên</label>
+                                    <input type="text" class="form-control" id="name" name="name" th:value="${user.name}" readonly>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="phone">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" th:value="${user.phone}">
+                                    <span id="phoneError" style="color: red"></span>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="address">Địa chỉ</label>
+                                    <input type="text" class="form-control" id="address" name="address" th:value="${user.address}">
+                                    <span id="addressError" style="color: red"></span>
+                                </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="order_box">
+                                <h2>Thông tin đơn hàng</h2>
+                                <table style="width: 100%;">
+                                    <tr class="checkout-row" th:each="item : ${cartItems}">
+                                        <td class="checkout-column-1" th:href="@{/product/${item.productItem.product.name}/${item.productItem.id}}" th:text="${item.productItem.product.name}"></td>
+                                        <td class="checkout-column-2" th:text=" 'x' + ${item.qty}"></td>
+                                        <td class="checkout-column-3" th:text="${#numbers.formatDecimal(item.productItem.price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></td>
+                                    </tr>
+                                    <tr style="height: 40px"></tr>
+                                    <tr style="padding-top: 40px">
+                                        <td class="checkout-column-1">Phí vận chuyển</td>
+                                        <td class="checkout-column-2"></td>
+                                        <td class="checkout-column-3" th:text="'0' + '&#8363;'"></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="checkout-column-1" style="color: red">Tổng</td>
+                                        <td class="checkout-column-2"></td>
+                                        <td class="checkout-column-3" style="color: red" th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></td>
+                                        <input type="hidden" name="total" th:value="${total}">
+                                    </tr>
+                                    <tr style="height: 40px"></tr>
+                                </table>
+<!--                                <div class="payment_item">-->
+<!--                                    <div class="radion_btn">-->
+<!--                                        <input type="radio" id="cash" name="payment-method" checked>-->
+<!--                                        <label for="cash">Thanh toán khi nhận hàng</label>-->
+<!--                                        <div class="check"></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div class="payment_item active">-->
+<!--                                    <div class="radion_btn">-->
+<!--                                        <input type="radio" id="vnpay" name="payment-method">-->
+<!--                                        <label for="vnpay">VNPAY QR</label>-->
+<!--                                        <img src="/img/product/card.jpg" alt="">-->
+<!--                                        <div class="check"></div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <div>-->
+<!--                                    <label>Payment Method:</label>-->
+<!--                                    <div th:each="method : ${T(com.ecommerce.smartphoneshop.domain.PaymentMethod).values()}">-->
+<!--&lt;!&ndash;                                        <input type="radio" th:value="${method}" th:id="${method}"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <label th:for="${#ids.prev('paymentMethod')}" th:text="${method}"></label>&ndash;&gt;-->
+<!--                                        <input name="method" type="radio" th:value="${method}" th:checked="${method == T(com.ecommerce.smartphoneshop.domain.PaymentMethod).CASH}">-->
+<!--                                        <label th:text="${method}"></label>-->
+<!--                                    </div>-->
+<!--                                    <input type="hidden" id="paymentMethod" name="paymentMethod" required>-->
+<!--                                </div>-->
+                                <button type="submit" class="primary-btn" onclick="validate(event)">Tiến hành thanh toán</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+    <!--================End Checkout Area =================-->
+
+    <div th:replace="~{user-fragment::footer}"></div>
+
+    <div th:replace="~{user-fragment::JS-import}"></div>
+
+    <script>
+        function validatePhoneNumber(phoneNumber) {
+            const phoneRegex = /^0\d{9}$/;
+            return phoneRegex.test(phoneNumber);
+        }
+
+        function validateNonNullString(input) {
+            return typeof input === 'string' && input.trim().length > 0;
+        }
+
+        function showError(inputElement, errorElement, message) {
+            errorElement.textContent = message;
+            inputElement.classList.add('is-invalid');
+        }
+
+        function clearError(inputElement, errorElement) {
+            errorElement.textContent = '';
+            inputElement.classList.remove('is-invalid');
+        }
+
+        function validatePhone() {
+            const phoneInput = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+
+            if (!validatePhoneNumber(phoneInput.value)) {
+                showError(phoneInput, phoneError, 'Số điện thoại không hợp lệ');
+                return false;
+            } else {
+                clearError(phoneInput, phoneError);
+                return true;
+            }
+        }
+
+        function validateAddress() {
+            const addressInput = document.getElementById('address');
+            const addressError = document.getElementById('addressError');
+
+            if (!validateNonNullString(addressInput.value)) {
+                showError(addressInput, addressError, 'Địa chỉ không được để trống.');
+                return false;
+            } else {
+                clearError(addressInput, addressError);
+                return true;
+            }
+        }
+
+        document.getElementById('phone').addEventListener('input', validatePhone);
+        document.getElementById('address').addEventListener('input', validateAddress);
+
+        function validate(event) {
+            const isPhoneValid = validatePhone();
+            const isAddressValid = validateAddress();
+
+            if (!isPhoneValid || !isAddressValid) {
+                event.preventDefault();
+            }
+        }
+    </script>
+</body>
+
+</html>

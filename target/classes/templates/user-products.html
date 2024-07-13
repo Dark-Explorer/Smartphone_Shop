@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+	<title>NHD | Sản phẩm</title>
+	<div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body id="category">
+	<div th:replace="~{user-fragment::header}"></div>
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Sản phẩm</h1>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<div class="container">
+		<div class="row">
+			<div class="col-xl-3 col-lg-4 col-md-5">
+				<div class="sidebar-filter mt-50">
+					<form action="" method="get" class="form-inline">
+						<div id="mc_embed_signup" style="margin-bottom: 20px">
+							<div class="d-flex flex-row">
+								<input class="form-control" name="keyword" th:value="${keyword}" placeholder="Nhập tên sản phẩm" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nhập tên sản phẩm'" type="text">
+								<button type="submit" class="click-btn btn btn-default"><i class="fa fa-search" aria-hidden="true"></i></button>
+							</div>
+						</div>
+					</form>
+					<div class="top-filter-head">Bộ lọc sản phẩm</div>
+					<form th:action="@{/productsfilter}" method="get">
+						<div class="common-filter">
+							<div class="head">Hãng</div>
+							<ul>
+								<li class="filter-list">
+									<input class="pixel-radio" type="radio" name="brandName" value="" checked><label>Tất cả</label>
+								</li>
+								<li th:each="brand : ${brands}" class="filter-list">
+									<input class="pixel-radio" type="radio" th:id="${brand.name}" th:value="${brand.name}" name="brandName"><label th:for="${brand.name}" th:text="${brand.name}"></label>
+								</li>
+							</ul>
+						</div>
+						<div class="common-filter">
+							<div class="head">Giá</div>
+							<div class="price-range-area">
+								<div id="price-range"></div>
+								<div class="value-wrapper d-flex">
+									<div class="price">Giá:</div>
+									<div id="lower-value"></div>
+									<input type="hidden" name="min" id="minPrice">
+									<span th:text="'&#8363;'"></span>
+									<div class="to">đến</div>
+									<div id="upper-value"></div>
+									<input type="hidden" name="max" id="maxPrice">
+									<span th:text="'&#8363;'"></span>
+									<script>
+										document.getElementById("minPrice").innerText = document.getElementById("lower-value").innerText;
+									</script>
+								</div>
+							</div>
+						</div>
+						<button class="primary-btn" type="submit">Tìm kiếm</button>
+					</form>
+				</div>
+			</div>
+			<div class="col-xl-9 col-lg-8 col-md-7">
+				<!-- Start Filter Bar -->
+				<div class="filter-bar d-flex flex-wrap align-items-center">
+<!--					<div class="sorting">-->
+<!--						<select>-->
+<!--							<option value="1">Default sorting</option>-->
+<!--							<option value="1">Default sorting</option>-->
+<!--							<option value="1">Default sorting</option>-->
+<!--						</select>-->
+<!--					</div>-->
+					<div class="sorting mr-auto">
+<!--						<select>-->
+<!--							<option value="1">Show 12</option>-->
+<!--							<option value="1">Show 12</option>-->
+<!--							<option value="1">Show 12</option>-->
+<!--						</select>-->
+					</div>
+					<ul class="pagination" th:if="${filter == 0}">
+						<li th:each="i : ${#numbers.sequence(1, totalPage)}">
+							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${i}}" th:classappend="${currentPage == i ? 'active' : ''}" th:text="${i}"></a>
+						</li>
+					</ul>
+					<ul class="pagination" th:if="${filter == 1}">
+						<li th:each="i : ${#numbers.sequence(1, totalFilteredPage)}">
+							<a th:href="@{${brandName != null && brandName != '' ? '?brandName=' + brandName : '?'} + '&min=' + ${min} + '&max=' + ${max} + '&pageNo=' + ${i}}" th:classappend="${currentPage == i ? 'active' : ''}" th:text="${i}"></a>
+						</li>
+					</ul>
+<!--					<ul class="pagination" th:if="${totalPage >= 4}">-->
+<!--&lt;!&ndash;						Left arrow&ndash;&gt;-->
+<!--						<li th:if="${currentPage > 1}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${currentPage - 1}}" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Page 1&ndash;&gt;-->
+<!--						<li th:if="${currentPage > 1}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=1'}" th:classappend="${currentPage == 1 ? 'active' : ''}">1</a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						3 dots&ndash;&gt;-->
+<!--						<li th:if="${currentPage > 3}">-->
+<!--							<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Previous page&ndash;&gt;-->
+<!--						<li th:if="${currentPage > 2}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${currentPage - 1}}" th:text="${currentPage - 1}"></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Current page&ndash;&gt;-->
+<!--						<li>-->
+<!--							<a th:classappend="active" th:text="${currentPage}"></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Next page&ndash;&gt;-->
+<!--						<li th:if="${currentPage < totalPage - 1}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${currentPage + 1}}" th:text="${currentPage + 1}"></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						3 dots&ndash;&gt;-->
+<!--						<li th:if="${currentPage < totalPage - 2}">-->
+<!--							<a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Last page&ndash;&gt;-->
+<!--						<li th:if="${currentPage < totalPage}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${totalPage}}" th:text="${totalPage}"></a>-->
+<!--						</li>-->
+<!--&lt;!&ndash;						Right arrow&ndash;&gt;-->
+<!--						<li th:if="${currentPage < totalPage}">-->
+<!--							<a th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${currentPage + 1}}" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>-->
+<!--						</li>-->
+<!--					</ul>-->
+				</div>
+				<!-- End Filter Bar -->
+				<!-- Start Best Seller -->
+				<section class="lattest-product-area pb-40 category-list">
+					<div class="row">
+						<!-- single product -->
+						<div class="col-lg-4 col-md-6" th:each="product : ${products}" th:if="${product.is_active} == true">
+							<a th:href="@{/product/{productName}/{itemId}(productName = ${product.name}, itemId = ${product.productItems.get(0).id})}">
+								<div class="single-product">
+									<img class="img-fluid" th:src="${product.image}" alt="">
+									<div class="product-details">
+										<h6 th:text="${product.name}"></h6>
+										<div class="price">
+											<h6 style="color: red" th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
+										</div>
+									</div>
+								</div>
+							</a>
+						</div>
+					</div>
+				</section>
+				<!-- End Best Seller -->
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{user-fragment::footer}"></div>
+
+	<div th:replace="~{user-fragment::JS-import}"></div>
+</body>
+
+</html>

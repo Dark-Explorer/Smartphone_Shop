@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>UCL | Sản phẩm</title>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+
+                <div class="container-fluid">
+                    <p th:if="${products.getSize() == 0}">Chưa có sản phẩm</p>
+                    <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
+                        <p th:text = "${success}"></p>
+                    </div>
+                    <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                        <p th:text = "${error}"></p>
+                    </div>
+
+                    <a th:href="@{add-product}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm sản phẩm</a>
+
+                    <div>
+                        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="get" style="margin-left: 0 !important; margin-bottom: 10px !important;">
+                            <div class="input-group">
+                                <input type="text" name="keyword" th:value="${keyword}" class="form-control bg-light border-0 small" placeholder="Tìm kiếm sản phẩm" aria-label="Search" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="fas fa-search fa-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <ul class="pagination">
+                        <li th:each="i : ${#numbers.sequence(1, totalPage)}" class="paginate_button page-item" th:classappend="${currentPage == i ? 'active' : ''}">
+                            <a class="page-link" th:href="@{${keyword != null && keyword != '' ? '?keyword=' + keyword + '&' : '?'} + 'pageNo=' + ${i}}" th:text="${i}"></a>
+                        </li>
+                    </ul>
+
+                    <table class="table table-bordered" th:if = "${products.getSize() > 0}">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tên</th>
+                            <th scope="col">Hãng</th>
+                            <th scope="col">Cấu hình</th>
+                            <th scope="col">Ảnh</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each = "product : ${products}">
+                            <th scope="row" th:text = "${product.name}"></th>
+                            <td th:text = "${product.brand.name}"></td>
+                            <td style="width: 500px" th:text = "${product.specification}"></td>
+                            <td>
+                                <img class = "my-product-image" style="height: 40px; width: 40px"
+                                     th:src="${product.image}" alt="Product Image">
+                            </td>
+                            <td><a th:href="@{/update-product/{id}(id = ${product.id})}" class="btn btn-primary">Cập nhật</a>
+                                <a th:href="@{/products/{productId}/item/add(productId = ${product.id})}" class="btn btn-primary">Thêm loại SP</a>
+                                <a th:href="@{/products/{id}/item(id = ${product.id})}" class="btn btn-outline-primary">Xem loại SP</a>
+                                <a th:if="${product.is_active()} == false" th:href="@{/enable-product(id = ${product.id})}"
+                                   class="btn btn-primary">Hiện SP</a>
+                                <a th:if="${product.is_active()} == true" th:href="@{/disable-product(id = ${product.id})}"
+                                   class="btn btn-danger">Ẩn SP</a>
+                                <a id="delete" th:onclick="'confirmDelete(' + ${product.id} + ')'"
+                                   class="btn btn-danger">Xoá SP</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <footer th:replace = "~{admin-fragments::footer}"></footer>
+        </div>
+    </div>
+
+    <a th:replace = "~{admin-fragments::scroll}"></a>
+
+    <div th:replace = "~{admin-fragments::script}"></div>
+    <script>
+        function confirmDelete(productID) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm?')) {
+                fetch(`/delete-product?id=${productID}`, {
+                    method: 'POST',
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Xóa sản phẩm thành công!');
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        alert('Có lỗi xảy ra!');
+                    });
+            }
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+	<title>NHD | Trang chủ</title>
+	<div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body>
+	<div th:replace="~{user-fragment::header}"></div>
+
+	<div th:replace="~{user-fragment::banner}"></div>
+
+	<!-- start features Area -->
+	<section class="features-area section_gap">
+		<div class="container">
+			<div class="row features-inner">
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="/img/features/f-icon1.png" alt="">
+						</div>
+						<h6>Miễn phí vận chuyển</h6>
+						<p>Miễn phí vận chuyển trong phạm vi 5km</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="/img/features/f-icon2.png" alt="">
+						</div>
+						<h6>1 đổi 1</h6>
+						<p>Hỗ trợ 1 dổi 1 trong 15 ngày</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="/img/features/f-icon3.png" alt="">
+						</div>
+						<h6>Hỗ trợ 24/7</h6>
+						<p>Hỗ trợ cài đặt phần mềm nhanh chóng</p>
+					</div>
+				</div>
+				<div class="col-lg-3 col-md-6 col-sm-6">
+					<div class="single-features">
+						<div class="f-icon">
+							<img src="/img/features/f-icon4.png" alt="">
+						</div>
+						<h6>Thanh toán thuận tiện</h6>
+						<p>Nhiều hình thức thanh toán đa dạng</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- end features Area -->
+
+	<!-- Start category Area -->
+	<section class="category-area">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-lg-8 col-md-12">
+					<div class="row">
+						<div class="col-lg-8 col-md-8">
+							<div class="single-deal">
+								<div class="overlay"></div>
+								<img class="img-fluid w-100" src="/img/category/flagship.jpg" alt="">
+								<div class="deal-details">
+									<h6 class="deal-title">Flagship</h6>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4">
+							<div class="single-deal">
+								<div class="overlay"></div>
+								<img class="img-fluid w-100" src="/img/category/gamingphone.jpg" alt="">
+								<div class="deal-details">
+									<h6 class="deal-title">Gaming Phone</h6>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-4 col-md-4">
+							<div class="single-deal">
+								<div class="overlay"></div>
+								<img class="img-fluid w-100" src="/img/category/xachtay.jpg" alt="">
+								<div class="deal-details">
+									<h6 class="deal-title">Điện thoại xách tay</h6>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-8 col-md-8">
+							<div class="single-deal">
+								<div class="overlay"></div>
+								<img class="img-fluid w-100" src="/img/category/giare.png" alt="">
+								<div class="deal-details">
+									<h6 class="deal-title">Điện thoại giá rẻ</h6>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-4 col-md-6">
+					<div class="single-deal">
+						<div class="overlay"></div>
+						<img class="img-fluid w-100" src="/img/category/c5.jpg" alt="">
+						<div class="deal-details">
+							<h6 class="deal-title">Khuyến mãi</h6>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End category Area -->
+
+	<!-- start product Area -->
+	<section class="owl-carousel active-product-area section_gap">
+		<!-- single product slide -->
+		<div class="single-product-slider">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-lg-6 text-center">
+						<div class="section-title">
+							<h1>Sản phẩm nổi bật</h1>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<!-- single product -->
+					<div class="col-lg-3 col-md-6" th:each="product : ${products}" th:if="${product.is_active} == true">
+						<a th:href="@{/product/{productName}/{itemId}(productName = ${product.name}, itemId = ${product.productItems.get(0).id})}">
+							<div class="single-product">
+								<img class="img-fluid" th:src="${product.image}" alt="">
+								<div class="product-details">
+									<h6 th:text="${product.name}"></h6>
+									<div class="price">
+										<h6 style="color: red" th:text="${#numbers.formatDecimal(product.productItems[0].price, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></h6>
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+<!--		 single product slide -->
+		<div class="single-product-slider">
+		</div>
+	</section>
+	<!-- end product Area -->
+
+	<!-- Start brand Area -->
+	<section class="brand-area section_gap">
+		<div class="container">
+			<div class="row">
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/brand/1.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/brand/2.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/brand/3.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/brand/4.png" alt="">
+				</a>
+				<a class="col single-img" href="#">
+					<img class="img-fluid d-block mx-auto" src="/img/brand/5.png" alt="">
+				</a>
+			</div>
+		</div>
+	</section>
+	<!-- End brand Area -->
+
+	<div th:replace="~{user-fragment::footer}"></div>
+
+	<div th:replace="~{user-fragment::JS-import}"></div>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{admin-fragments::header}"></head>
+<body id="page-top">
+    <div id="wrapper">
+        <ul th:replace="~{admin-fragments::sidebar}"></ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="~{admin-fragments::top-navbar}"></nav>
+
+                <div th:if="${success}" class="text-center alert alert-success">
+                    <p th:text="${success}">
+                    </p>
+                </div>
+
+                <div class="table-main table-responsive">
+                    <table class="table" id="myTable">
+                        <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Thành tiền</th>
+                            <th>Tên</th>
+                            <th>SĐT</th>
+                            <th>Địa chỉ</th>
+                            <th>Sản phẩm</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td>
+                                <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                            </td>
+                            <td>
+                                <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                            </td>
+                            <td>
+                                <p th:text="${order.user.name}"></p>
+                            </td>
+                            <td style="width: 115px;">
+                                <p th:text="${order.user.phone}"></p>
+                            </td>
+                            <td style="width: 300px;">
+                                <p th:text="${order.address}"></p>
+                            </td>
+                            <td>
+                                <div th:each="product : ${order.orderLines}">
+                                    <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
+                                </div>
+                            </td>
+                            <td>
+                                <p th:text="${order.status}"></p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            sortTable(0); // Sắp xếp bảng khi trang web được tải
+
+                            function sortTable(columnIndex) {
+                                var table, rows, switching, i, x, y, shouldSwitch;
+                                table = document.getElementById("myTable");
+                                switching = true;
+
+                                while (switching) {
+                                    switching = false;
+                                    rows = table.getElementsByTagName("tr");
+
+                                    for (i = 1; i < (rows.length - 1); i++) {
+                                        shouldSwitch = false;
+                                        x = rows[i].getElementsByTagName("td")[columnIndex];
+                                        y = rows[i + 1].getElementsByTagName("td")[columnIndex];
+
+                                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                            shouldSwitch = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (shouldSwitch) {
+                                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                        switching = true;
+                                    }
+                                }
+                            }
+                        });
+                    </script>
+
+                    <footer th:replace="~{admin-fragments::footer}"></footer>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a th:replace="~{admin-fragments::scroll}"></a>
+
+    <div th:replace="~{admin-fragments::script}"></div>
+    <script th:src="@{/js/categories.js}"></script>
+
+</body>
+
+</html>

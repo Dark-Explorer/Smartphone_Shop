@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>UCL | Hãng</title>
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+        <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+                <div class="container-fluid">
+                    <p th:if="${size == 0} ">Không có hãng nào</p>
+                    <div id="successMessage" th:if = "${success}" class = "text-center alert alert-success">
+                        <p th:text = "${success}"></p>
+                    </div>
+                    <div id="errorMessage" th:if = "${error}" class="text-center alert alert-danger">
+                        <p th:text = "${error}"></p>
+                    </div>
+
+                    <a th:href="@{add-brand}" class = "btn btn-primary" style="margin-bottom: 10px;">Thêm hãng</a>
+
+                    <table class="table table-bordered" th:if = "${size > 0}">
+                        <thead>
+                        <tr>
+                            <th scope="col">Tên hãng</th>
+                            <th scope="col">Thao tác</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each = "brand : ${brands}">
+                            <th scope="row" th:text = "${brand.name}"></th>
+                            <td>
+                                <a th:href="@{/update-brand/{id}(id= ${brand.id})}" class="btn btn-primary">Cập nhật</a>
+                                <a id="delete" th:onclick="'confirmDelete(' + ${brand.id} + ')'" class=" btn btn-danger">Xoá</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+
+            <footer th:replace = "~{admin-fragments::footer}"></footer>
+        </div>
+    </div>
+
+    <a th:replace = "~{admin-fragments::scroll}"></a>
+
+    <div th:replace = "~{admin-fragments::script}"></div>
+
+    <script>
+        function confirmDelete(brandID) {
+            if (confirm('Bạn có chắc chắn muốn xóa thương hiệu này?')) {
+                fetch(`/delete-brand?id=${brandID}`, {
+                    method: 'POST',
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Xóa thương hiệu thành công!');
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        alert('Có lỗi xảy ra!');
+                    });
+            }
+        }
+    </script>
+</body>
+</html>

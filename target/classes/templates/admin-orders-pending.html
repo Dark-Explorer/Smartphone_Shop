@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head th:replace="~{admin-fragments::header}"></head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <ul th:replace="~{admin-fragments::sidebar}"></ul>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <nav th:replace="~{admin-fragments::top-navbar}"></nav>
+
+                <div th:if="${success}" class="text-center alert alert-success">
+                    <p th:text="${success}">
+                    </p>
+                </div>
+                <div class="table-main table-responsive">
+                    <table id="myTable" class="table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Thành tiền</th>
+                                <th>Tên</th>
+                                <th>SĐT</th>
+                                <th>Địa chỉ</th>
+                                <th>Sản phẩm</th>
+                                <th>Trạng thái</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Đơn hàng mới tạo, chưa duyệt-->
+                            <tr th:each="order : ${orders}" th:if="${order.status.name() == 'CREATED'}">
+                                <td>
+                                    <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </td>
+                                <td>
+                                    <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${order.user.name}"></p>
+                                </td>
+                                <td style="width: 115px;">
+                                    <p th:text="${order.user.phone}"></p>
+                                </td>
+                                <td style="width: 300px;">
+                                    <p th:text="${order.address}"></p>
+                                </td>
+                                <td>
+                                    <div th:each="product : ${order.orderLines}">
+                                        <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>CREATED</p>
+                                </td>
+                                <td>
+                                    <a th:href="@{/accept-order/{id}(id = ${order.id})}" style="margin-bottom: 5px;"
+                                       class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Duyệt</a>
+                                    <a id="delete" th:onclick="'confirmDelete(' + ${order.id} + ')'"
+                                       class="btn btn-primary"><img class='fa fa-window-close' alt='' src=''>Huỷ</a>
+                                </td>
+                            </tr>
+
+                        <!--Đơn hàng đã duyệt, đang vận chuyển-->
+
+                            <tr th:each="order : ${orders}" th:if="${order.status.name() == 'DELIVERING'}">
+                                <td>
+                                    <p th:text="${#temporals.format(order.date_created, 'yyyy-MM-dd HH:mm:ss')}"></p>
+                                </td>
+                                <td>
+                                    <p style="color: red" th:text="${#numbers.formatDecimal(order.total, 0, 'COMMA', 3, 'POINT').replace('.000', '') + '&#8363;'}"></p>
+                                </td>
+                                <td>
+                                    <p th:text="${order.user.name}"></p>
+                                </td>
+                                <td style="width: 115px;">
+                                    <p th:text="${order.user.phone}"></p>
+                                </td>
+                                <td style="width: 300px;">
+                                    <p th:text="${order.address}"></p>
+                                </td>
+                                <td>
+                                    <div th:each="product : ${order.orderLines}">
+                                        <p th:text="${product.qty} + ' x ' + ${product.productItem.product.name} + ' (' + ${product.productItem.variation} + ')'"></p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>DELIVERING</p>
+                                </td>
+                                <td>
+                                    <a th:href="@{/deliver-order/{id}(id = ${order.id})}"
+                                       class="btn btn-secondary"><img class='fa fa-check' alt='' src=''>Hoàn thành</a>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                    <footer th:replace="~{admin-fragments::footer}"></footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a th:replace="~{admin-fragments::scroll}"></a>
+
+    <div th:replace="~{admin-fragments::script}"></div>
+
+    <script th:src="@{/js/categories.js}"></script>
+
+    <script>
+        function confirmDelete(orderID) {
+            if (confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+                fetch(`/cancel-order/${orderID}`, {
+                    method: 'POST',
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert('Hủy đơn hàng thành công!');
+                        location.reload();
+                    })
+                    .catch((error) => {
+                        alert('Có lỗi xảy ra!');
+                    });
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" th:href="@{/img/fav.png}">
+    <meta charset="UTF-8">
+    <title>UCL</title>
+
+    <link rel="stylesheet" th:href="@{/css/linearicons.css}">
+    <link href="https://cdn.jsdelivr.net/npm/linearicons@1.0.2/dist/web-font/style.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@icon/themify-icons@1.0.1-alpha.3/themify-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+    <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/css/nice-select.css}">
+    <link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
+    <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
+    <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+</head>
+<body>
+<!--    Head of HTML files-->
+    <div th:fragment="head">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="shortcut icon" th:href="@{/img/fav.png}">
+        <meta charset="UTF-8">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/css/linearicons.css}">
+        <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}">
+        <link rel="stylesheet" th:href="@{/css/themify-icons.css}">
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+        <link rel="stylesheet" th:href="@{/css/owl.carousel.css}">
+        <link rel="stylesheet" th:href="@{/css/nice-select.css}">
+        <link rel="stylesheet" th:href="@{/css/nouislider.min.css}">
+        <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.css}">
+        <link rel="stylesheet" th:href="@{/css/ion.rangeSlider.skinFlat.css}">
+        <link rel="stylesheet" th:href="@{/css/magnific-popup.css}">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+    </div>
+
+<!--    Header for anonymous user-->
+    <div th:fragment="header">
+        <header class="header_area sticky-header">
+            <div class="main_menu">
+                <nav class="navbar navbar-expand-lg navbar-light main_box">
+                    <div class="container">
+                        <!-- Brand and toggle get grouped for better mobile display -->
+                        <a class="navbar-brand logo_h" th:href="@{/home}"><img th:src="@{/img/logo.png}" alt=""></a>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <!-- Collect the nav links, forms, and other content for toggling -->
+                        <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
+                            <ul class="nav navbar-nav menu_nav ml-auto">
+                                <li class="nav-item active"><a class="nav-link" th:href="@{/home}">Trang chủ</a></li>
+                                <li class="nav-item"><a class="nav-link" th:href="@{/products}">Sản phẩm</a></li>
+                                <li class="nav-item"><a class="nav-link" th:href="@{/contact}">Liên hệ</a></li>
+                                <li class="nav-item"><a class="nav-link" th:href="@{/info}">Thông tin cá nhân</a></li>
+                            </ul>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="nav-item"><a th:href="@{/cart}" class="nav-link"><span class="lnr lnr-cart" style="font-size: 20px"></span></a></li>
+                                <li class="nav-item">
+                                    <button class="search"><span class="lnr lnr-magnifier nav-link" id="search" style="font-size: 20px"></span></button>
+                                </li>
+                                <li sec:authorize="!isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/login}"><span>Đăng nhập</span></a></li>
+                                <li sec:authorize="isAuthenticated()" class="nav-item"><a class="nav-link" th:href="@{/logout}"><span style="color: red">Đăng xuất</span></a></li>
+                                <li sec:authorize="isAuthenticated()" th:if="${#strings.contains(#authentication.principal.authorities, 'ADMIN')}" class="nav-item"><a class="nav-link" th:href="@{/dashboard}"><span>Quản lý cửa hàng</span></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="search_input" id="search_input_box">
+                <div class="container">
+                    <form class="d-flex justify-content-between" th:action="@{/products}" method="get">
+                        <input type="text" class="form-control" name="keyword" id="search_input" placeholder="Nhập tên sản phẩm cần tìm">
+                        <button type="submit" class="btn"></button>
+                        <span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+                    </form>
+                </div>
+            </div>
+        </header>
+    </div>
+
+<!--    Banner-->
+    <div th:fragment="banner">
+        <section class="banner-area">
+            <div class="container">
+                <div class="row fullscreen align-items-center justify-content-start">
+                    <div class="col-lg-12">
+                        <div class="active-banner-slider owl-carousel">
+                            <!-- single-slide -->
+                            <div class="row single-slide align-items-center d-flex">
+                                <div class="col-lg-5 col-md-6">
+                                    <div class="banner-content">
+                                        <h1>Samsung S24 <br> Series</h1>
+                                        <p>Với Galaxy S24 Series trong tay, bạn sẽ tạo nên những đột phá trong sáng tạo vá công việc cũng như mở khóa những tiềm năng mới không giới hạn - tất cả đều bắt đầu từ chiếc điện thoại thông minh của bạn</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="banner-img">
+                                        <img class="img-fluid" th:src="@{/img/banner/banner-img.png}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- single-slide -->
+                            <div class="row single-slide">
+                                <div class="col-lg-5">
+                                    <div class="banner-content">
+                                        <h1>IPhone 15 <br> Series</h1>
+                                        <p>Bước nhảy vọt cho iPhone với thiết kế mới tuyệt đẹp, gồm mặt lưng bền bỉ làm bằng kính pha màu và cạnh viền bo tròn mới, Dynamic Island, camera Chính 48MP với camera Telephoto 2x, và cổng kết nối USB‑C</p>
+                                    </div>
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="banner-img">
+                                        <img class="img-fluid" th:src="@{/img/banner/banner-2.png}" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<!--    Footer-->
+    <div th:fragment="footer">
+        <footer class="footer-area section_gap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3  col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h6>NHD | Smartphone Shop</h6>
+                            <p>
+                                Thành lập năm 2024, cửa hàng luôn hướng đến việc mang lại trải nghiệm tốt nhất cho người dùng.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3  col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <div class="" id="mc_embed_signup">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3  col-md-6 col-sm-6">
+                        <div class="single-footer-widget mail-chimp">
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="single-footer-widget">
+                            <h6>Liên lạc với chúng tôi</h6>
+                            <p>Địa chỉ: Số 1, Đại Cồ Việt, Hai Bà Trưng, Hà Nội</p>
+                            <div class="footer-social d-flex align-items-center">
+                                <a href="https://www.facebook.com/lmaoezeveryday/"><i class="fa fa-facebook"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+<!--    JS import-->
+    <div th:fragment="JS-import">
+        <script th:src="@{/js/vendor/jquery-2.2.4.min.js}"></script>>
+        <script th:src="@{/js/vendor/bootstrap.min.js}"></script>
+        <script th:src="@{/js/jquery.ajaxchimp.min.js}"></script>
+        <script th:src="@{/js/jquery.nice-select.min.js}"></script>
+        <script th:src="@{/js/jquery.sticky.js}"></script>
+        <script th:src="@{/js/nouislider.min.js}"></script>
+        <script th:src="@{/js/countdown.js}"></script>
+        <script th:src="@{/js/jquery.magnific-popup.min.js}"></script>
+        <script th:src="@{/js/owl.carousel.min.js}"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
+        <script th:src="@{/js/gmaps.min.js}"></script>
+        <script th:src="@{/js/main.js}"></script>
+    </div>
+</body>
+</html>

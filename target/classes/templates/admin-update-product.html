@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+
+<head th:replace = "~{admin-fragments::header}">
+    <title>Thêm sản phẩm</title>
+</head>
+
+<body id="page-top">
+<div id="wrapper">
+    <ul th:replace = "~{admin-fragments::sidebar}"></ul>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <nav th:replace = "~{admin-fragments::top-navbar}"></nav>
+
+            <div class="container-fluid">
+                <form class="form-horizontal" th:action="@{/update-product/{id}(id = ${productDTO.id})}" method="post" th:object="${productDTO}">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <legend style="padding-left: 60px;">Cập nhật sản phẩm</legend>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="product_name">Tên sản phẩm</label>
+                                <div class="col-md-8">
+                                    <input id="product_name" th:field="*{name}" th:value="${name}" name="product_name" class="form-control input-md" required="" type="text">
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <!--                                Drop box-->
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="brand">Hãng</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="brand" name="brand">
+                                        <option th:each="brand : ${brands}" th:value="${brand.name}" th:text="${brand.name}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Text input-->
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="cpu">CPU</label>
+                                <div class="col-md-8">
+                                    <input id="cpu" name="cpu" class="form-control input-md" th:value="${CPU}" required="" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="ram">RAM</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="ram" name="ram">
+                                        <option th:value="${RAM}" th:text="${RAM}"></option>
+                                        <option value="4 GB">4 GB</option>
+                                        <option value="6 GB">6 GB</option>
+                                        <option value="8 GB">8 GB</option>
+                                        <option value="12 GB">12 GB</option>
+                                        <option value="16 GB">16 GB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="rom">ROM</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="rom" name="rom">
+                                        <option th:value="${ROM}" th:text="${ROM}"></option>
+                                        <option value="64 GB">64 GB</option>
+                                        <option value="128 GB">128 GB</option>
+                                        <option value="256 GB">256 GB</option>
+                                        <option value="512 GB">512 GB</option>
+                                        <option value="1 TB">1 TB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="size">Kích thước màn hình (inch)</label>
+                                <div class="col-md-8">
+                                    <input id="size" name="size" class="form-control input-md" th:value="${size}" required="" type="number" step="0.01">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="resolution">Độ phân giải</label>
+                                <div class="col-md-8">
+                                    <select class="form-control" id="resolution" name="resolution">
+                                        <option th:value="${resolution}" th:text="${resolution}"></option>
+                                        <option value="HD+">HD+</option>
+                                        <option value="Full HD+">Full HD+</option>
+                                        <option value="AMOLED">AMOLED</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="camera">Camera</label>
+                                <div class="col-md-8">
+                                    <input id="camera" name="camera" class="form-control input-md" th:value="${camera}" required="" type="text">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="battery">Pin (mAh)</label>
+                                <div class="col-md-8">
+                                    <input id="battery" name="battery" class="form-control input-md" th:value="${battery}" required="" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="charge">Sạc (W)</label>
+                                <div class="col-md-8">
+                                    <input id="charge" name="charge" class="form-control input-md" th:value="${charge}" required="" type="number">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-left: 50px;">
+                                <label class="col-md-4 control-label" for="os">Hệ điều hành</label>
+                                <div class="col-md-8">
+                                    <input id="os" name="os" class="form-control input-md" th:value="${os}" required="" type="text">
+                                </div>
+                            </div>
+                            <!-- Add other fields here -->
+                            <button type="submit" class="btn btn-primary" style="margin-left: 60px;">Cập nhật</button>
+                            <a th:href="@{admin-products}" class="btn btn-danger">Hủy</a>
+
+
+                        </div>
+                        <div class="col-md-6">
+                            <!-- File Button -->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="image">Ảnh</label>
+                                <div class="col-md-8">
+                                    <input id="image" name="image" class="form-control input-md" th:value="${productDTO.image}" required="" type="text" placeholder="Link ảnh">
+                                    <img id="previewImage" class="my-product-image" style="height: 250px; width: 250px;" alt="">
+
+                                    <script>
+                                        const inputElement = document.getElementById("image");
+                                        const previewElement = document.getElementById("previewImage");
+
+                                        inputElement.addEventListener("input", () => {
+                                            previewElement.src = inputElement.value.trim();
+                                        });
+                                    </script>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer th:replace="~{admin-fragments::footer}">
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a th:replace="~{admin-fragments::scroll}">
+</a>
+
+
+
+<!-- Bootstrap core JavaScript-->
+<div th:replace="~{admin-fragments::script}"></div>
+
+</body>
+
+</html>

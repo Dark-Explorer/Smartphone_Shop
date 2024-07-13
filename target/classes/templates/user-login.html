@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+
+<head>
+	<title>NHD | Đăng nhập</title>
+	<div th:replace="~{user-fragment::head}"></div>
+</head>
+
+<body>
+	<div th:replace="~{user-fragment::header}"></div>
+
+	<div style="height: 100px"></div>
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" th:src="@{img/login.jpg}" alt="">
+						<div class="hover">
+							<h4>Chưa có tài khoản? Đăng ký ngay!</h4>
+							<a class="primary-btn" th:href="@{register}">Đăng ký</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Đăng nhập</h3>
+						<div th:if="${success}" id="success">
+							<p class="alert alert-success" th:text="${success}"></p>
+						</div>
+						<div th:if="${error}" id="error">
+							<p class="alert alert-danger" th:text="${error}"></p>
+						</div>
+						<div th:if = "${param.error}" id="error2" class="alert alert-danger text-center">Tên đăng nhập hoặc mật khẩu không đúng</div>
+						<form class="row login_form" th:action="@{/do-login}" method="POST" id="contactForm" novalidate="novalidate">
+							<div class="col-md-12 form-group">
+								<input type="text" class="form-control" id="name" name="username" placeholder="Tên đăng nhập" required onfocus="this.placeholder = ''" onblur="this.placeholder = 'Tên đăng nhập'">
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Mật khẩu" required onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mật khẩu'">
+							</div>
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Đăng nhập</button>
+								<a th:href="@{forgot-password}">Quên mật khẩu?</a>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+	<div th:replace="~{user-fragment::footer}"></div>
+
+	<div th:replace="~{user-fragment::JS-import}"></div>
+</body>
+
+</html>
