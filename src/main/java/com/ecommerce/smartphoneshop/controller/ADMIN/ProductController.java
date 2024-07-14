@@ -35,29 +35,11 @@ public class ProductController {
             return "redirect:/login";
         }
 
-//        List<Product> products = productService.getAllProducts();
         Page<Product> products = productService.getAllProducts(pageNo);
         if (keyword != null && !keyword.isEmpty()) {
             products = productService.searchProduct(keyword, pageNo);
             model.addAttribute("keyword", keyword);
         }
-
-//        List<ProductDTO> productDTOs = new ArrayList<>();
-//        for (Product product : products) {
-//            ProductDTO productDTO = ProductDTO.builder()
-//                    .id(product.getId())
-//                    .name(product.getName())
-//                    .brand(product.getBrand().getName())
-//                    .specification(product.getSpecification())
-//                    .warranty(product.getWarranty())
-//                    .is_active(product.is_active())
-//                    .image(product.getImage())
-//                    .build();
-//            productDTOs.add(productDTO);
-//        }
-
-//        model.addAttribute("products", productDTOs);
-//        model.addAttribute("size", productDTOs.size());
         model.addAttribute("products", products);
         model.addAttribute("totalPage", products.getTotalPages());
         model.addAttribute("currentPage", pageNo);

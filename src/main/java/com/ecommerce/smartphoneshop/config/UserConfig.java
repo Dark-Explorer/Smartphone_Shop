@@ -62,8 +62,9 @@ public class UserConfig {
     private static final String[] REGISTERED_PERMISSION = {
             "user-order-confirmation",
             "/checkout",
-            "/cart",
+            "cart",
             "/info",
+            "user-cart"
     };
 
     @Bean
@@ -79,7 +80,7 @@ public class UserConfig {
                         author.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                                 .requestMatchers("/img/**").permitAll()
                                 .requestMatchers(PUBLIC_MATCHERS).permitAll()
-                                .requestMatchers(REGISTERED_PERMISSION).hasAnyAuthority("CUSTOMER","ADMIN")
+                                .requestMatchers(REGISTERED_PERMISSION).hasAnyAuthority("USER","ADMIN")
                                 .requestMatchers(ADMIN_PERMISSION).hasAuthority("ADMIN")
                                 .anyRequest().authenticated()
                 )

@@ -135,7 +135,7 @@ public class ProductServiceImplement implements ProductService {
     public Page<Product> searchProduct(String keyword, Integer pageNo) {
         List<Product> list = productRepository.findByKeyword(keyword);
         Pageable pageable = PageRequest.of(pageNo - 1, PAGE_SIZE);
-
+        System.out.println(list.size());
         int start = (pageNo - 1) * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, list.size());
 

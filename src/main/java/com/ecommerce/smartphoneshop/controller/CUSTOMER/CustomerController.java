@@ -152,6 +152,7 @@ public class CustomerController {
         Long min = Long.valueOf(minPrice);
         Long max = Long.valueOf(maxPrice);
         Page<Product> products = productService.filterProduct(brandName, min, max, pageNo);
+
         List<Brand> brands = brandService.getAllBrands();
         int pageCount = products.getTotalPages();
 
