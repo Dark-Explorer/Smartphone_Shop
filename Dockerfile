@@ -1,7 +1,16 @@
-FROM eclipse-temurin:22-jdk-alpine
-VOLUME /tmp
-COPY target/smartphoneshop-0.0.1-SNAPSHOT.jar app.jar
-LABEL authors="diema"
+#FROM eclipse-temurin:22-jdk-alpine
+#VOLUME /tmp
+#COPY target/smartphoneshop-0.0.1-SNAPSHOT.jar app.jar
+#LABEL authors="diema"
+#
+#ENTRYPOINT ["java", "-jar", "/app.jar"]
+#EXPOSE 2004
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+FROM maven:4.0.0-eclipse-temurin-22-alpine AS build
+COPY . .
+RUN mvn clean package -DskipTests
+
+FROM openjdk:22
+COPY --from=build target/smartphoneshop-0.0.1-SNAPSHOT.jar smartphoneshop-0.0.1-SNAPSHOT.jar
 EXPOSE 2004
+ENTRYPOINT ["java", "-jar", "/smartphoneshop-0.0.1-SNAPSHOT.jar"]
