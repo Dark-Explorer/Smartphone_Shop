@@ -147,11 +147,18 @@ public class CustomerController {
     public String showProducts(@RequestParam(name = "brandName", required = false, defaultValue = "") String brandName,
                                @RequestParam(name = "min", required = false, defaultValue = "0") String minPrice,
                                @RequestParam(name = "max", required = false, defaultValue = "10000000000") String maxPrice,
+                               @RequestParam(name = "keyword", required = false, defaultValue = "") String keyword,
                                @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                Model model) {
         Long min = Long.valueOf(minPrice);
         Long max = Long.valueOf(maxPrice);
-        Page<Product> products = productService.filterProduct(brandName, min, max, pageNo);
+
+        Page<Product> products;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            products = productService.searchProduct(keyword, pageNo);
+            model.addAttribute("keyword", keyword);
+        } else products = productService.filterProduct(brandName, min, max, pageNo);
 
         List<Brand> brands = brandService.getAllBrands();
         int pageCount = products.getTotalPages();
